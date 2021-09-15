@@ -115,95 +115,48 @@ const Candidate: NextPage = () => {
         relationAddress: [""]
     })
 
-    const RelationForm = () => {
-        return(
-            <div>
-                <div className="p-4 w-full clone_section">
-                    <div className="flex flex-wrap -mx-3 mb-6">
-                        <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Nama Lengkap </label>
-                            <input
-                                type="text"
-                                className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                name="officialName"
-                                value={signUpData.officialName}
-                                onChange={(e) => setSignUpData({...signUpData, relationName: [e.target.value]})}
-                            />
-                        </div>
-                        <div className="w-full lg:w-1/6 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Hubungan </label>
-                            <select
-                                className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                value={signUpData.stayedStatus1}
-                                onChange={(e) => setSignUpData({...signUpData, relationShip: [e.target.value]})}
-                            >
-                                <option value="">- choose -</option>
-                                <option value="1"> Islam </option>
-                                <option value="2"> Kristen </option>
-                                <option value="3"> Katolik </option>
-                            </select>
-                        </div>
-                        <div className="w-full lg:w-1/6 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> No Telephone </label>
-                            <input
-                                type="text"
-                                className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                value={signUpData.nickName}
-                                onChange={(e) => setSignUpData({...signUpData, relationTelephone: [e.target.value]})}
-                            />
-                        </div>
-                        <div className="w-full lg:w-1/6 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> No Handphone </label>
-                            <input
-                                type="text"
-                                className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                value={signUpData.nickName}
-                                onChange={(e) => setSignUpData({...signUpData, relationPhone: [e.target.value]})}
-                            />
-                        </div>
-                        <div className="w-full lg:w-1/6 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Status </label>
-                            <select
-                                className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                value={signUpData.stayedStatus1}
-                                onChange={(e) => setSignUpData({...signUpData, relationStatus: [e.target.value]})}
-                            >
-                                <option value="">- choose -</option>
-                                <option value="1"> Islam </option>
-                                <option value="2"> Kristen </option>
-                                <option value="3"> Katolik </option>
-                            </select>
-                        </div>
-                        <div className="w-full lg:w-1/6 px-3">
-                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Alamat </label>
-                            <textarea
-                                className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                value={signUpData.addressTax}
-                                onChange={(e) => setSignUpData({...signUpData, relationAddress: [e.target.value]})}
-                            >
-                            </textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
     const handleSubmit = (event: any) => {
         event.preventDefault()
 
         const dateFix = moment(signUpData.birthDate).format('YYYY-MM-DD')
         setSignUpData({...signUpData, birthDateFix: dateFix})
+        console.log(signUpData)
     }
 
     const cloneElements = (event: any) => {
-        const form = document.querySelectorAll('.clone_section')
-        const lastElements = form[form.length - 1]
-        
-        const cloneElements = lastElements.cloneNode(true)
+        const relationNameDefault: string[] = signUpData.relationName
+        relationNameDefault.push("")
 
-        if(lastElements.parentNode !== null){
-            lastElements.parentNode.append(cloneElements)
+        setSignUpData({...signUpData, relationName: relationNameDefault})
+
+        const relationShipDefault: string[] = signUpData.relationShip
+        relationShipDefault.push("")
+
+        setSignUpData({...signUpData, relationShip: relationShipDefault})
+    }
+
+    const changeNewRelation = (id: number=0, stateName: string[]= [], type: string = "", value: string= "") => {
+        const temporary:string[] = stateName
+        temporary[id] = value
+        switch(type){
+            case 'relationName':
+                setSignUpData({...signUpData, relationName: temporary})
+            break;
+            case 'relationShip':
+                setSignUpData({...signUpData, relationShip: temporary})
+            break;
+            case 'relationTelephone':
+                setSignUpData({...signUpData, relationTelephone: temporary})
+            break;
+            case 'relationPhone':
+                setSignUpData({...signUpData, relationPhone: temporary})
+            break;
+            case 'relationStatus':
+                setSignUpData({...signUpData, relationStatus: temporary})
+            break;
+            case 'relationAddress':
+                setSignUpData({...signUpData, relationAddress: temporary})
+            break;
         }
     }
     
@@ -928,10 +881,76 @@ const Candidate: NextPage = () => {
         </div>
 
         <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
-            <p className="font-bold text-md">Alamat</p>
+            <p className="font-bold text-md">Hubungan</p>
         </div>
 
-        <RelationForm />
+        {
+            signUpData.relationName.map((entry, i) => {
+                return (
+                    <div className="p-4 w-full clone_section" key={i}>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Nama Lengkap </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    name="officialName"
+                                    onChange={(e) => changeNewRelation(i, signUpData.relationName, 'relationName', e.target.value)}
+                                />
+                            </div>
+                            <div className="w-full lg:w-1/6 px-3">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Hubungan </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewRelation(i, signUpData.relationShip, 'relationShip', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+                            <div className="w-full lg:w-1/6 px-3">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> No Telephone </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewRelation(i, signUpData.relationTelephone, 'relationTelephone', e.target.value)}
+                                />
+                            </div>
+                            <div className="w-full lg:w-1/6 px-3">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> No Handphone </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewRelation(i, signUpData.relationPhone, 'relationPhone', e.target.value)}
+                                />
+                            </div>
+                            <div className="w-full lg:w-1/6 px-3">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Status </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewRelation(i, signUpData.relationStatus, 'relationStatus', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+                            <div className="w-full lg:w-1/6 px-3">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Alamat </label>
+                                <textarea
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewRelation(i, signUpData.relationAddress, 'relationAddress', e.target.value)}
+                                >
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
 
         <div className="w-full lg:w-1/6 px-3">
             <button
