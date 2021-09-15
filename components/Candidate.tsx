@@ -133,6 +133,27 @@ const Candidate: NextPage = () => {
         relationShipDefault.push("")
 
         setSignUpData({...signUpData, relationShip: relationShipDefault})
+
+        const relationTelephoneDefault: string[] = signUpData.relationTelephone
+        relationTelephoneDefault.push("")
+
+        setSignUpData({...signUpData, relationTelephone: relationTelephoneDefault})
+
+        const relationPhoneDefault: string[] = signUpData.relationPhone
+        relationPhoneDefault.push("")
+
+        setSignUpData({...signUpData, relationPhone: relationPhoneDefault})
+
+        const relationStatusDefault: string[] = signUpData.relationStatus
+        relationStatusDefault.push("")
+
+        setSignUpData({...signUpData, relationStatus: relationStatusDefault})
+
+        const relationAddressDefault: string[] = signUpData.relationAddress
+        relationAddressDefault.push("")
+
+        setSignUpData({...signUpData, relationAddress: relationAddressDefault})
+
     }
 
     const changeNewRelation = (id: number=0, stateName: string[]= [], type: string = "", value: string= "") => {
