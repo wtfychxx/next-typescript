@@ -50,6 +50,13 @@ export interface isSignUpData{
     stayedStatus1: number;
     stayedStatus2: number;
     stayedStatus3: number;
+    relationName: string[];
+    relationShip: number[];
+    relationTelephone: string[];
+    relationPhone: string[];
+    relationStatus: number[];
+    relationAddress: string[];
+
 }
 
 const Candidate: NextPage = () => {
@@ -99,10 +106,16 @@ const Candidate: NextPage = () => {
         residenceSince3: "",
         stayedStatus1: "",
         stayedStatus2: "",
-        stayedStatus3: ""
+        stayedStatus3: "",
+        relationName: [""],
+        relationShip: [""],
+        relationTelephone: [""],
+        relationPhone: [""],
+        relationStatus: [""],
+        relationAddress: [""]
     })
 
-    const AddressForm = () => {
+    const RelationForm = () => {
         return(
             <div>
                 <div className="p-4 w-full clone_section">
@@ -114,7 +127,7 @@ const Candidate: NextPage = () => {
                                 className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                 name="officialName"
                                 value={signUpData.officialName}
-                                onChange={(e) => setSignUpData({...signUpData, officialName: e.target.value})}
+                                onChange={(e) => setSignUpData({...signUpData, relationName: [e.target.value]})}
                             />
                         </div>
                         <div className="w-full lg:w-1/6 px-3">
@@ -122,7 +135,7 @@ const Candidate: NextPage = () => {
                             <select
                                 className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                 value={signUpData.stayedStatus1}
-                                onChange={(e) => setSignUpData({...signUpData, stayedStatus1: e.target.value})}
+                                onChange={(e) => setSignUpData({...signUpData, relationShip: [e.target.value]})}
                             >
                                 <option value="">- choose -</option>
                                 <option value="1"> Islam </option>
@@ -136,7 +149,7 @@ const Candidate: NextPage = () => {
                                 type="text"
                                 className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                 value={signUpData.nickName}
-                                onChange={(e) => setSignUpData({...signUpData, nickName: e.target.value})}
+                                onChange={(e) => setSignUpData({...signUpData, relationTelephone: [e.target.value]})}
                             />
                         </div>
                         <div className="w-full lg:w-1/6 px-3">
@@ -145,7 +158,7 @@ const Candidate: NextPage = () => {
                                 type="text"
                                 className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                 value={signUpData.nickName}
-                                onChange={(e) => setSignUpData({...signUpData, nickName: e.target.value})}
+                                onChange={(e) => setSignUpData({...signUpData, relationPhone: [e.target.value]})}
                             />
                         </div>
                         <div className="w-full lg:w-1/6 px-3">
@@ -153,7 +166,7 @@ const Candidate: NextPage = () => {
                             <select
                                 className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                 value={signUpData.stayedStatus1}
-                                onChange={(e) => setSignUpData({...signUpData, stayedStatus1: e.target.value})}
+                                onChange={(e) => setSignUpData({...signUpData, relationStatus: [e.target.value]})}
                             >
                                 <option value="">- choose -</option>
                                 <option value="1"> Islam </option>
@@ -166,7 +179,7 @@ const Candidate: NextPage = () => {
                             <textarea
                                 className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                 value={signUpData.addressTax}
-                                onChange={(e) => setSignUpData({...signUpData, addressTax: e.target.value})}
+                                onChange={(e) => setSignUpData({...signUpData, relationAddress: [e.target.value]})}
                             >
                             </textarea>
                         </div>
@@ -918,7 +931,7 @@ const Candidate: NextPage = () => {
             <p className="font-bold text-md">Alamat</p>
         </div>
 
-        <AddressForm />
+        <RelationForm />
 
         <div className="w-full lg:w-1/6 px-3">
             <button
