@@ -14,7 +14,7 @@ export interface isSignUpData{
     email: string;
     gender: string;
     nationality: number;
-    birthDate: "";
+    birthDate: string;
     idCardNumber: number;
     phoneNumber: string;
     instagramAccount: string;
@@ -56,7 +56,12 @@ export interface isSignUpData{
     relationPhone: string[];
     relationStatus: number[];
     relationAddress: string[];
-
+    familyRelationship: number[];
+    familyRelationname: string[];
+    familyRelationBirth: string;
+    familyRelationEducation: number[];
+    familyRelationOccupation: number[];
+    familyRelationStatus: number[];
 }
 
 const Candidate: NextPage = () => {
@@ -107,12 +112,18 @@ const Candidate: NextPage = () => {
         stayedStatus1: "",
         stayedStatus2: "",
         stayedStatus3: "",
-        relationName: [""],
-        relationShip: [""],
-        relationTelephone: [""],
-        relationPhone: [""],
-        relationStatus: [""],
-        relationAddress: [""]
+        contactName: [""],
+        contactShip: [""],
+        contactTelephone: [""],
+        contactPhone: [""],
+        contactStatus: [""],
+        contactAddress: [""],
+        familyRelationship: [""],
+        familyRelationname: [""],
+        familyRelationBirth: [""],
+        familyRelationEducation: [""],
+        familyRelationOccupation: [""],
+        familyRelationStatus: [""]
     })
 
     const handleSubmit = (event: any) => {
@@ -123,60 +134,80 @@ const Candidate: NextPage = () => {
         console.log(signUpData)
     }
 
-    const cloneElements = (event: any) => {
-        const relationNameDefault: string[] = signUpData.relationName
-        relationNameDefault.push("")
+    const cloneContact = (event: any) => {
+        const contactNameDefault: string[] = signUpData.contactName
+        contactNameDefault.push("")
+        setSignUpData({...signUpData, contactName: contactNameDefault})
 
-        setSignUpData({...signUpData, relationName: relationNameDefault})
+        const contactShipDefault: string[] = signUpData.contactShip
+        contactShipDefault.push("")
+        setSignUpData({...signUpData, contactShip: contactShipDefault})
 
-        const relationShipDefault: string[] = signUpData.relationShip
-        relationShipDefault.push("")
+        const contactTelephoneDefault: string[] = signUpData.contactTelephone
+        contactTelephoneDefault.push("")
+        setSignUpData({...signUpData, contactTelephone: contactTelephoneDefault})
 
-        setSignUpData({...signUpData, relationShip: relationShipDefault})
+        const contactPhoneDefault: string[] = signUpData.contactPhone
+        contactPhoneDefault.push("")
+        setSignUpData({...signUpData, contactPhone: contactPhoneDefault})
 
-        const relationTelephoneDefault: string[] = signUpData.relationTelephone
-        relationTelephoneDefault.push("")
+        const contactStatusDefault: string[] = signUpData.contactStatus
+        contactStatusDefault.push("")
+        setSignUpData({...signUpData, contactStatus: contactStatusDefault})
 
-        setSignUpData({...signUpData, relationTelephone: relationTelephoneDefault})
-
-        const relationPhoneDefault: string[] = signUpData.relationPhone
-        relationPhoneDefault.push("")
-
-        setSignUpData({...signUpData, relationPhone: relationPhoneDefault})
-
-        const relationStatusDefault: string[] = signUpData.relationStatus
-        relationStatusDefault.push("")
-
-        setSignUpData({...signUpData, relationStatus: relationStatusDefault})
-
-        const relationAddressDefault: string[] = signUpData.relationAddress
-        relationAddressDefault.push("")
-
-        setSignUpData({...signUpData, relationAddress: relationAddressDefault})
+        const contactAddressDefault: string[] = signUpData.contactAddress
+        contactAddressDefault.push("")
+        setSignUpData({...signUpData, contactAddress: contactAddressDefault})
 
     }
 
-    const changeNewRelation = (id: number=0, stateName: string[]= [], type: string = "", value: string= "") => {
+    const deleteContact = () => {
+        const cloneLengthName: number = signUpData.contactName.length
+        setSignUpData({...signUpData, contactName: signUpData.contactName.filter((_, i) => i !== cloneLengthName -1)})
+
+        const cloneLengthShip: number = signUpData.contactShip.length
+        setSignUpData({...signUpData, contactShip: signUpData.contactShip.filter((_, i) => i !== cloneLengthShip -1)})
+        // const afterName = signUpData.contactName.slice(cloneLengthName - 1)
+        
+        // const cloneLengthShip: number = signUpData.contactShip.length
+        // const afterShip = signUpData.contactShip.slice(cloneLengthShip - 1)
+        // setSignUpData({...signUpData, contactShip: afterShip})
+        
+        // const afterTelephone = signUpData.contactTelephone.slice(cloneLength - 1)
+        // setSignUpData({...signUpData, contactTelephone: afterTelephone})
+
+        // const afterPhone = signUpData.contactPhone.slice(cloneLength - 1)
+        // setSignUpData({...signUpData, contactPhone: afterPhone})
+        
+        // const afterStatus = signUpData.contactStatus.slice(cloneLength - 1)
+        // setSignUpData({...signUpData, contactStatus: afterStatus})
+
+        // const afterAddress = signUpData.contactAddress.slice(cloneLength - 1)
+        // setSignUpData({...signUpData, contactAddress: afterAddress})
+
+    }
+
+    const changeNewContact = (id: number=0, stateName: string[]= [], type: string = "", value: string= "") => {
         const temporary:string[] = stateName
         temporary[id] = value
         switch(type){
-            case 'relationName':
-                setSignUpData({...signUpData, relationName: temporary})
+            case 'contactName':
+                setSignUpData({...signUpData, contactName: temporary})
             break;
-            case 'relationShip':
-                setSignUpData({...signUpData, relationShip: temporary})
+            case 'contactShip':
+                setSignUpData({...signUpData, contactShip: temporary})
             break;
-            case 'relationTelephone':
-                setSignUpData({...signUpData, relationTelephone: temporary})
+            case 'contactTelephone':
+                setSignUpData({...signUpData, contactTelephone: temporary})
             break;
-            case 'relationPhone':
-                setSignUpData({...signUpData, relationPhone: temporary})
+            case 'contactPhone':
+                setSignUpData({...signUpData, contactPhone: temporary})
             break;
-            case 'relationStatus':
-                setSignUpData({...signUpData, relationStatus: temporary})
+            case 'contactStatus':
+                setSignUpData({...signUpData, contactStatus: temporary})
             break;
-            case 'relationAddress':
-                setSignUpData({...signUpData, relationAddress: temporary})
+            case 'contactAddress':
+                setSignUpData({...signUpData, contactAddress: temporary})
             break;
         }
     }
@@ -902,13 +933,13 @@ const Candidate: NextPage = () => {
         </div>
 
         <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
-            <p className="font-bold text-md">Hubungan</p>
+            <p className="font-bold text-md">Kontak Darurat</p>
         </div>
 
         {
-            signUpData.relationName.map((entry, i) => {
+            signUpData.contactName.map((entry, i) => {
                 return (
-                    <div className="p-4 w-full clone_section" key={i}>
+                    <div className="p-4 w-full" key={i}>
                         <div className="flex flex-wrap -mx-3 mb-6">
                             <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Nama Lengkap </label>
@@ -916,14 +947,14 @@ const Candidate: NextPage = () => {
                                     type="text"
                                     className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                     name="officialName"
-                                    onChange={(e) => changeNewRelation(i, signUpData.relationName, 'relationName', e.target.value)}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactName, 'contactName', e.target.value)}
                                 />
                             </div>
                             <div className="w-full lg:w-1/6 px-3">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Hubungan </label>
                                 <select
                                     className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                    onChange={(e) => changeNewRelation(i, signUpData.relationShip, 'relationShip', e.target.value)}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
                                 >
                                     <option value="">- choose -</option>
                                     <option value="1"> Islam </option>
@@ -936,7 +967,7 @@ const Candidate: NextPage = () => {
                                 <input
                                     type="text"
                                     className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                    onChange={(e) => changeNewRelation(i, signUpData.relationTelephone, 'relationTelephone', e.target.value)}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactTelephone, 'contactTelephone', e.target.value)}
                                 />
                             </div>
                             <div className="w-full lg:w-1/6 px-3">
@@ -944,14 +975,14 @@ const Candidate: NextPage = () => {
                                 <input
                                     type="text"
                                     className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                    onChange={(e) => changeNewRelation(i, signUpData.relationPhone, 'relationPhone', e.target.value)}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactPhone, 'contactPhone', e.target.value)}
                                 />
                             </div>
                             <div className="w-full lg:w-1/6 px-3">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Status </label>
                                 <select
                                     className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                    onChange={(e) => changeNewRelation(i, signUpData.relationStatus, 'relationStatus', e.target.value)}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactStatus, 'contactStatus', e.target.value)}
                                 >
                                     <option value="">- choose -</option>
                                     <option value="1"> Islam </option>
@@ -963,23 +994,56 @@ const Candidate: NextPage = () => {
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Alamat </label>
                                 <textarea
                                     className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                    onChange={(e) => changeNewRelation(i, signUpData.relationAddress, 'relationAddress', e.target.value)}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactAddress, 'contactAddress', e.target.value)}
                                 >
                                 </textarea>
                             </div>
+
                         </div>
                     </div>
                 )
             })
         }
 
-        <div className="w-full lg:w-1/6 px-3">
-            <button
-                className="px-4 py-2 bg-red-500 text-white text-sm rounded shadow-md transition duration-200 hover:bg-red-700"
-                onClick={cloneElements}
-            >
-                Tambah Lagi 
-            </button>
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full lg:w-1/6 md:1/2 px-3 mb-6 md:mb-2">
+                    <button
+                        className={`py-3 px-4 w-full bg-blue-500 text-white text-md rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        onClick={cloneContact}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <p className="ml-3">
+                            Tambah Lagi
+                        </p>
+                    </button>
+                </div>
+
+                {
+                    (signUpData.contactName.length > 1) ? <div className="w-full lg:w-1/6 md:1/2 px-3">
+                    <button
+                        className={`py-3 px-4 w-full bg-red-500 text-white text-md rounded shadow-md transition duration-200 flex hover:bg-red-700 appearance-none block leading-tight`}
+                        onClick={deleteContact}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+
+                        <p className="ml-3">
+                            Delete row
+                        </p>
+                    </button>
+                </div> : null
+                }
+            </div>
+        </div>
+
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md">Kontak Darurat</p>
         </div>
 
         <div className="flex flex-wrap justify-end mx-3 mb-6 pb-3">
