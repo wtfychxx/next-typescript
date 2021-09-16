@@ -57,7 +57,7 @@ export interface isSignUpData{
     relationStatus: number[];
     relationAddress: string[];
     familyRelationship: number[];
-    familyRelationname: string[];
+    familyRelationName: string[];
     familyRelationBirth: string;
     familyRelationEducation: number[];
     familyRelationOccupation: number[];
@@ -118,12 +118,12 @@ const Candidate: NextPage = () => {
         contactPhone: [""],
         contactStatus: [""],
         contactAddress: [""],
-        familyRelationship: [""],
-        familyRelationname: [""],
-        familyRelationBirth: [""],
-        familyRelationEducation: [""],
-        familyRelationOccupation: [""],
-        familyRelationStatus: [""]
+        familyRelationship: ["", ""],
+        familyRelationName: ["", ""],
+        familyRelationBirth: ["", ""],
+        familyRelationEducation: ["", ""],
+        familyRelationOccupation: ["", ""],
+        familyRelationStatus: ["", ""]
     })
 
     const handleSubmit = (event: any) => {
@@ -134,7 +134,7 @@ const Candidate: NextPage = () => {
         console.log(signUpData)
     }
 
-    const cloneContact = (event: any) => {
+    const cloneContact = () => {
         const contactNameDefault: string[] = signUpData.contactName
         contactNameDefault.push("")
         setSignUpData({...signUpData, contactName: contactNameDefault})
@@ -158,32 +158,93 @@ const Candidate: NextPage = () => {
         const contactAddressDefault: string[] = signUpData.contactAddress
         contactAddressDefault.push("")
         setSignUpData({...signUpData, contactAddress: contactAddressDefault})
-
     }
 
     const deleteContact = () => {
         const cloneLengthName: number = signUpData.contactName.length
-        setSignUpData({...signUpData, contactName: signUpData.contactName.filter((_, i) => i !== cloneLengthName -1)})
+        const afterName = signUpData.contactName.slice(0, cloneLengthName - 1)
 
         const cloneLengthShip: number = signUpData.contactShip.length
-        setSignUpData({...signUpData, contactShip: signUpData.contactShip.filter((_, i) => i !== cloneLengthShip -1)})
-        // const afterName = signUpData.contactName.slice(cloneLengthName - 1)
-        
-        // const cloneLengthShip: number = signUpData.contactShip.length
-        // const afterShip = signUpData.contactShip.slice(cloneLengthShip - 1)
-        // setSignUpData({...signUpData, contactShip: afterShip})
-        
-        // const afterTelephone = signUpData.contactTelephone.slice(cloneLength - 1)
-        // setSignUpData({...signUpData, contactTelephone: afterTelephone})
+        const afterShip = signUpData.contactShip.slice(0, cloneLengthShip - 1)
 
-        // const afterPhone = signUpData.contactPhone.slice(cloneLength - 1)
-        // setSignUpData({...signUpData, contactPhone: afterPhone})
-        
-        // const afterStatus = signUpData.contactStatus.slice(cloneLength - 1)
-        // setSignUpData({...signUpData, contactStatus: afterStatus})
+        const cloneLengthTelephone: number = signUpData.contactTelephone.length
+        const afterTelephone = signUpData.contactTelephone.slice(0, cloneLengthTelephone - 1)
 
-        // const afterAddress = signUpData.contactAddress.slice(cloneLength - 1)
-        // setSignUpData({...signUpData, contactAddress: afterAddress})
+        const cloneLengthPhone: number = signUpData.contactPhone.length
+        const afterPhone = signUpData.contactPhone.slice(0, cloneLengthPhone - 1)
+
+        const cloneLengthStatus: number = signUpData.contactStatus.length
+        const afterStatus = signUpData.contactStatus.slice(0, cloneLengthStatus - 1)
+
+        const cloneLengthAddress: number = signUpData.contactAddress.length
+        const afterAddress = signUpData.contactAddress.slice(0, cloneLengthAddress - 1)
+
+        setSignUpData({
+            ...signUpData,
+            contactName: afterName,
+            contactShip: afterShip,
+            contactTelephone: afterTelephone,
+            contactPhone: afterPhone,
+            contactStatus: afterStatus,
+            contactAddress: afterAddress
+        })
+
+    }
+
+    const cloneFamily = () => {
+        const familyRelationshipDefault: string[] = signUpData.familyRelationship
+        familyRelationshipDefault.push("")
+        setSignUpData({...signUpData, familyRelationship: familyRelationshipDefault})
+
+        const familyRelationNameDefault: string[] = signUpData.familyRelationName
+        familyRelationNameDefault.push("")
+        setSignUpData({...signUpData, familyRelationName: familyRelationNameDefault})
+
+        const familyRelationBirthDefault: string[] = signUpData.familyRelationBirth
+        familyRelationBirthDefault.push("")
+        setSignUpData({...signUpData, familyRelationBirth: familyRelationBirthDefault})
+
+        const familyRelationEducationDefault: string[] = signUpData.familyRelationEducation
+        familyRelationEducationDefault.push("")
+        setSignUpData({...signUpData, familyRelationEducation: familyRelationEducationDefault})
+
+        const familyRelationOccupationDefault: string[] = signUpData.familyRelationOccupation
+        familyRelationOccupationDefault.push("")
+        setSignUpData({...signUpData, familyRelationOccupation: familyRelationOccupationDefault})
+
+        const familyRelationStatusDefault: string[] = signUpData.familyRelationStatus
+        familyRelationStatusDefault.push("")
+        setSignUpData({...signUpData, familyRelationStatus: familyRelationStatusDefault})
+    }
+
+    const deleteFamily = () => {
+        const familyLengthRelationship: number = signUpData.familyRelationship.length
+        const afterRelationship = signUpData.familyRelationship.slice(0, familyLengthRelationship - 1)
+
+        const familyLengthName: number = signUpData.familyRelationName.length
+        const afterName = signUpData.familyRelationName.slice(0, familyLengthName - 1)
+
+        const familyLengthBirth: number = signUpData.familyRelationBirth.length
+        const afterBirth = signUpData.familyRelationBirth.slice(0, familyLengthBirth - 1)
+
+        const familyLengthEducation: number = signUpData.familyRelationEducation.length
+        const afterEducation = signUpData.familyRelationEducation.slice(0, familyLengthEducation - 1)
+
+        const familyLengthOccupation: number = signUpData.familyRelationOccupation.length
+        const afterOccupation = signUpData.familyRelationOccupation.slice(0, familyLengthOccupation - 1)
+
+        const familyLengthStatus: number = signUpData.familyRelationStatus.length
+        const afterStatus = signUpData.familyRelationStatus.slice(0, familyLengthStatus - 1)
+
+        setSignUpData({
+            ...signUpData,
+            familyRelationship: afterRelationship,
+            familyRelationName: afterName,
+            familyRelationBirth: afterBirth,
+            familyRelationEducation: afterEducation,
+            familyRelationOccupation: afterOccupation,
+            familyRelationStatus: afterStatus
+        })
 
     }
 
@@ -339,7 +400,7 @@ const Candidate: NextPage = () => {
             <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tanggal Lahir </label>
-                    <DatePicker dateFormat="yyyy-mm-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} />
+                    <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-mm-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} />
                 </div>
                 <div className="w-full md:w-1/2 px-3">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> No KTP </label>
@@ -1007,23 +1068,23 @@ const Candidate: NextPage = () => {
 
         <div className="p-4 w-full">
             <div className="flex flex-wrap -mx-3 mb-6">
-                <div className="w-full lg:w-1/6 md:1/2 px-3 mb-6 md:mb-2">
+                <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                     <button
-                        className={`py-3 px-4 w-full bg-blue-500 text-white text-md rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        className={`py-3 px-4 w-full bg-blue-500 text-white text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
                         onClick={cloneContact}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
 
-                        <p className="ml-3">
+                        <p className="ml-3 mt-1">
                             Tambah Lagi
                         </p>
                     </button>
                 </div>
 
                 {
-                    (signUpData.contactName.length > 1) ? <div className="w-full lg:w-1/6 md:1/2 px-3">
+                    (signUpData.contactName.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                     <button
                         className={`py-3 px-4 w-full bg-red-500 text-white text-md rounded shadow-md transition duration-200 flex hover:bg-red-700 appearance-none block leading-tight`}
                         onClick={deleteContact}
@@ -1043,8 +1104,121 @@ const Candidate: NextPage = () => {
 
 
         <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
-            <p className="font-bold text-md">Kontak Darurat</p>
+            <p className="font-bold text-md"> Keluarga </p>
         </div>
+
+        {
+            signUpData.familyRelationship.map((entry, i) => {
+                return(
+                    <div className="p-4 w-full" key={i}>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Hubungan </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lengkap </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactTelephone, 'contactTelephone', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tanggal Lahir </label>
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-mm-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} />
+                            </div>
+
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Pendidikan Terakhir </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Pekerjaan </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
+                    <button
+                        className={`py-3 px-4 w-full bg-blue-500 text-white text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        onClick={cloneFamily}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Tambah Lagi
+                        </p>
+                    </button>
+                </div>
+
+                {
+                    (signUpData.familyRelationship.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
+                    <button
+                        className={`py-3 px-4 w-full bg-red-500 text-white text-md rounded shadow-md transition duration-200 flex hover:bg-red-700 appearance-none block leading-tight`}
+                        onClick={deleteFamily}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+
+                        <p className="ml-3">
+                            Delete row
+                        </p>
+                    </button>
+                </div> : null
+                }
+            </div>
+        </div>
+
 
         <div className="flex flex-wrap justify-end mx-3 mb-6 pb-3">
             <button
