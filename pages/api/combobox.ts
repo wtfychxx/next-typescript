@@ -7,7 +7,8 @@ type Data = {
     sessionId: string,
     timestamp: number,
     securityCode: string,
-    language_id: number
+    language_id: number,
+    result: Object
 }
 
 export default async function getCombo(
@@ -20,7 +21,7 @@ export default async function getCombo(
         isarray: true
     }
 
-    const res = await http.post('/getCombo', obj);
+    const res: any = await http.post('/getCombo', obj);
 
-    return res;
+    return res.result;
 }

@@ -1,3 +1,3 @@
-import Http from './pages/lib/http'
+import Http from './lib/http'
 
 export { Http }

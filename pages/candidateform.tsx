@@ -1,21 +1,18 @@
-import type { NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import Candidate from '../components/Candidate'
-import CloneDemo from '../components/CloneDemo'
 import getCombo from './api/combobox'
-import { useStoreOption } from './lib/candidate'
+import { useStoreOption } from '../lib/candidate'
 
-export interface propsData{
-    positionAppliedOption: positionAppliedData[] | undefined,
+
+interface propsData {
+    positionApplied?: string[]
 }
 
-const CandidateForm: NextPage<propsData> = ({positionAppliedOption}) => {
+const CandidateForm: NextPage<propsData> = ({positionApplied}) => {
+    console.log(positionApplied)
     const { setPositionApplied } = useStoreOption()
-
-    useEffect(() => {
-        setPositionApplied(positionAppliedOption)
-    }, [])
 
     return(
         <>
@@ -32,16 +29,19 @@ const CandidateForm: NextPage<propsData> = ({positionAppliedOption}) => {
     )
 }
 
-interface positionAppliedData{
-    combo_key: number;
-    combo_name: string;
-}
+export const getStaticProps = async () => {
+    const res = await getCombo("genre", 0);
+    const positionApplied: any[] = [];
 
-CandidateForm.getInitialProps = async() => {
-    const res = await getCombo("genre", 0)
-    const positionAppliedOption: positionAppliedData[] | undefined = res.result
-    
-    return {positionAppliedOption: positionAppliedOption}
+    res.map((key:any) => {
+        positionApplied.push({value: key.combo_key, label: key.combo_name})
+    })
+
+    return {
+        props: {
+            positionApplied
+        }
+    }
 }
 
 export default CandidateForm

@@ -4,7 +4,7 @@ import { imageConfigDefault } from 'next/dist/server/image-config'
 import React, { useState } from 'react'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import { useStoreOption } from '../pages/lib/candidate'
+import { useStoreOption } from '../lib/candidate'
 
 export interface isSignUpData{
     officialName: string;
@@ -85,6 +85,13 @@ export interface isSignUpData{
     workshopEnd: string[];
     workshopEndFix: string[];
     workshopCertificate: number[];
+    organizationName: string[];
+    organizationPosition: string[];
+    organizationCity: number[];
+    organizationStart: string[];
+    organizationStartFix: string[];
+    organizationEnd: string[];
+    organizationEndFix: string[];
 }
 
 const Candidate: NextPage = () => {
@@ -170,7 +177,14 @@ const Candidate: NextPage = () => {
         workshopStartFix: [""],
         workshopEnd: [new Date()],
         workshopEndFix: [""],
-        workshopCertificate: [""]
+        workshopCertificate: [""],
+        organizationName: [""],
+        organizationPosition: [""],
+        organizationCity: [""],
+        organizationStart: [new Date()],
+        organizationStartFix: [""],
+        organizationEnd: [new Date()],
+        organizationEndFix: [""]
     })
 
     const handleSubmit = (event: any) => {
@@ -341,8 +355,8 @@ const Candidate: NextPage = () => {
         const workshopStartDefault: Date[] = signUpData.workshopStart
         workshopStartDefault.push(new Date())
 
-        const educationUnformalStartFixDefault: string[] = signUpData.workshopStartFix
-        educationUnformalStartFixDefault.push("")
+        const workshopStartFixDefault: string[] = signUpData.workshopStartFix
+        workshopStartFixDefault.push("")
 
         const workshopEndDefault: Date[] = signUpData.workshopEnd
         workshopEndDefault.push(new Date())
@@ -359,10 +373,45 @@ const Candidate: NextPage = () => {
             workshopName: workshopNameDefault,
             workshopCity: workshopCityDefault,
             workshopStart: workshopStartDefault,
-            workshopStartFix: educationUnformalStartFixDefault,
+            workshopStartFix: workshopStartFixDefault,
             workshopEnd: workshopEndDefault,
             workshopEndFix: workshopEndFixDefault,
             workshopCertificate: workshopCertificateDefault
+        })
+
+    }
+
+    const cloneOrganization = () => {
+        const organizationNameDefault: string[] = signUpData.organizationName
+        organizationNameDefault.push("")
+        
+        const organizationPositionDefault: string[] = signUpData.organizationPosition
+        organizationPositionDefault.push("")
+        
+        const organizationCityDefault: string[] = signUpData.organizationCity
+        organizationCityDefault.push("")
+
+        const organizationStartDefault: Date[] = signUpData.organizationStart
+        organizationStartDefault.push(new Date())
+
+        const organizationStartFixDefault: string[] = signUpData.organizationStartFix
+        organizationStartFixDefault.push("")
+
+        const organizationEndDefault: Date[] = signUpData.organizationEnd
+        organizationEndDefault.push(new Date())
+
+        const organizationEndFixDefault: string[] = signUpData.organizationEndFix
+        organizationEndFixDefault.push("")
+
+        setSignUpData({
+            ...signUpData,
+            organizationName: organizationNameDefault,
+            organizationPosition: organizationPositionDefault,
+            organizationCity: organizationCityDefault,
+            organizationStart: organizationStartDefault,
+            organizationStartFix: organizationStartFixDefault,
+            organizationEnd: organizationEndDefault,
+            organizationEndFix: organizationEndFixDefault,
         })
 
     }
@@ -542,6 +591,41 @@ const Candidate: NextPage = () => {
 
     }
 
+    const deleteOrganization = () => {
+        const organizationNameLength: number = signUpData.organizationName.length
+        const afterTitle = signUpData.organizationName.slice(organizationNameLength - 1)
+        
+        const organizationPositionLength: number = signUpData.organizationPosition.length
+        const afterName = signUpData.organizationPosition.slice(organizationPositionLength - 1)
+        
+        const workshopCityLength: number = signUpData.workshopCity.length
+        const afterCity = signUpData.workshopCity.slice(workshopCityLength - 1)
+
+        const organizationStartLength: number = signUpData.organizationStart.length
+        const afterStart = signUpData.organizationStart.slice(organizationStartLength - 1)
+
+        const organizationStartFixLength: number = signUpData.organizationStartFix.length
+        const afterStartFix = signUpData.organizationStartFix.slice(organizationStartFixLength - 1)
+
+        const organizationEndLength: number = signUpData.organizationEnd.length
+        const afterEnd = signUpData.organizationEnd.slice(organizationEndLength - 1)
+
+        const organizationEndFixLength: number = signUpData.organizationEndFix.length
+        const afterEndFix = signUpData.organizationEndFix.slice(organizationEndFixLength - 1)
+
+        setSignUpData({
+            ...signUpData,
+            organizationName: afterTitle,
+            organizationPosition: afterName,
+            organizationCity: afterCity,
+            organizationStart: afterStart,
+            organizationStartFix: afterStartFix,
+            organizationEnd: afterEnd,
+            organizationEndFix: afterEndFix,
+        })
+
+    }
+
     const changeNewContact = (id: number=0, stateName: string[] | undefined= [], type: string = "", value: string= "") => {
         const temporary:string[] = stateName
         temporary[id] = value
@@ -670,6 +754,29 @@ const Candidate: NextPage = () => {
             break
             case 'workshopCertificate':
                 setSignUpData({...signUpData, workshopCertificate: temporary})
+            break
+        }
+    }
+
+    const changeNewOrganization = (id: number = 0, stateName: any[], type: string = "", value: any = "") => {
+        const temporary:any[] = stateName
+
+        temporary[id] = value
+        switch(type){
+            case 'organizationName':
+                setSignUpData({...signUpData, organizationName: temporary})
+            break
+            case 'organizationPosition':
+                setSignUpData({...signUpData, organizationPosition: temporary})
+            break
+            case 'organizationCity':
+                setSignUpData({...signUpData, organizationCity: temporary})
+            break
+            case 'organizationStart':
+                setSignUpData({...signUpData, organizationStart: temporary})
+            break
+            case 'organizationEnd':
+                setSignUpData({...signUpData, organizationEnd: temporary})
             break
         }
     }
@@ -1956,6 +2063,96 @@ const Candidate: NextPage = () => {
                     <button
                         className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
                         onClick={deleteWorkshop}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Delete row
+                        </p>
+                    </button>
+                </div> : null
+                }
+            </div>
+        </div>
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Pengalaman Organisasi </p>
+        </div>
+
+        {
+            signUpData.organizationName.map((entry, i) => {
+                return(
+                    <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full lg:w-1/4 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Organisasi </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewOrganization(i, signUpData.organizationName, 'organizationName', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/4 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Posisi </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewOrganization(i, signUpData.organizationPosition, 'organizationPosition', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/4 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kota </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewOrganization(i, signUpData.organizationCity, 'organizationCity', e.target.value)}
+                                    id="majorSelect"
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                                {/* <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} /> */}
+                            </div>
+
+                            <div className="w-full lg:w-1/4 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Periode </label>
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.organizationStart[i]} onChange={(date: any) => changeNewOrganization(i, signUpData.organizationStart, 'organizationStart', moment(date, "YYYY-MM-DD").toDate())} />
+
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.organizationStart[i]} onChange={(date: any) => changeNewOrganization(i, signUpData.organizationEnd, 'organizationEnd', moment(date, "YYYY-MM-DD").toDate())} />
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
+                    <button
+                        className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        onClick={cloneOrganization}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Tambah Lagi
+                        </p>
+                    </button>
+                </div>
+
+                {
+                    (signUpData.organizationName.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
+                    <button
+                        className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                        onClick={deleteOrganization}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
