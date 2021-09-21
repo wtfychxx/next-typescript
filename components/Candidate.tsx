@@ -833,7 +833,7 @@ const Candidate: NextPage = () => {
                         {
                             ((dataPositionApplied !== undefined) ? dataPositionApplied : []).map((entry:any, i:number) => {
                                 return(
-                                    <option key={i} value={entry.combo_key}>{entry.combo_name}</option>
+                                    <option key={i} value={entry.value}>{entry.label}</option>
                                 )
                             })
                         }

@@ -7,12 +7,15 @@ import { useStoreOption } from '../lib/candidate'
 
 
 interface propsData {
-    positionApplied?: string[]
+    positionApplied: string[]
 }
 
 const CandidateForm: NextPage<propsData> = ({positionApplied}) => {
-    console.log(positionApplied)
     const { setPositionApplied } = useStoreOption()
+
+    useEffect(() => {
+        setPositionApplied(positionApplied)
+    }, [])
 
     return(
         <>
