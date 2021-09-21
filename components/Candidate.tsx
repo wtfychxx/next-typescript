@@ -1,5 +1,6 @@
 import moment from 'moment'
 import type { NextPage } from 'next'
+import { imageConfigDefault } from 'next/dist/server/image-config'
 import React, { useState } from 'react'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -58,10 +59,32 @@ export interface isSignUpData{
     relationAddress: string[];
     familyRelationship: number[];
     familyRelationName: string[];
-    familyRelationBirth: string;
+    familyRelationBirth: string[];
+    familyRelationBirthFix: string[];
     familyRelationEducation: number[];
     familyRelationOccupation: number[];
     familyRelationStatus: number[];
+    educationFormalGrade: number[];
+    educationFormalInstitution: number[];
+    educationFormalMajor: number[];
+    educationFormalCity: number[];
+    educationFormalStart: number[];
+    educationFormalEnd: number[];
+    educationFormalGpa: number[];
+    educationUnformalType: number[];
+    educationUnformalName: string[];
+    educationUnformalCity: number[];
+    educationUnformalStart: string[];
+    educationUnformalEnd: string[];
+    educationUnformalCertificate: number[];
+    workshopTitle: string[];
+    workshopName: number[];
+    workshopCity: number[];
+    workshopStart: string[];
+    workshopStartFix: string[];
+    workshopEnd: string[];
+    workshopEndFix: string[];
+    workshopCertificate: number[];
 }
 
 const Candidate: NextPage = () => {
@@ -120,10 +143,34 @@ const Candidate: NextPage = () => {
         contactAddress: [""],
         familyRelationship: ["", ""],
         familyRelationName: ["", ""],
-        familyRelationBirth: ["", ""],
+        familyRelationBirth: [new Date(), new Date()],
+        familyRelationBirthFix: ["", ""],
         familyRelationEducation: ["", ""],
         familyRelationOccupation: ["", ""],
-        familyRelationStatus: ["", ""]
+        familyRelationStatus: ["", ""],
+        educationFormalGrade: [""],
+        educationFormalInstitution: [""],
+        educationFormalMajor: [""],
+        educationFormalCity: [""],
+        educationFormalStart: [""],
+        educationFormalEnd: [""],
+        educationFormalGpa: [""],
+        educationUnformalType: [""],
+        educationUnformalName: [""],
+        educationUnformalCity: [""],
+        educationUnformalStart: [new Date()],
+        educationUnformalStartFix: [""],
+        educationUnformalEnd: [new Date()],
+        educationUnformalEndFix: [""],
+        educationUnformalCertificate: [""],
+        workshopTitle: [""],
+        workshopName: [""],
+        workshopCity: [""],
+        workshopStart: [new Date()],
+        workshopStartFix: [""],
+        workshopEnd: [new Date()],
+        workshopEndFix: [""],
+        workshopCertificate: [""]
     })
 
     const handleSubmit = (event: any) => {
@@ -131,33 +178,193 @@ const Candidate: NextPage = () => {
 
         const dateFix = moment(signUpData.birthDate).format('YYYY-MM-DD')
         setSignUpData({...signUpData, birthDateFix: dateFix})
+
+        signUpData.familyRelationBirth.map((entry, i) => {
+            const temporary: string[] = signUpData.familyRelationBirthFix
+
+            temporary[i] = moment(entry).format('YYYY-MM-DD')
+
+            setSignUpData({...signUpData, familyRelationBirthFix: temporary})
+        })
+
         console.log(signUpData)
     }
 
     const cloneContact = () => {
         const contactNameDefault: string[] = signUpData.contactName
         contactNameDefault.push("")
-        setSignUpData({...signUpData, contactName: contactNameDefault})
 
         const contactShipDefault: string[] = signUpData.contactShip
         contactShipDefault.push("")
-        setSignUpData({...signUpData, contactShip: contactShipDefault})
 
         const contactTelephoneDefault: string[] = signUpData.contactTelephone
         contactTelephoneDefault.push("")
-        setSignUpData({...signUpData, contactTelephone: contactTelephoneDefault})
 
         const contactPhoneDefault: string[] = signUpData.contactPhone
         contactPhoneDefault.push("")
-        setSignUpData({...signUpData, contactPhone: contactPhoneDefault})
 
         const contactStatusDefault: string[] = signUpData.contactStatus
         contactStatusDefault.push("")
-        setSignUpData({...signUpData, contactStatus: contactStatusDefault})
 
         const contactAddressDefault: string[] = signUpData.contactAddress
         contactAddressDefault.push("")
-        setSignUpData({...signUpData, contactAddress: contactAddressDefault})
+
+        setSignUpData({
+            ...signUpData,
+            contactName: contactNameDefault,
+            contactShip: contactShipDefault,
+            contactTelephone: contactTelephoneDefault,
+            contactPhone: contactPhoneDefault,
+            contactStatus: contactStatusDefault,
+            contactAddress: contactAddressDefault
+        })
+    }
+
+    const cloneFamily = () => {
+        const familyRelationshipDefault: string[] = signUpData.familyRelationship
+        familyRelationshipDefault.push("")
+
+        const familyRelationNameDefault: string[] = signUpData.familyRelationName
+        familyRelationNameDefault.push("")
+
+        const familyRelationBirthDefault: Date[] = signUpData.familyRelationBirth
+        familyRelationBirthDefault.push(new Date())
+
+        const familyRelationBirthFixDefault: string[] = signUpData.familyRelationBirthFix
+        familyRelationBirthFixDefault.push("")
+
+        const familyRelationEducationDefault: string[] = signUpData.familyRelationEducation
+        familyRelationEducationDefault.push("")
+
+        const familyRelationOccupationDefault: string[] = signUpData.familyRelationOccupation
+        familyRelationOccupationDefault.push("")
+
+        const familyRelationStatusDefault: string[] = signUpData.familyRelationStatus
+        familyRelationStatusDefault.push("")
+
+        setSignUpData({
+            ...signUpData,
+            familyRelationship: familyRelationshipDefault,
+            familyRelationName: familyRelationNameDefault,
+            familyRelationBirth: familyRelationBirthDefault,
+            familyRelationBirthFix: familyRelationBirthFixDefault,
+            familyRelationEducation: familyRelationEducationDefault,
+            familyRelationOccupation: familyRelationOccupationDefault,
+            familyRelationStatus: familyRelationStatusDefault
+        })
+    }
+
+    const cloneEducationFormal = () => {
+        const educationFormalGradeDefault: string[] = signUpData.educationFormalGrade
+        educationFormalGradeDefault.push("")
+        
+        const educationFormalInstitutionDefault: string[] = signUpData.educationFormalInstitution
+        educationFormalInstitutionDefault.push("")
+        
+        const educationFormalMajorDefault: string[] = signUpData.educationFormalMajor
+        educationFormalMajorDefault.push("")
+
+        const educationFormalCityDefault: string[] = signUpData.educationFormalCity
+        educationFormalCityDefault.push("")
+
+        const educationFormalStartDefault: string[] = signUpData.educationFormalStart
+        educationFormalStartDefault.push("")
+
+        const educationFormalEndDefault: string[] = signUpData.educationFormalEnd
+        educationFormalEndDefault.push("")
+
+        const educationFormalGpaDefault: string[] = signUpData.educationFormalGpa
+        educationFormalGpaDefault.push("")
+
+        setSignUpData({
+            ...signUpData,
+            educationFormalGrade: educationFormalGradeDefault,
+            educationFormalInstitution: educationFormalInstitutionDefault,
+            educationFormalMajor: educationFormalMajorDefault,
+            educationFormalCity: educationFormalCityDefault,
+            educationFormalStart: educationFormalStartDefault,
+            educationFormalEnd: educationFormalEndDefault,
+            educationFormalGpa: educationFormalGpaDefault
+        })
+
+    }
+
+    const cloneEducationUnformal = () => {
+        const educationUnformalTypeDefault: string[] = signUpData.educationUnformalType
+        educationUnformalTypeDefault.push("")
+        
+        const educationUnformalNameDefault: string[] = signUpData.educationUnformalName
+        educationUnformalNameDefault.push("")
+        
+        const educationUnformalCityDefault: string[] = signUpData.educationUnformalCity
+        educationUnformalCityDefault.push("")
+
+        const educationUnformalStartDefault: Date[] = signUpData.educationUnformalStart
+        educationUnformalStartDefault.push(new Date())
+
+        const educationUnformalStartFixDefault: string[] = signUpData.educationUnformalStartFix
+        educationUnformalStartFixDefault.push("")
+
+        const educationUnformalEndDefault: Date[] = signUpData.educationUnformalEnd
+        educationUnformalEndDefault.push(new Date())
+
+        const educationUnformalEndFixDefault: string[] = signUpData.educationUnformalEndFix
+        educationUnformalEndFixDefault.push("")
+
+        const educationUnformalCertificateDefault: string[] = signUpData.educationUnformalCertificate
+        educationUnformalCertificateDefault.push("")
+
+        setSignUpData({
+            ...signUpData,
+            educationUnformalType: educationUnformalTypeDefault,
+            educationUnformalName: educationUnformalNameDefault,
+            educationUnformalCity: educationUnformalCityDefault,
+            educationUnformalStart: educationUnformalStartDefault,
+            educationUnformalStartFix: educationUnformalStartFixDefault,
+            educationUnformalEnd: educationUnformalEndDefault,
+            educationUnformalEndFix: educationUnformalEndFixDefault,
+            educationUnformalCertificate: educationUnformalCertificateDefault
+        })
+
+    }
+
+    const cloneWorkshop = () => {
+        const workshopTitleDefault: string[] = signUpData.workshopTitle
+        workshopTitleDefault.push("")
+        
+        const workshopNameDefault: string[] = signUpData.workshopName
+        workshopNameDefault.push("")
+        
+        const workshopCityDefault: string[] = signUpData.workshopCity
+        workshopCityDefault.push("")
+
+        const workshopStartDefault: Date[] = signUpData.workshopStart
+        workshopStartDefault.push(new Date())
+
+        const educationUnformalStartFixDefault: string[] = signUpData.workshopStartFix
+        educationUnformalStartFixDefault.push("")
+
+        const workshopEndDefault: Date[] = signUpData.workshopEnd
+        workshopEndDefault.push(new Date())
+
+        const workshopEndFixDefault: string[] = signUpData.workshopEndFix
+        workshopEndFixDefault.push("")
+
+        const workshopCertificateDefault: string[] = signUpData.workshopCertificate
+        workshopCertificateDefault.push("")
+
+        setSignUpData({
+            ...signUpData,
+            workshopTitle: workshopTitleDefault,
+            workshopName: workshopNameDefault,
+            workshopCity: workshopCityDefault,
+            workshopStart: workshopStartDefault,
+            workshopStartFix: educationUnformalStartFixDefault,
+            workshopEnd: workshopEndDefault,
+            workshopEndFix: workshopEndFixDefault,
+            workshopCertificate: workshopCertificateDefault
+        })
+
     }
 
     const deleteContact = () => {
@@ -191,32 +398,6 @@ const Candidate: NextPage = () => {
 
     }
 
-    const cloneFamily = () => {
-        const familyRelationshipDefault: string[] = signUpData.familyRelationship
-        familyRelationshipDefault.push("")
-        setSignUpData({...signUpData, familyRelationship: familyRelationshipDefault})
-
-        const familyRelationNameDefault: string[] = signUpData.familyRelationName
-        familyRelationNameDefault.push("")
-        setSignUpData({...signUpData, familyRelationName: familyRelationNameDefault})
-
-        const familyRelationBirthDefault: string[] = signUpData.familyRelationBirth
-        familyRelationBirthDefault.push("")
-        setSignUpData({...signUpData, familyRelationBirth: familyRelationBirthDefault})
-
-        const familyRelationEducationDefault: string[] = signUpData.familyRelationEducation
-        familyRelationEducationDefault.push("")
-        setSignUpData({...signUpData, familyRelationEducation: familyRelationEducationDefault})
-
-        const familyRelationOccupationDefault: string[] = signUpData.familyRelationOccupation
-        familyRelationOccupationDefault.push("")
-        setSignUpData({...signUpData, familyRelationOccupation: familyRelationOccupationDefault})
-
-        const familyRelationStatusDefault: string[] = signUpData.familyRelationStatus
-        familyRelationStatusDefault.push("")
-        setSignUpData({...signUpData, familyRelationStatus: familyRelationStatusDefault})
-    }
-
     const deleteFamily = () => {
         const familyLengthRelationship: number = signUpData.familyRelationship.length
         const afterRelationship = signUpData.familyRelationship.slice(0, familyLengthRelationship - 1)
@@ -248,28 +429,248 @@ const Candidate: NextPage = () => {
 
     }
 
-    const changeNewContact = (id: number=0, stateName: string[]= [], type: string = "", value: string= "") => {
+    const deleteEducationFormal = () => {
+        const educationFormalGradeLength: number = signUpData.educationFormalGrade.length
+        const afterGrade = signUpData.educationFormalGrade.slice(0, educationFormalGradeLength - 1)
+
+        const educationFormalInstitutionLength: number = signUpData.educationFormalInstitution.length
+        const afterInstitution = signUpData.educationFormalInstitution.slice(0, educationFormalInstitutionLength - 1)
+
+        const educationFormalMajorLength: number = signUpData.educationFormalMajor.length
+        const afterMajor = signUpData.educationFormalMajor.slice(0, educationFormalMajorLength - 1)
+
+        const educationFormalCity: number = signUpData.educationFormalCity.length
+        const afterCity = signUpData.educationFormalCity.slice(0, educationFormalCity - 1)
+
+        const educationFormalStartLength: number = signUpData.educationFormalStart.length
+        const afterStart = signUpData.educationFormalStart.slice(0, educationFormalStartLength - 1)
+
+        const educationFormalEndLength: number = signUpData.educationFormalEnd.length
+        const afterEnd = signUpData.educationFormalEnd.slice(0, educationFormalEndLength - 1)
+
+        const educationFormalGpaLength: number = signUpData.educationFormalGpa.length
+        const afterGpa = signUpData.educationFormalGpa.slice(0, educationFormalGpaLength - 1)
+
+        setSignUpData({
+            ...signUpData,
+            educationFormalGrade: afterGrade,
+            educationFormalInstitution: afterInstitution,
+            educationFormalMajor: afterMajor,
+            educationFormalCity: afterCity,
+            educationFormalStart: afterStart,
+            educationFormalEnd: afterEnd,
+            educationFormalGpa: afterGpa
+        })
+
+    }
+    
+    const deleteEducationUnformal = () => {
+        const educationUnformalTypeLength: number = signUpData.educationUnformalType.length
+        const afterType = signUpData.educationUnformalType.slice(educationUnformalTypeLength - 1)
+        
+        const educationUnformalNameLength: number = signUpData.educationUnformalName.length
+        const afterName = signUpData.educationUnformalName.slice(educationUnformalNameLength - 1)
+        
+        const educationUnformalCityLength: number = signUpData.educationUnformalCity.length
+        const afterCity = signUpData.educationUnformalCity.slice(educationUnformalCityLength - 1)
+
+        const educationUnformalStartLength: number = signUpData.educationUnformalStart.length
+        const afterStart = signUpData.educationUnformalStart.slice(educationUnformalStartLength - 1)
+
+        const educationUnformalStartFixLength: number = signUpData.educationUnformalStartFix.length
+        const afterStartFix = signUpData.educationUnformalStartFix.slice(educationUnformalStartFixLength - 1)
+
+        const educationUnformalEndLength: number = signUpData.educationUnformalEnd.length
+        const afterEnd = signUpData.educationUnformalEnd.slice(educationUnformalEndLength - 1)
+
+        const educationUnformalEndFixLength: number = signUpData.educationUnformalEndFix.length
+        const afterEndFix = signUpData.educationUnformalEndFix.slice(educationUnformalEndFixLength - 1)
+
+        const educationUnformalCertificateLength: number = signUpData.educationUnformalCertificate.length
+        const afterCertificate = signUpData.educationUnformalCertificate.slice(educationUnformalCertificateLength - 1)
+
+        setSignUpData({
+            ...signUpData,
+            educationUnformalType: afterType,
+            educationUnformalName: afterName,
+            educationUnformalCity: afterCity,
+            educationUnformalStart: afterStart,
+            educationUnformalStartFix: afterStartFix,
+            educationUnformalEnd: afterEnd,
+            educationUnformalEndFix: afterEndFix,
+            educationUnformalCertificate: afterCertificate
+        })
+
+    }
+
+    const deleteWorkshop = () => {
+        const workshopTitleLength: number = signUpData.workshopTitle.length
+        const afterTitle = signUpData.workshopTitle.slice(workshopTitleLength - 1)
+        
+        const workshopNameLength: number = signUpData.workshopName.length
+        const afterName = signUpData.workshopName.slice(workshopNameLength - 1)
+        
+        const workshopCityLength: number = signUpData.workshopCity.length
+        const afterCity = signUpData.workshopCity.slice(workshopCityLength - 1)
+
+        const workshopStartLength: number = signUpData.workshopStart.length
+        const afterStart = signUpData.workshopStart.slice(workshopStartLength - 1)
+
+        const workshopStartFixLength: number = signUpData.workshopStartFix.length
+        const afterStartFix = signUpData.workshopStartFix.slice(workshopStartFixLength - 1)
+
+        const workshopEndLength: number = signUpData.workshopEnd.length
+        const afterEnd = signUpData.workshopEnd.slice(workshopEndLength - 1)
+
+        const workshopEndFixLength: number = signUpData.workshopEndFix.length
+        const afterEndFix = signUpData.workshopEndFix.slice(workshopEndFixLength - 1)
+
+        const workshopCertificateLength: number = signUpData.workshopCertificate.length
+        const afterCertificate = signUpData.workshopCertificate.slice(workshopCertificateLength - 1)
+
+        setSignUpData({
+            ...signUpData,
+            workshopTitle: afterTitle,
+            workshopName: afterName,
+            workshopCity: afterCity,
+            workshopStart: afterStart,
+            workshopStartFix: afterStartFix,
+            workshopEnd: afterEnd,
+            workshopEndFix: afterEndFix,
+            workshopCertificate: afterCertificate
+        })
+
+    }
+
+    const changeNewContact = (id: number=0, stateName: string[] | undefined= [], type: string = "", value: string= "") => {
         const temporary:string[] = stateName
         temporary[id] = value
         switch(type){
             case 'contactName':
                 setSignUpData({...signUpData, contactName: temporary})
-            break;
+            break
             case 'contactShip':
                 setSignUpData({...signUpData, contactShip: temporary})
-            break;
+            break
             case 'contactTelephone':
                 setSignUpData({...signUpData, contactTelephone: temporary})
-            break;
+            break
             case 'contactPhone':
                 setSignUpData({...signUpData, contactPhone: temporary})
-            break;
+            break
             case 'contactStatus':
                 setSignUpData({...signUpData, contactStatus: temporary})
-            break;
+            break
             case 'contactAddress':
                 setSignUpData({...signUpData, contactAddress: temporary})
-            break;
+            break
+        }
+    }
+
+    const changeNewFamily = (id: number=0, stateName: any[]= [], type: string = "", value: any= "") => {
+        const temporary:any[] = stateName
+
+        temporary[id] = value
+        switch(type){
+            case 'familyRelationship':
+                setSignUpData({...signUpData, familyRelationship: temporary})
+            break
+            case 'familyRelationName':
+                setSignUpData({...signUpData, familyRelationName: temporary})
+            break
+            case 'familyRelationBirth':
+                setSignUpData({...signUpData, familyRelationBirth: temporary})
+            break
+            case 'familyRelationEducation':
+                setSignUpData({...signUpData, familyRelationEducation: temporary})
+            break
+            case 'familyRelationOccupation':
+                setSignUpData({...signUpData, familyRelationOccupation: temporary})
+            break
+            case 'familyRelationStatus':
+                setSignUpData({...signUpData, familyRelationStatus: temporary})
+            break
+        }
+    }
+
+    const changeNewEduFormal = (id: number = 0, stateName: string[], type: string = "", value: string = "") => {
+        const temporary:string[] = stateName
+
+        temporary[id] = value
+        switch(type){
+            case 'educationFormalGrade':
+                setSignUpData({...signUpData, educationFormalGrade: temporary})
+            break
+            case 'educationFormalInstitution':
+                setSignUpData({...signUpData, educationFormalInstitution: temporary})
+            break
+            case 'educationFormalMajor':
+                setSignUpData({...signUpData, educationFormalMajor: temporary})
+            break
+            case 'educationFormalCity':
+                setSignUpData({...signUpData, educationFormalCity: temporary})
+            break
+            case 'educationFormalStart':
+                setSignUpData({...signUpData, educationFormalStart: temporary})
+            break
+            case 'educationFormalEnd':
+                setSignUpData({...signUpData, educationFormalEnd: temporary})
+            break
+            case 'educationFormalGpa':
+                setSignUpData({...signUpData, educationFormalGpa: temporary})
+            break
+        }
+    }
+
+    const changeNewEduUnformal = (id: number = 0, stateName: any[], type: string = "", value: any = "") => {
+        const temporary:any[] = stateName
+
+        temporary[id] = value
+        switch(type){
+            case 'educationUnformalType':
+                setSignUpData({...signUpData, educationUnformalType: temporary})
+            break
+            case 'educationUnformalName':
+                setSignUpData({...signUpData, educationUnformalName: temporary})
+            break
+            case 'educationUnformalCity':
+                setSignUpData({...signUpData, educationUnformalCity: temporary})
+            break
+            case 'educationUnformalStart':
+                setSignUpData({...signUpData, educationUnformalStart: temporary})
+            break
+            case 'educationUnformalEnd':
+                setSignUpData({...signUpData, educationUnformalEnd: temporary})
+            break
+            case 'educationUnformalCertificate':
+                setSignUpData({...signUpData, educationUnformalCertificate: temporary})
+            break
+        }
+    }
+
+    const changeNewWorkshop = (id: number = 0, stateName: any[], type: string = "", value: any = "") => {
+        const temporary:any[] = stateName
+
+        temporary[id] = value
+        switch(type){
+            case 'workshopTitle':
+                setSignUpData({...signUpData, workshopTitle: temporary})
+            break
+            case 'workshopName':
+                setSignUpData({...signUpData, workshopName: temporary})
+            break
+            case 'workshopCity':
+                setSignUpData({...signUpData, workshopCity: temporary})
+            break
+            case 'workshopStart':
+                setSignUpData({...signUpData, workshopStart: temporary})
+            break
+            case 'workshopEnd':
+                setSignUpData({...signUpData, workshopEnd: temporary})
+            break
+            case 'workshopCertificate':
+                setSignUpData({...signUpData, workshopCertificate: temporary})
+            break
         }
     }
     
@@ -400,7 +801,7 @@ const Candidate: NextPage = () => {
             <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tanggal Lahir </label>
-                    <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-mm-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} />
+                    <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} />
                 </div>
                 <div className="w-full md:w-1/2 px-3">
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> No KTP </label>
@@ -1000,7 +1401,7 @@ const Candidate: NextPage = () => {
         {
             signUpData.contactName.map((entry, i) => {
                 return (
-                    <div className="p-4 w-full" key={i}>
+                    <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
                         <div className="flex flex-wrap -mx-3 mb-6">
                             <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Nama Lengkap </label>
@@ -1070,7 +1471,7 @@ const Candidate: NextPage = () => {
             <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                     <button
-                        className={`py-3 px-4 w-full bg-blue-500 text-white text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
                         onClick={cloneContact}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1086,14 +1487,14 @@ const Candidate: NextPage = () => {
                 {
                     (signUpData.contactName.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                     <button
-                        className={`py-3 px-4 w-full bg-red-500 text-white text-md rounded shadow-md transition duration-200 flex hover:bg-red-700 appearance-none block leading-tight`}
+                        className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
                         onClick={deleteContact}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
 
-                        <p className="ml-3">
+                        <p className="ml-3 mt-1">
                             Delete row
                         </p>
                     </button>
@@ -1102,7 +1503,6 @@ const Candidate: NextPage = () => {
             </div>
         </div>
 
-
         <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
             <p className="font-bold text-md"> Keluarga </p>
         </div>
@@ -1110,13 +1510,13 @@ const Candidate: NextPage = () => {
         {
             signUpData.familyRelationship.map((entry, i) => {
                 return(
-                    <div className="p-4 w-full" key={i}>
+                    <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
                         <div className="flex flex-wrap -mx-3 mb-6">
                             <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Hubungan </label>
                                 <select
                                     className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                    onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
+                                    onChange={(e) => changeNewFamily(i, signUpData.familyRelationship, 'familyRelationship', e.target.value)}
                                 >
                                     <option value="">- choose -</option>
                                     <option value="1"> Islam </option>
@@ -1130,20 +1530,20 @@ const Candidate: NextPage = () => {
                                 <input
                                     type="text"
                                     className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                    onChange={(e) => changeNewContact(i, signUpData.contactTelephone, 'contactTelephone', e.target.value)}
+                                    onChange={(e) => changeNewFamily(i, signUpData.familyRelationName, 'familyRelationName', e.target.value)}
                                 />
                             </div>
 
                             <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tanggal Lahir </label>
-                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-mm-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} />
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.familyRelationBirth[i]} onChange={(date: any) => changeNewFamily(i, signUpData.familyRelationBirth, 'familyRelationBirth', moment(date, "YYYY-MM-DD").toDate())} />
                             </div>
 
                             <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Pendidikan Terakhir </label>
                                 <select
                                     className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                    onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
+                                    onChange={(e) => changeNewFamily(i, signUpData.familyRelationEducation, 'familyRelationEducation', e.target.value)}
                                 >
                                     <option value="">- choose -</option>
                                     <option value="1"> Islam </option>
@@ -1156,7 +1556,7 @@ const Candidate: NextPage = () => {
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Pekerjaan </label>
                                 <select
                                     className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                    onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
+                                    onChange={(e) => changeNewFamily(i, signUpData.familyRelationOccupation, 'familyRelationOccupation', e.target.value)}
                                 >
                                     <option value="">- choose -</option>
                                     <option value="1"> Islam </option>
@@ -1169,7 +1569,7 @@ const Candidate: NextPage = () => {
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status </label>
                                 <select
                                     className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                                    onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
+                                    onChange={(e) => changeNewFamily(i, signUpData.familyRelationStatus, 'familyRelationStatus', e.target.value)}
                                 >
                                     <option value="">- choose -</option>
                                     <option value="1"> Islam </option>
@@ -1187,7 +1587,7 @@ const Candidate: NextPage = () => {
             <div className="flex flex-wrap -mx-3 mb-6">
                 <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                     <button
-                        className={`py-3 px-4 w-full bg-blue-500 text-white text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
                         onClick={cloneFamily}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1203,14 +1603,14 @@ const Candidate: NextPage = () => {
                 {
                     (signUpData.familyRelationship.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                     <button
-                        className={`py-3 px-4 w-full bg-red-500 text-white text-md rounded shadow-md transition duration-200 flex hover:bg-red-700 appearance-none block leading-tight`}
+                        className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
                         onClick={deleteFamily}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
 
-                        <p className="ml-3">
+                        <p className="ml-3 mt-1">
                             Delete row
                         </p>
                     </button>
@@ -1219,13 +1619,365 @@ const Candidate: NextPage = () => {
             </div>
         </div>
 
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Pendidikan Formal </p>
+        </div>
+
+        {
+            signUpData.educationFormalGrade.map((entry, i) => {
+                return(
+                    <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tingkat </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalGrade, 'educationFormalGrade', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lembaga </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalInstitution, 'educationFormalInstitution', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jurusan </label>
+                                <select
+                                    className={`appearance-none hidden w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalMajor, 'educationFormalMajor', e.target.value)}
+                                    id="majorSelect"
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                                {/* <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} /> */}
+                            </div>
+
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kota </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalCity, 'educationFormalCity', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Mulai </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalStart, 'educationFormalStart', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Selesai </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalEnd, 'educationFormalEnd', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nilai </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalGpa, 'educationFormalGpa', e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
+                    <button
+                        className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        onClick={cloneEducationFormal}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Tambah Lagi
+                        </p>
+                    </button>
+                </div>
+
+                {
+                    (signUpData.educationFormalGrade.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
+                    <button
+                        className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                        onClick={deleteEducationFormal}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Delete row
+                        </p>
+                    </button>
+                </div> : null
+                }
+            </div>
+        </div>
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Pendidikan Non Formal </p>
+        </div>
+
+        {
+            signUpData.educationUnformalType.map((entry, i) => {
+                return(
+                    <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jenis Kursus </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalType, 'educationUnformalType', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lembaga </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalName, 'educationUnformalName', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kota </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalCity, 'educationUnformalCity', e.target.value)}
+                                    id="majorSelect"
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                                {/* <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} /> */}
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Periode </label>
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.educationUnformalStart[i]} onChange={(date: any) => changeNewEduUnformal(i, signUpData.educationUnformalStart, 'educationUnformalStart', moment(date, "YYYY-MM-DD").toDate())} />
+
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.educationUnformalStart[i]} onChange={(date: any) => changeNewEduUnformal(i, signUpData.educationUnformalEnd, 'educationUnformalEnd', moment(date, "YYYY-MM-DD").toDate())} />
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Berijazah </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalCertificate, 'educationUnformalCertificate', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
+                    <button
+                        className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        onClick={cloneEducationUnformal}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Tambah Lagi
+                        </p>
+                    </button>
+                </div>
+
+                {
+                    (signUpData.educationUnformalType.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
+                    <button
+                        className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                        onClick={deleteEducationUnformal}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Delete row
+                        </p>
+                    </button>
+                </div> : null
+                }
+            </div>
+        </div>
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Penataran dan lokakarya </p>
+        </div>
+
+        {
+            signUpData.workshopTitle.map((entry, i) => {
+                return(
+                    <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jenis Kursus </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkshop(i, signUpData.workshopTitle, 'workshopTitle', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lembaga </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkshop(i, signUpData.workshopName, 'workshopName', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kota </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkshop(i, signUpData.workshopCity, 'workshopCity', e.target.value)}
+                                    id="majorSelect"
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                                {/* <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} /> */}
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Periode </label>
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.workshopStart[i]} onChange={(date: any) => changeNewWorkshop(i, signUpData.workshopStart, 'workshopStart', moment(date, "YYYY-MM-DD").toDate())} />
+
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.workshopStart[i]} onChange={(date: any) => changeNewWorkshop(i, signUpData.workshopEnd, 'workshopEnd', moment(date, "YYYY-MM-DD").toDate())} />
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Berijazah </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkshop(i, signUpData.workshopCertificate, 'workshopCertificate', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
+                    <button
+                        className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        onClick={cloneWorkshop}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Tambah Lagi
+                        </p>
+                    </button>
+                </div>
+
+                {
+                    (signUpData.workshopTitle.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
+                    <button
+                        className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                        onClick={deleteWorkshop}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Delete row
+                        </p>
+                    </button>
+                </div> : null
+                }
+            </div>
+        </div>
 
         <div className="flex flex-wrap justify-end mx-3 mb-6 pb-3">
             <button
-                className="px-6 py-2 m-3 bg-blue-500 text-white rounded shadow-md transition duration-200 hover:bg-blue-700"
+                className="px-6 py-2 m-3 bg-gradient-to-r from-green-400 to-blue-400 hover:from-green-500 hover:to-blue-500 text-white rounded shadow-md transition duration-200"
                 onClick={handleSubmit}
                 type="submit"
-            > Simpan </button>
+            >
+            Simpan
+            </button>
         </div>
         </>
     )
