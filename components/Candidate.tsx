@@ -92,6 +92,29 @@ export interface isSignUpData{
     organizationStartFix: string[];
     organizationEnd: string[];
     organizationEndFix: string[];
+    languageName: string[];
+    languageReading: number[];
+    languageWriting: number[];
+    languageListening: number[];
+    languageSpeaking: number[];
+    skillProgram: string[];
+    skillApplication: string[];
+    skillType: string[];
+    skillDescription: string[];
+    workExpName: string[];
+    workExpAddress: string[];
+    workExpBusinessField: number[];
+    workExpPosition: string[];
+    workExpTelephone: string[];
+    workExpStart: string[];
+    workExpStartFix: string[];
+    workExpEnd: string[];
+    workExpEndFix: string[];
+    workExpDirectSupervisor: string[];
+    workExpSalaryMonth: number[];
+    workExpDirectPosition: string[];
+    workExpLeavingReason: number[];
+    workExpJobDescription: string[];
 }
 
 const Candidate: NextPage = () => {
@@ -184,7 +207,30 @@ const Candidate: NextPage = () => {
         organizationStart: [new Date()],
         organizationStartFix: [""],
         organizationEnd: [new Date()],
-        organizationEndFix: [""]
+        organizationEndFix: [""],
+        languageName: [""],
+        languageReading: [""],
+        languageWriting: [""],
+        languageListening: [""],
+        languageSpeaking: [""],
+        skillProgram: [""],
+        skillApplication: [""],
+        skillType: [""],
+        skillDescription: [""],
+        workExpName: [""],
+        workExpAddress: [""],
+        workExpBusinessField: [""],
+        workExpPosition: [""],
+        workExpTelephone: [""],
+        workExpStart: [new Date()],
+        workExpStartFix: [""],
+        workExpEnd: [new Date()],
+        workExpEndFix: [""],
+        workExpDirectSupervisor: [""],
+        workExpSalaryMonth: [""],
+        workExpDirectPosition: [""],
+        workExpLeavingReason: [""],
+        workExpJobDescription: [""]
     })
 
     const handleSubmit = (event: any) => {
@@ -199,6 +245,54 @@ const Candidate: NextPage = () => {
             temporary[i] = moment(entry).format('YYYY-MM-DD')
 
             setSignUpData({...signUpData, familyRelationBirthFix: temporary})
+        })
+
+        signUpData.educationUnformalStart.map((entry, i) => {
+            const temporary: string[] = signUpData.educationUnformalStartFix
+
+            temporary[i] = moment(entry).format('YYYY-MM-DD')
+
+            setSignUpData({...signUpData, educationUnformalStartFix: temporary})
+        })
+
+        signUpData.educationUnformalEnd.map((entry, i) => {
+            const temporary: string[] = signUpData.educationUnformalEndFix
+
+            temporary[i] = moment(entry).format('YYYY-MM-DD')
+
+            setSignUpData({...signUpData, educationUnformalEndFix: temporary})
+        })
+
+        signUpData.workshopStart.map((entry, i) => {
+            const temporary: string[] = signUpData.workshopStartFix
+
+            temporary[i] = moment(entry).format('YYYY-MM-DD')
+
+            setSignUpData({...signUpData, workshopStartFix: temporary})
+        })
+
+        signUpData.workshopEnd.map((entry, i) => {
+            const temporary: string[] = signUpData.workshopEndFix
+
+            temporary[i] = moment(entry).format('YYYY-MM-DD')
+
+            setSignUpData({...signUpData, workshopEndFix: temporary})
+        })
+
+        signUpData.organizationStart.map((entry, i) => {
+            const temporary: string[] = signUpData.organizationStartFix
+
+            temporary[i] = moment(entry).format('YYYY-MM-DD')
+
+            setSignUpData({...signUpData, organizationStartFix: temporary})
+        })
+
+        signUpData.organizationEnd.map((entry, i) => {
+            const temporary: string[] = signUpData.organizationEndFix
+
+            temporary[i] = moment(entry).format('YYYY-MM-DD')
+
+            setSignUpData({...signUpData, organizationEndFix: temporary})
         })
 
         console.log(signUpData)
@@ -416,6 +510,123 @@ const Candidate: NextPage = () => {
 
     }
 
+    const cloneLanguage = () => {
+        const languageNameDefault: string[] = signUpData.languageName
+        languageNameDefault.push("")
+        
+        const languageReadingDefault: string[] = signUpData.languageReading
+        languageReadingDefault.push("")
+        
+        const languageWritingDefault: string[] = signUpData.languageWriting
+        languageWritingDefault.push("")
+
+        const languageListeningDefault:string[] = signUpData.languageListening
+        languageListeningDefault.push("")
+
+        const languageSpeakingDefault: string[] = signUpData.languageSpeaking
+        languageSpeakingDefault.push("")
+
+
+        setSignUpData({
+            ...signUpData,
+            languageName: languageNameDefault,
+            languageReading: languageReadingDefault,
+            languageWriting: languageWritingDefault,
+            languageListening: languageListeningDefault,
+            languageSpeaking: languageSpeakingDefault
+        })
+    }
+
+    const cloneComputerSkill = () => {
+        const skillProgramDefault: string[] = signUpData.skillProgram
+        skillProgramDefault.push("")
+        
+        const skillApplicationDefault: string[] = signUpData.skillApplication
+        skillApplicationDefault.push("")
+
+        setSignUpData({
+            ...signUpData,
+            skillProgram: skillProgramDefault,
+            skillApplication: skillApplicationDefault
+        })
+    }
+
+    const cloneSkill = () => {
+        const skillTypeDefault: string[] = signUpData.skillType
+        skillTypeDefault.push("")
+        
+        const skillDescriptionDefault: string[] = signUpData.skillDescription
+        skillDescriptionDefault.push("")
+
+        setSignUpData({
+            ...signUpData,
+            skillType: skillTypeDefault,
+            skillDescription: skillDescriptionDefault
+        })
+    }
+
+    const cloneWorkExp = () => {
+        const workExpNameDefault: string[] = signUpData.workExpName
+        workExpNameDefault.push("")
+
+        const workExpAddressDefault: string[] = signUpData.workExpAddress
+        workExpAddressDefault.push("")
+
+        const workExpBusinessFieldDefault: string[] = signUpData.workExpBusinessField
+        workExpBusinessFieldDefault.push("")
+
+        const workExpPositionDefault: string[] = signUpData.workExpPosition
+        workExpPositionDefault.push("")
+
+        const workExpTelephoneDefault: string[] = signUpData.workExpTelephone
+        workExpTelephoneDefault.push("")
+        
+        const workExpStartDefault: Date[] = signUpData.workExpStart
+        workExpStartDefault.push(new Date())
+        
+        const workExpStartFixDefault: string[] = signUpData.workExpStartFix
+        workExpStartFixDefault.push("")
+        
+        const workExpEndDefault: Date[] = signUpData.workExpEnd
+        workExpEndDefault.push(new Date())
+        
+        const workExpEndFixDefault: string[] = signUpData.workExpEndFix
+        workExpEndFixDefault.push("")
+        
+        const workExpDirectSupervisorDefault: string[] = signUpData.workExpDirectSupervisor
+        workExpDirectSupervisorDefault.push("")
+        
+        const workExpSalaryMonthDefault: string[] = signUpData.workExpSalaryMonth
+        workExpSalaryMonthDefault.push("")
+        
+        const workExpDirectPositionDefault: string[] = signUpData.workExpDirectPosition
+        workExpDirectPositionDefault.push("")
+        
+        const workExpLeavingReasonDefault: string[] = signUpData.workExpLeavingReason
+        workExpLeavingReasonDefault.push("")
+        
+        const workExpJobDescriptionDefault: string[] = signUpData.workExpJobDescription
+        workExpJobDescriptionDefault.push("")
+
+        setSignUpData({
+            ...signUpData,
+            workExpName: workExpNameDefault,
+            workExpAddress: workExpAddressDefault,
+            workExpBusinessField: workExpBusinessFieldDefault,
+            workExpPosition: workExpPositionDefault,
+            workExpTelephone: workExpTelephoneDefault,
+            workExpStart: workExpStartDefault,
+            workExpStartFix: workExpStartFixDefault,
+            workExpEnd: workExpEndDefault,
+            workExpEndFix: workExpEndFixDefault,
+            workExpDirectSupervisor: workExpDirectSupervisorDefault,
+            workExpSalaryMonth: workExpSalaryMonthDefault,
+            workExpDirectPosition: workExpDirectPositionDefault,
+            workExpLeavingReason: workExpLeavingReasonDefault,
+            workExpJobDescription: workExpJobDescriptionDefault
+        })
+    }
+
     const deleteContact = () => {
         const cloneLengthName: number = signUpData.contactName.length
         const afterName = signUpData.contactName.slice(0, cloneLengthName - 1)
@@ -515,28 +726,28 @@ const Candidate: NextPage = () => {
     
     const deleteEducationUnformal = () => {
         const educationUnformalTypeLength: number = signUpData.educationUnformalType.length
-        const afterType = signUpData.educationUnformalType.slice(educationUnformalTypeLength - 1)
+        const afterType = signUpData.educationUnformalType.slice(0, educationUnformalTypeLength - 1)
         
         const educationUnformalNameLength: number = signUpData.educationUnformalName.length
-        const afterName = signUpData.educationUnformalName.slice(educationUnformalNameLength - 1)
+        const afterName = signUpData.educationUnformalName.slice(0, educationUnformalNameLength - 1)
         
         const educationUnformalCityLength: number = signUpData.educationUnformalCity.length
-        const afterCity = signUpData.educationUnformalCity.slice(educationUnformalCityLength - 1)
+        const afterCity = signUpData.educationUnformalCity.slice(0, educationUnformalCityLength - 1)
 
         const educationUnformalStartLength: number = signUpData.educationUnformalStart.length
-        const afterStart = signUpData.educationUnformalStart.slice(educationUnformalStartLength - 1)
+        const afterStart = signUpData.educationUnformalStart.slice(0, educationUnformalStartLength - 1)
 
         const educationUnformalStartFixLength: number = signUpData.educationUnformalStartFix.length
-        const afterStartFix = signUpData.educationUnformalStartFix.slice(educationUnformalStartFixLength - 1)
+        const afterStartFix = signUpData.educationUnformalStartFix.slice(0, educationUnformalStartFixLength - 1)
 
         const educationUnformalEndLength: number = signUpData.educationUnformalEnd.length
-        const afterEnd = signUpData.educationUnformalEnd.slice(educationUnformalEndLength - 1)
+        const afterEnd = signUpData.educationUnformalEnd.slice(0, educationUnformalEndLength - 1)
 
         const educationUnformalEndFixLength: number = signUpData.educationUnformalEndFix.length
-        const afterEndFix = signUpData.educationUnformalEndFix.slice(educationUnformalEndFixLength - 1)
+        const afterEndFix = signUpData.educationUnformalEndFix.slice(0, educationUnformalEndFixLength - 1)
 
         const educationUnformalCertificateLength: number = signUpData.educationUnformalCertificate.length
-        const afterCertificate = signUpData.educationUnformalCertificate.slice(educationUnformalCertificateLength - 1)
+        const afterCertificate = signUpData.educationUnformalCertificate.slice(0, educationUnformalCertificateLength - 1)
 
         setSignUpData({
             ...signUpData,
@@ -554,28 +765,28 @@ const Candidate: NextPage = () => {
 
     const deleteWorkshop = () => {
         const workshopTitleLength: number = signUpData.workshopTitle.length
-        const afterTitle = signUpData.workshopTitle.slice(workshopTitleLength - 1)
+        const afterTitle = signUpData.workshopTitle.slice(0, workshopTitleLength - 1)
         
         const workshopNameLength: number = signUpData.workshopName.length
-        const afterName = signUpData.workshopName.slice(workshopNameLength - 1)
+        const afterName = signUpData.workshopName.slice(0, workshopNameLength - 1)
         
         const workshopCityLength: number = signUpData.workshopCity.length
-        const afterCity = signUpData.workshopCity.slice(workshopCityLength - 1)
+        const afterCity = signUpData.workshopCity.slice(0, workshopCityLength - 1)
 
         const workshopStartLength: number = signUpData.workshopStart.length
-        const afterStart = signUpData.workshopStart.slice(workshopStartLength - 1)
+        const afterStart = signUpData.workshopStart.slice(0, workshopStartLength - 1)
 
         const workshopStartFixLength: number = signUpData.workshopStartFix.length
-        const afterStartFix = signUpData.workshopStartFix.slice(workshopStartFixLength - 1)
+        const afterStartFix = signUpData.workshopStartFix.slice(0, workshopStartFixLength - 1)
 
         const workshopEndLength: number = signUpData.workshopEnd.length
-        const afterEnd = signUpData.workshopEnd.slice(workshopEndLength - 1)
+        const afterEnd = signUpData.workshopEnd.slice(0, workshopEndLength - 1)
 
         const workshopEndFixLength: number = signUpData.workshopEndFix.length
-        const afterEndFix = signUpData.workshopEndFix.slice(workshopEndFixLength - 1)
+        const afterEndFix = signUpData.workshopEndFix.slice(0, workshopEndFixLength - 1)
 
         const workshopCertificateLength: number = signUpData.workshopCertificate.length
-        const afterCertificate = signUpData.workshopCertificate.slice(workshopCertificateLength - 1)
+        const afterCertificate = signUpData.workshopCertificate.slice(0, workshopCertificateLength - 1)
 
         setSignUpData({
             ...signUpData,
@@ -593,25 +804,25 @@ const Candidate: NextPage = () => {
 
     const deleteOrganization = () => {
         const organizationNameLength: number = signUpData.organizationName.length
-        const afterTitle = signUpData.organizationName.slice(organizationNameLength - 1)
+        const afterTitle = signUpData.organizationName.slice(0, organizationNameLength - 1)
         
         const organizationPositionLength: number = signUpData.organizationPosition.length
-        const afterName = signUpData.organizationPosition.slice(organizationPositionLength - 1)
+        const afterName = signUpData.organizationPosition.slice(0, organizationPositionLength - 1)
         
-        const workshopCityLength: number = signUpData.workshopCity.length
-        const afterCity = signUpData.workshopCity.slice(workshopCityLength - 1)
+        const organizationCityLength: number = signUpData.organizationCity.length
+        const afterCity = signUpData.organizationCity.slice(0, organizationCityLength - 1)
 
         const organizationStartLength: number = signUpData.organizationStart.length
-        const afterStart = signUpData.organizationStart.slice(organizationStartLength - 1)
+        const afterStart = signUpData.organizationStart.slice(0, organizationStartLength - 1)
 
         const organizationStartFixLength: number = signUpData.organizationStartFix.length
-        const afterStartFix = signUpData.organizationStartFix.slice(organizationStartFixLength - 1)
+        const afterStartFix = signUpData.organizationStartFix.slice(0, organizationStartFixLength - 1)
 
         const organizationEndLength: number = signUpData.organizationEnd.length
-        const afterEnd = signUpData.organizationEnd.slice(organizationEndLength - 1)
+        const afterEnd = signUpData.organizationEnd.slice(0, organizationEndLength - 1)
 
         const organizationEndFixLength: number = signUpData.organizationEndFix.length
-        const afterEndFix = signUpData.organizationEndFix.slice(organizationEndFixLength - 1)
+        const afterEndFix = signUpData.organizationEndFix.slice(0, organizationEndFixLength - 1)
 
         setSignUpData({
             ...signUpData,
@@ -622,6 +833,126 @@ const Candidate: NextPage = () => {
             organizationStartFix: afterStartFix,
             organizationEnd: afterEnd,
             organizationEndFix: afterEndFix,
+        })
+
+    }
+
+    const deleteLanguage = () => {
+        const languageNameLength: number = signUpData.languageName.length
+        const afterName = signUpData.languageName.slice(0, languageNameLength - 1)
+        
+        const languageReadingLength: number = signUpData.languageReading.length
+        const afterReading = signUpData.languageReading.slice(0, languageReadingLength - 1)
+        
+        const languageWritingLength: number = signUpData.languageWriting.length
+        const afterWriting = signUpData.languageWriting.slice(0, languageWritingLength - 1)
+
+        const languageListeningLength: number = signUpData.languageListening.length
+        const afterListening = signUpData.languageListening.slice(0, languageListeningLength - 1)
+
+        const languageSpeakingLength: number = signUpData.languageSpeaking.length
+        const afterSpeaking = signUpData.languageSpeaking.slice(0, languageSpeakingLength - 1)
+
+        setSignUpData({
+            ...signUpData,
+            languageName: afterName,
+            languageReading: afterReading,
+            languageWriting: afterWriting,
+            languageListening: afterListening,
+            languageSpeaking: afterSpeaking
+        })
+
+    }
+
+    const deleteComputerSkill = () => {
+        const skillProgramLength: number = signUpData.skillProgram.length
+        const afterProgram = signUpData.skillProgram.slice(0, skillProgramLength - 1)
+        
+        const skillApplicationLength: number = signUpData.skillApplication.length
+        const afterApplication = signUpData.skillApplication.slice(0, skillApplicationLength - 1)
+
+        setSignUpData({
+            ...signUpData,
+            skillProgram: afterProgram,
+            skillApplication: afterApplication
+        })
+
+    }
+
+    const deleteSkill = () => {
+        const skillTypeLength: number = signUpData.skillType.length
+        const afterType = signUpData.skillType.slice(0, skillTypeLength - 1)
+        
+        const skillDescriptionLength: number = signUpData.skillDescription.length
+        const afterDescription = signUpData.skillDescription.slice(0, skillDescriptionLength - 1)
+
+        setSignUpData({
+            ...signUpData,
+            skillType: afterType,
+            skillDescription: afterDescription
+        })
+
+    }
+
+    const deleteWorkExp = () => {
+        const workExpNameLength: number = signUpData.workExpName.length
+        const afterName = signUpData.workExpName.slice(0, workExpNameLength - 1)
+
+        const workExpAddressLength: number = signUpData.workExpAddress.length
+        const afterAddress = signUpData.workExpAddress.slice(0, workExpAddressLength - 1)
+        
+        const workExpBusinessFieldLength: number = signUpData.workExpBusinessField.length
+        const afterBusinessField = signUpData.workExpBusinessField.slice(0, workExpBusinessFieldLength - 1)
+        
+        const workExpPositionLength: number = signUpData.workExpPosition.length
+        const afterPosition = signUpData.workExpPosition.slice(0, workExpPositionLength - 1)
+
+        const workExpTelephoneLength: number = signUpData.workExpTelephone.length
+        const afterTelephone = signUpData.workExpTelephone.slice(0, workExpTelephoneLength - 1)
+        
+        const workExpStartLength: number = signUpData.workExpStart.length
+        const afterStart = signUpData.workExpStart.slice(0, workExpStartLength - 1)
+        
+        const workExpStartFixLength: number = signUpData.workExpStartFix.length
+        const afterStartFix = signUpData.workExpStartFix.slice(0, workExpStartFixLength - 1)
+        
+        const workExpEndLength: number = signUpData.workExpEnd.length
+        const afterEnd = signUpData.workExpEnd.slice(0, workExpEndLength - 1)
+        
+        const workExpEndFixLength: number = signUpData.workExpEndFix.length
+        const afterEndFix = signUpData.workExpEndFix.slice(0, workExpEndFixLength - 1)
+        
+        const workExpDirectSupervisorLength: number = signUpData.workExpDirectSupervisor.length
+        const afterDirectSupervisor = signUpData.workExpDirectSupervisor.slice(0, workExpDirectSupervisorLength - 1)
+        
+        const workExpSalaryMonthLength: number = signUpData.workExpSalaryMonth.length
+        const afterSalaryMonth = signUpData.workExpSalaryMonth.slice(0, workExpSalaryMonthLength - 1)
+        
+        const workExpDirectPositionLength: number = signUpData.workExpDirectPosition.length
+        const afterDirectPosition = signUpData.workExpDirectPosition.slice(0, workExpDirectPositionLength - 1)
+        
+        const workExpLeavingReasonLength: number = signUpData.workExpLeavingReason.length
+        const afterLeavingReason = signUpData.workExpLeavingReason.slice(0, workExpLeavingReasonLength - 1)
+        
+        const workExpJobDescriptionLength: number = signUpData.workExpJobDescription.length
+        const afterJobDescription = signUpData.workExpJobDescription.slice(0, workExpJobDescriptionLength - 1)  
+        
+        setSignUpData({
+            ...signUpData,
+            workExpName: afterName,
+            workExpAddress: afterAddress,
+            workExpBusinessField: afterBusinessField,
+            workExpPosition: afterPosition,
+            workExpTelephone: afterTelephone,
+            workExpStart: afterStart,
+            workExpStartFix: afterStartFix,
+            workExpEnd: afterEnd,
+            workExpEndFix: afterEndFix,
+            workExpDirectSupervisor: afterDirectSupervisor,
+            workExpSalaryMonth: afterSalaryMonth,
+            workExpDirectPosition: afterDirectPosition,
+            workExpLeavingReason: afterLeavingReason,
+            workExpJobDescription: afterJobDescription
         })
 
     }
@@ -777,6 +1108,107 @@ const Candidate: NextPage = () => {
             break
             case 'organizationEnd':
                 setSignUpData({...signUpData, organizationEnd: temporary})
+            break
+        }
+    }
+
+    const changeNewLanguage = (id: number = 0, stateName: string[], type: string = "", value: string = "") => {
+        const temporary:string[] = stateName
+
+        temporary[id] = value
+        switch(type){
+            case 'languageName':
+                setSignUpData({...signUpData, languageName: temporary})
+            break
+            case 'languageReading':
+                setSignUpData({...signUpData, languageReading: temporary})
+            break
+            case 'languageWriting':
+                setSignUpData({...signUpData, languageWriting: temporary})
+            break
+            case 'languageListening':
+                setSignUpData({...signUpData, languageListening: temporary})
+            break
+            case 'languageSpeaking':
+                setSignUpData({...signUpData, languageSpeaking: temporary})
+            break
+        }
+    }
+
+    const changeNewComputerSkill = (id: number = 0, stateName: string[], type: string = "", value: string = "") => {
+        const temporary:string[] = stateName
+
+        temporary[id] = value
+        switch(type){
+            case 'skillProgram':
+                setSignUpData({...signUpData, skillProgram: temporary})
+            break
+            case 'skillApplication':
+                setSignUpData({...signUpData, skillApplication: temporary})
+            break
+        }
+    }
+
+    const changeNewSkill = (id: number = 0, stateName: string[], type: string = "", value: string = "") => {
+        const temporary:string[] = stateName
+
+        temporary[id] = value
+        switch(type){
+            case 'skillType':
+                setSignUpData({...signUpData, skillType: temporary})
+            break
+            case 'skillDescription':
+                setSignUpData({...signUpData, skillDescription: temporary})
+            break
+        }
+    }
+
+    const changeNewWorkExp = (id: number = 0, stateName: any[], type: string = "", value: any = "") => {
+        const temporary:any[] = stateName
+
+        temporary[id] = value
+        switch(type){
+            case 'workExpName':
+                setSignUpData({...signUpData, workExpName: temporary})
+            break
+            case 'workExpAddress':
+                setSignUpData({...signUpData, workExpAddress: temporary})
+            break
+            case 'workExpBusinessField':
+                setSignUpData({...signUpData, workExpBusinessField: temporary})
+            break
+            case 'workExpPosition':
+                setSignUpData({...signUpData, workExpPosition: temporary})
+            break
+            case 'workExpTelephone':
+                setSignUpData({...signUpData, workExpTelephone: temporary})
+            break
+            case 'workExpStart':
+                setSignUpData({...signUpData, workExpStart: temporary})
+            break
+            case 'workExpStartFix':
+                setSignUpData({...signUpData, workExpStartFix: temporary})
+            break
+            case 'workExpEnd':
+                setSignUpData({...signUpData, workExpEnd: temporary})
+            break
+            case 'workExpEndFix':
+                setSignUpData({...signUpData, workExpEndFix: temporary})
+            break
+            case 'workExpDirectSupervisor':
+                setSignUpData({...signUpData, workExpDirectSupervisor: temporary})
+            break
+            case 'workExpSalaryMonth':
+                setSignUpData({...signUpData, workExpSalaryMonth: temporary})
+            break
+            case 'workExpDirectPosition':
+                setSignUpData({...signUpData, workExpDirectPosition: temporary})
+            break
+            case 'workExpLeavingReason':
+                setSignUpData({...signUpData, workExpLeavingReason: temporary})
+            break
+            case 'workExpJobDescription':
+                setSignUpData({...signUpData, workExpJobDescription: temporary})
             break
         }
     }
@@ -1899,7 +2331,6 @@ const Candidate: NextPage = () => {
                                 <select
                                     className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                     onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalCity, 'educationUnformalCity', e.target.value)}
-                                    id="majorSelect"
                                 >
                                     <option value="">- choose -</option>
                                     <option value="1"> Islam </option>
@@ -2006,7 +2437,6 @@ const Candidate: NextPage = () => {
                                 <select
                                     className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                     onChange={(e) => changeNewWorkshop(i, signUpData.workshopCity, 'workshopCity', e.target.value)}
-                                    id="majorSelect"
                                 >
                                     <option value="">- choose -</option>
                                     <option value="1"> Islam </option>
@@ -2109,21 +2539,19 @@ const Candidate: NextPage = () => {
                                 <select
                                     className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                     onChange={(e) => changeNewOrganization(i, signUpData.organizationCity, 'organizationCity', e.target.value)}
-                                    id="majorSelect"
                                 >
                                     <option value="">- choose -</option>
                                     <option value="1"> Islam </option>
                                     <option value="2"> Kristen </option>
                                     <option value="3"> Katolik </option>
                                 </select>
-                                {/* <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} /> */}
                             </div>
 
                             <div className="w-full lg:w-1/4 px-3 mb-6 md:mb-0">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Periode </label>
                                 <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.organizationStart[i]} onChange={(date: any) => changeNewOrganization(i, signUpData.organizationStart, 'organizationStart', moment(date, "YYYY-MM-DD").toDate())} />
 
-                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.organizationStart[i]} onChange={(date: any) => changeNewOrganization(i, signUpData.organizationEnd, 'organizationEnd', moment(date, "YYYY-MM-DD").toDate())} />
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.organizationEnd[i]} onChange={(date: any) => changeNewOrganization(i, signUpData.organizationEnd, 'organizationEnd', moment(date, "YYYY-MM-DD").toDate())} />
                             </div>
                         </div>
                     </div>
@@ -2164,6 +2592,584 @@ const Candidate: NextPage = () => {
                     </button>
                 </div> : null
                 }
+            </div>
+        </div>
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Kemampuan Bahasa </p>
+        </div>
+
+        {
+            signUpData.languageName.map((entry, i) => {
+                return(
+                    <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Bahasa </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewLanguage(i, signUpData.languageName, 'languageName', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Membaca </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewLanguage(i, signUpData.languageReading, 'languageReading', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Menulis </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewLanguage(i, signUpData.languageWriting, 'languageWriting', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Mendengarkan </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewLanguage(i, signUpData.languageListening, 'languageListening', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Berbicara </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewLanguage(i, signUpData.languageSpeaking, 'languageSpeaking', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
+                    <button
+                        className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        onClick={cloneLanguage}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Tambah Lagi
+                        </p>
+                    </button>
+                </div>
+
+                {
+                    (signUpData.languageName.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
+                    <button
+                        className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                        onClick={deleteLanguage}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Delete row
+                        </p>
+                    </button>
+                </div> : null
+                }
+            </div>
+        </div>
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Keterampilan Komputer </p>
+        </div>
+
+        {
+            signUpData.skillProgram.map((entry, i) => {
+                return(
+                    <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jenis Program </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewComputerSkill(i, signUpData.skillProgram, 'skillProgram', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Aplikasi </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewComputerSkill(i, signUpData.skillApplication, 'skillApplication', e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
+                    <button
+                        className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        onClick={cloneComputerSkill}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Tambah Lagi
+                        </p>
+                    </button>
+                </div>
+
+                {
+                    (signUpData.skillProgram.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
+                    <button
+                        className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                        onClick={deleteComputerSkill}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Delete row
+                        </p>
+                    </button>
+                </div> : null
+                }
+            </div>
+        </div>
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Keterampilan Lain </p>
+        </div>
+
+        {
+            signUpData.skillType.map((entry, i) => {
+                return(
+                    <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jenis </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewSkill(i, signUpData.skillType, 'skillType', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Deskripsi </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewSkill(i, signUpData.skillDescription, 'skillDescription', e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
+                    <button
+                        className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        onClick={cloneSkill}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Tambah Lagi
+                        </p>
+                    </button>
+                </div>
+
+                {
+                    (signUpData.skillProgram.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
+                    <button
+                        className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                        onClick={deleteSkill}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Delete row
+                        </p>
+                    </button>
+                </div> : null
+                }
+            </div>
+        </div>
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Pengalaman Kerja </p>
+        </div>
+
+        {
+            signUpData.workExpName.map((entry, i) => {
+                return(
+                    <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
+                        <div className="flex flex-wrap -mx-3 mb-6">
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Perusahaan </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkExp(i, signUpData.workExpName, 'workExpName', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat Perusahaan </label>
+                                <textarea
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkExp(i, signUpData.workExpAddress, 'workExpAddress', e.target.value)}
+                                >
+                                </textarea>
+                            </div>
+
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Bidang Usaha </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkExp(i, signUpData.workExpBusinessField, 'workExpBusinessField', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jabatan </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkExp(i, signUpData.workExpPosition, 'workExpPosition', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0 lg:mt-5">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No. Telephone </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkExp(i, signUpData.workExpTelephone, 'workExpTelephone', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Periode Kerja </label>
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.workExpStart[i]} onChange={(date: any) => changeNewWorkExp(i, signUpData.workExpStart, 'workExpStart', moment(date, "YYYY-MM-DD").toDate())} />
+                                <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.workExpEnd[i]} onChange={(date: any) => changeNewWorkExp(i, signUpData.workExpEnd, 'workExpEnd', moment(date, "YYYY-MM-DD").toDate())} />
+                            </div>
+                            
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Atasan Langsung </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkExp(i, signUpData.workExpDirectSupervisor, 'workExpDirectSupervisor', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jabatan Atasan Langsung </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkExp(i, signUpData.workExpDirectPosition, 'workExpDirectPosition', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Pendapatan /Bulan </label>
+                                <input
+                                    type="text"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkExp(i, signUpData.workExpSalaryMonth, 'workExpSalaryMonth', e.target.value)}
+                                />
+                            </div>
+
+                            <div className="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alasan Berhenti </label>
+                                <select
+                                    className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkExp(i, signUpData.workExpLeavingReason, 'workExpLeavingReason', e.target.value)}
+                                >
+                                    <option value="">- choose -</option>
+                                    <option value="1"> Islam </option>
+                                    <option value="2"> Kristen </option>
+                                    <option value="3"> Katolik </option>
+                                </select>
+                            </div>
+
+                            <div className="w-full px-3 mb-6 md:mb-0">
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Uraian Tugas </label>
+                                <textarea
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changeNewWorkExp(i, signUpData.workExpJobDescription, 'workExpJobDescription', e.target.value)}
+                                >
+                                </textarea>
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
+                    <button
+                        className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                        onClick={cloneWorkExp}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Tambah Lagi
+                        </p>
+                    </button>
+                </div>
+
+                {
+                    (signUpData.workExpName.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
+                    <button
+                        className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                        onClick={deleteWorkExp}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+
+                        <p className="ml-3 mt-1">
+                            Delete row
+                        </p>
+                    </button>
+                </div> : null
+                }
+            </div>
+        </div>
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Lain - Lain </p>
+        </div>
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <label className="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-xs"> Jenis pekerjaan yang anda sukai </label>
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                </div>
+
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <label className="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-xs"> Jenis lokasi kerja yang anda sukai </label>
+                    <select
+                        className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    >
+                        <option value="">- choose -</option>
+                        <option value="1"> Islam </option>
+                        <option value="2"> Kristen </option>
+                        <option value="3"> Katolik </option>
+                    </select>
+                </div>
+
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <label className="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-xs"> Bila diterima, kapan anda dapat mulai bekerja? </label>
+                    <DatePicker
+                        className={`appearance-none block text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                        dateFormat="yyyy-MM-dd"
+                        selected={signUpData.birthDate}
+                        onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})}
+                    />
+                </div>
+
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <label className="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-xs"> Besar gaji yang diharapkan </label>
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                </div>
+
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <label className="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-xs"> Fasilitas yang diharapkan </label>
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                </div>
+
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <label className="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-xs"> Orang-orang yang anda kenal dalam perusahaan ini? </label>
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                </div>
+
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <label className="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-xs"> 3 (tiga) kelebihan yang anda miliki </label>
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                </div>
+
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <label className="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-xs"> 3 (tiga) kelemahan yang anda miliki </label>
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                </div>
+
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <label className="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-xs"> Penyakit berat yang pernah diderita & kapan? </label>
+                    <select
+                        className={`appearance-none block w-full lg:w-1/4 text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    >
+                        <option value="">- choose -</option>
+                        <option value="1"> Islam </option>
+                        <option value="2"> Kristen </option>
+                        <option value="3"> Katolik </option>
+                    </select>
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                </div>
+
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <label className="block uppercase tracking-wide text-gray-700 font-bold mb-2 text-xs"> Keterlibatan perkara pidana, masalah apa & kapan? </label>
+                    <select
+                        className={`appearance-none block w-full lg:w-1/4 text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    >
+                        <option value="">- choose -</option>
+                        <option value="1"> Islam </option>
+                        <option value="2"> Kristen </option>
+                        <option value="3"> Katolik </option>
+                    </select>
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                    <input
+                        type="text"
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    />
+                </div>
+                
+            </div>
+        </div>
+        
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Bila anda sedang dalam proses seleksi di perusahaan lain, sebutkan nama perusahaan tersebut, posisi yang anda lamar dan seberapa jauh proses tersebut? </p>
+        </div>
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <textarea
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    >
+                    </textarea>
+                </div>
+            </div>
+        </div>
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Tuliskan keterangan lain yang ingin yang anda sampaikan dan perlu untuk diketahui </p>
+        </div>
+
+        <div className="p-4 w-full">
+            <div className="flex flex-wrap -mx-3 mb-6">
+                <div className="w-full px-3 mb-6 md:mb-0">
+                    <textarea
+                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                    >
+                    </textarea>
+                </div>
             </div>
         </div>
 
