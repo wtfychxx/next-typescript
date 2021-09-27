@@ -4,6 +4,9 @@ module.exports = {
     env: {
         appName: 'HRMS'
     },
+    images: {
+        domains: ['res.cloudinary.com']
+    },
     async redirects() {
         return [{
             source: '/',

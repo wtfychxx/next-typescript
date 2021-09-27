@@ -15,7 +15,7 @@ const CandidateForm: NextPage<propsData> = ({positionApplied}) => {
 
     useEffect(() => {
         setPositionApplied(positionApplied)
-    }, [])
+    }, [positionApplied])
 
     return(
         <>
