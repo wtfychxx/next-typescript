@@ -4,7 +4,9 @@ import { imageConfigDefault } from 'next/dist/server/image-config'
 import React, { useState } from 'react'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
+import Swal from 'sweetalert2'
 import { useStoreOption } from '../lib/candidate'
+import { uploadFile } from '../lib/upload'
 
 export interface isSignUpData{
     officialName: string;
@@ -115,6 +117,28 @@ export interface isSignUpData{
     workExpDirectPosition: string[];
     workExpLeavingReason: number[];
     workExpJobDescription: string[];
+    jobTypePrefer: string;
+    workLocationPrefer: number;
+    startWorking: string;
+    startWorkingFix: string;
+    expectedSalary: number;
+    expectedFacility: string;
+    personKnow: string[];
+    strength: string[];
+    weakness: string[];
+    ilnessStatus: number;
+    ilness: string[];
+    criminalStatus: number;
+    criminal: string[];
+    candidatePhoto: string;
+    idCardPhoto: string;
+    familyCardPhoto: string;
+    certificatePhoto: string;
+    taxPhoto: string;
+    simPhoto: string;
+    maritalCertificatePhoto: string;
+    workExpPhoto: string;
+    vaccinePhoto: string;
 }
 
 const Candidate: NextPage = () => {
@@ -230,7 +254,29 @@ const Candidate: NextPage = () => {
         workExpSalaryMonth: [""],
         workExpDirectPosition: [""],
         workExpLeavingReason: [""],
-        workExpJobDescription: [""]
+        workExpJobDescription: [""],
+        jobTypePrefer: "",
+        workLocationPrefer: "",
+        startWorking: new Date(),
+        startWorkingFix: "",
+        expectedSalary: "",
+        expectedFacility: "",
+        personKnow: [""],
+        strength: [""],
+        weakness: [""],
+        ilnessStatus: "",
+        ilness: [""],
+        criminalStatus: "",
+        criminal: [""],
+        candidatePhoto: "",
+        idCardPhoto: "",
+        familyCardPhoto: "",
+        certificatePhoto: "",
+        taxPhoto: "",
+        simPhoto: "",
+        maritalCertificatePhoto: "",
+        workExpPhoto: "",
+        vaccinePhoto: ""
     })
 
     const handleSubmit = (event: any) => {
@@ -293,6 +339,22 @@ const Candidate: NextPage = () => {
             temporary[i] = moment(entry).format('YYYY-MM-DD')
 
             setSignUpData({...signUpData, organizationEndFix: temporary})
+        })
+
+        signUpData.workExpStart.map((entry, i) => {
+            const temporary: string[] = signUpData.workExpStartFix
+
+            temporary[i] = moment(entry).format('YYYY-MM-DD')
+
+            setSignUpData({...signUpData, workExpStartFix: temporary})
+        })
+
+        signUpData.workExpEnd.map((entry, i) => {
+            const temporary: string[] = signUpData.workExpEndFix
+
+            temporary[i] = moment(entry).format('YYYY-MM-DD')
+
+            setSignUpData({...signUpData, workExpStartFix: temporary})
         })
 
         console.log(signUpData)
@@ -1211,6 +1273,84 @@ const Candidate: NextPage = () => {
                 setSignUpData({...signUpData, workExpJobDescription: temporary})
             break
         }
+    }
+
+    const changePhoto = (type: string = "", files: any = {}, element: any = {}) => {
+        const match = ["image/jpeg", "image/png", "image/jpg", "application/pdf"]
+
+        const fileType: string = files.type
+        let isValid:boolean = false;
+
+        match.map((entry) => {
+            if(entry === fileType) isValid = true
+        })
+
+        const alertElement = document.createElement("span")
+        alertElement.classList.add('text-red-500', 'text-sm', 'type-validation')
+
+        if(!isValid){
+            document.querySelector('.type-validation')?.remove()
+            
+            alertElement.innerHTML = 'Tipe file tidak didukung'
+            element.parentNode.insertBefore(alertElement, element.nextSibling)
+            element.value = ''
+            return
+        }
+
+        if(files.size > 2048000){
+            document.querySelector('.type-validation')?.remove()
+            
+            alertElement.innerHTML = 'File melebihi batas maximal (2Mb)'
+            element.parentNode.insertBefore(alertElement, element.nextSibling)
+            element.value = ''
+            return
+        }
+
+        const reader = new FileReader()
+        reader.readAsDataURL(files)
+        reader.onload = () => {
+            const response: any = reader.result
+            const frameElement = document.querySelector(`#${type}Photo`)
+            frameElement?.classList.remove('h-auto', 'w-auto')
+            frameElement?.classList.add('h-auto', 'w-auto')
+            frameElement?.setAttribute('src', response)
+        }
+
+        const file = uploadFile(files)
+        fetch('https://api.cloudinary.com/v1_1/ayo-belajar-company/image/upload', file)
+            .then(res => res.json())
+            .then(res => {
+                switch(type){
+                    case 'candidate':
+                        setSignUpData({...signUpData, candidatePhoto: res.secure_url})
+                    break
+                    case 'idCard':
+                        setSignUpData({...signUpData, idCardPhoto: res.secure_url})
+                    break
+                    case 'familyCard':
+                        setSignUpData({...signUpData, familyCardPhoto: res.secure_url})
+                    break
+                    case 'certificate':
+                        setSignUpData({...signUpData, certificatePhoto: res.secure_url})
+                    break
+                    case 'taxType':
+                        setSignUpData({...signUpData, taxPhoto: res.secure_url})
+                    break
+                    case 'sim':
+                        setSignUpData({...signUpData, simPhoto: res.secure_url})
+                    break
+                    case 'maritalCertificate':
+                        setSignUpData({...signUpData, maritalCertificatePhoto: res.secure_url})
+                    break
+                    case 'workExp':
+                        setSignUpData({...signUpData, workExpPhoto: res.secure_url})
+                    break
+                    case 'vaccine':
+                        setSignUpData({...signUpData, vaccinePhoto: res.secure_url})
+                    break
+                }
+            })
+
     }
     
     return(
@@ -3170,6 +3310,167 @@ const Candidate: NextPage = () => {
                     >
                     </textarea>
                 </div>
+            </div>
+        </div>
+
+        <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
+            <p className="font-bold text-md"> Kelengkapan Data Diri </p>
+        </div>
+
+        <div className="p-4 w-full">
+            <div className="border-b border-gray-200 shadow overflow-x-auto">
+                <table className="mx-auto w-full whitescape-nowrap rounded-lg bg-white divide-y divide-gray-300 overflow-hidden">
+                    <thead className="bg-gray-50">
+                        <tr className="text-left">
+                            <th className="font-semibold text-sm uppercase px-6 py-4 lg:w-3/6">
+                                Jenis
+                            </th>
+                            <th className="font-semibold text-sm uppercase px-6 py-4 lg:w-2/6">
+                                Upload
+                            </th>
+                            <th className="font-semibold text-sm uppercase px-6 py-4 lg:w-1/6">
+                                Hasil
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-300">
+                        <tr className="whitespace-nowrap">
+                            <td className="px-6 py-4 text-gray-900">
+                                <p className="text-md font-bold"> Foto diri kandidat </p>
+                                <p className="text-sm"> ***Max Size: 2048Kb </p>
+                                <p className="text-sm"> ***Allowed file type: PNG, jpg </p>
+                            </td>
+                            <td className="px-6 py-4 text-gray-900">
+                                <input type="file"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changePhoto('candidate', (!e.target.files) ? null : e.target.files[0], e.target) } />
+                            </td>
+                            <td className="lg:px-6 lg:py-4">
+                                <img id="candidatePhoto" />
+                            </td>
+                        </tr>
+                        <tr className="whitespace-nowrap">
+                            <td className="px-6 py-4 text-gray-900">
+                                <p className="text-md font-bold"> Foto KTP </p>
+                                <p className="text-sm"> ***Max Size: 2048Kb </p>
+                                <p className="text-sm"> ***Allowed file type: PNG, jpg </p>
+                            </td>
+                            <td className="px-6 py-4 text-gray-900">
+                                <input type="file"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changePhoto('idCard', (!e.target.files) ? null : e.target.files[0], e.target) } />
+                            </td>
+                            <td className="lg:px-6 lg:py-4">
+                                <img id="idCardPhoto" />
+                            </td>
+                        </tr>
+                        <tr className="whitespace-nowrap">
+                            <td className="px-6 py-4 text-gray-900">
+                                <p className="text-md font-bold"> Foto Kartu Keluarga </p>
+                                <p className="text-sm"> ***Max Size: 2048Kb </p>
+                                <p className="text-sm"> ***Allowed file type: PNG, jpg </p>
+                            </td>
+                            <td className="px-6 py-4 text-gray-900">
+                                <input type="file"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changePhoto('familyCard', (!e.target.files) ? null : e.target.files[0], e.target) } />
+                            </td>
+                            <td className="lg:px-6 lg:py-4">
+                                <img id="familyCardPhoto" />
+                            </td>
+                        </tr>
+                        <tr className="whitespace-nowrap">
+                            <td className="px-6 py-4 text-gray-900">
+                                <p className="text-md font-bold"> Foto Sertifikat </p>
+                                <p className="text-sm"> ***Max Size: 2048Kb </p>
+                                <p className="text-sm"> ***Allowed file type: PNG, jpg </p>
+                            </td>
+                            <td className="px-6 py-4 text-gray-900">
+                                <input type="file"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changePhoto('certificate', (!e.target.files) ? null : e.target.files[0], e.target) } />
+                            </td>
+                            <td className="lg:px-6 lg:py-4 text-gray-900">
+                                <img id="certificatePhoto" />
+                            </td>
+                        </tr>
+                        <tr className="whitespace-nowrap">
+                            <td className="px-6 py-4 text-gray-900">
+                                <p className="text-md font-bold"> Foto NPWP </p>
+                                <p className="text-sm"> ***Max Size: 2048Kb </p>
+                                <p className="text-sm"> ***Allowed file type: PNG, jpg </p>
+                            </td>
+                            <td className="px-6 py-4 text-gray-900">
+                                <input type="file"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changePhoto('tax', (!e.target.files) ? null : e.target.files[0], e.target) } />
+                            </td>
+                            <td className="lg:px-6 lg:py-4 text-gray-900">
+                                <img id="taxPhoto" />
+                            </td>
+                        </tr>
+                        <tr className="whitespace-nowrap">
+                            <td className="px-6 py-4 text-gray-900">
+                                <p className="text-md font-bold"> Foto SIM </p>
+                                <p className="text-sm"> ***Max Size: 2048Kb </p>
+                                <p className="text-sm"> ***Allowed file type: PNG, jpg </p>
+                            </td>
+                            <td className="px-6 py-4 text-gray-900">
+                                <input type="file"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changePhoto('sim', (!e.target.files) ? null : e.target.files[0], e.target) } />
+                            </td>
+                            <td className="lg:px-6 lg:py-4 text-gray-900">
+                                <img id="simPhoto" />
+                            </td>
+                        </tr>
+                        <tr className="whitespace-nowrap">
+                            <td className="px-6 py-4 text-gray-900">
+                                <p className="text-md font-bold"> Foto Akte Nikah </p>
+                                <p className="text-sm"> ***Max Size: 2048Kb </p>
+                                <p className="text-sm"> ***Allowed file type: PNG, jpg </p>
+                            </td>
+                            <td className="px-6 py-4 text-gray-900">
+                                <input type="file"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changePhoto('maritalCertificate', (!e.target.files) ? null : e.target.files[0], e.target) } />
+                            </td>
+                            <td className="lg:px-6 lg:py-4 text-gray-900">
+                                <img id="maritalCertificatePhoto" />
+                            </td>
+                        </tr>
+                        <tr className="whitespace-nowrap">
+                            <td className="px-6 py-4 text-gray-900">
+                                <p className="text-md font-bold"> Foto Surat Pengalaman Kerja </p>
+                                <p className="text-sm"> ***Max Size: 2048Kb </p>
+                                <p className="text-sm"> ***Allowed file type: PNG, jpg </p>
+                            </td>
+                            <td className="px-6 py-4 text-gray-900">
+                                <input type="file"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changePhoto('workExp', (!e.target.files) ? null : e.target.files[0], e.target) } />
+                            </td>
+                            <td className="lg:px-6 lg:py-4 text-gray-900">
+                                <img id="workExpPhoto" />
+                            </td>
+                        </tr>
+                        <tr className="whitespace-nowrap">
+                            <td className="px-6 py-4 text-gray-900">
+                                <p className="text-md font-bold"> Foto Sertifikat Vaksin </p>
+                                <p className="text-sm"> ***Max Size: 2048Kb </p>
+                                <p className="text-sm"> ***Allowed file type: PNG, jpg </p>
+                            </td>
+                            <td className="px-6 py-4 text-gray-900">
+                                <input type="file"
+                                    className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    onChange={(e) => changePhoto('vaccine', (!e.target.files) ? null : e.target.files[0], e.target) } />
+                            </td>
+                            <td className="lg:px-6 lg:py-4 text-gray-900">
+                                <img id="vaccinePhoto" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
