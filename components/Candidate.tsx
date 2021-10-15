@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { useStoreOption } from '../lib/candidate'
 import { uploadFile } from '../lib/upload'
+import { saveCandidate } from '../pages/api/candidate'
 
 export interface isSignUpData{
     officialName: string;
@@ -282,7 +283,7 @@ const Candidate: NextPage = () => {
         vaccinePhoto: ""
     })
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault()
 
         const dateFix = moment(signUpData.birthDate).format('YYYY-MM-DD')
@@ -363,7 +364,7 @@ const Candidate: NextPage = () => {
         const dateWorkFix = moment(signUpData.startWorking).format('YYYY-MM-DD')
         setSignUpData({...signUpData, startWorkingFix: dateWorkFix})
 
-        console.log(signUpData)
+        const result = await saveCandidate(signUpData)
     }
 
     const cloneContact = () => {

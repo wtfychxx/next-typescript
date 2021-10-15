@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from 'next'
+import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import Candidate from '../components/Candidate'
@@ -15,7 +15,7 @@ const CandidateForm: NextPage<propsData> = ({positionApplied}) => {
 
     useEffect(() => {
         setPositionApplied(positionApplied)
-    }, [positionApplied])
+    }, [])
 
     return(
         <>

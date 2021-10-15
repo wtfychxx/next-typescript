@@ -1,16 +1,6 @@
 import { Http } from '../../lib'
 const http = new Http('http://127.0.0.1:70/api')
 
-type Data = {
-    name: string
-    param: Object,
-    sessionId: string,
-    timestamp: number,
-    securityCode: string,
-    language_id: number,
-    result: Object
-}
-
 export default async function getCombo(
     type: string,
     id: number
@@ -21,7 +11,20 @@ export default async function getCombo(
         isarray: true
     }
 
-    const res: any = await http.post('/getCombo', obj);
+    // const res: any = await http.post('/getCombo', obj)
 
-    return res.result;
+    const res : any = {
+        result: [
+            {
+                combo_key: 10,
+                combo_name: 'Test'
+            },
+            {
+                combo_key: 11,
+                combo_name: 'Test2'
+            }
+        ]
+    }
+
+    return res.result
 }
