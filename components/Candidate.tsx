@@ -144,7 +144,7 @@ export interface isSignUpData{
 }
 
 const Candidate: NextPage = () => {
-    const { dataPositionApplied } = useStoreOption()
+    const { dataPositionApplied, dataGender, dataBirthCity, dataNationality, dataBank, dataBloodType, dataMaritalStatus, dataTaxType, dataStayedStatus, dataFamilyRelationship, dataFamilyStatus, dataEducation, dataOccupation, dataEducationInstantion, dataBusinessLine, dataTerminationType, dataWorkLocation } = useStoreOption()
 
     const [signUpData, setSignUpData] = useState({
         officialName: "",
@@ -1359,6 +1359,17 @@ const Candidate: NextPage = () => {
             })
             .catch(error => console.error(error))
     }
+
+    const generateYearCombo = (startYear: number = 1960) => {
+        const currentYear = new Date().getFullYear(),
+            years = []
+    
+        while (startYear <= currentYear) {
+            years.push({value: startYear++, label: startYear++})
+        }
+    
+        return years
+    }
     
     return(
         <>
@@ -1381,7 +1392,7 @@ const Candidate: NextPage = () => {
             <div className="p-4 w-full">
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Nama Lengkap (Sesuai KTP) </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lengkap (Sesuai KTP) <label className="text-red-500"> * </label></label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
@@ -1392,7 +1403,7 @@ const Candidate: NextPage = () => {
                         />
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Nama Panggilan </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Panggilan </label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
@@ -1404,7 +1415,7 @@ const Candidate: NextPage = () => {
 
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Posisi yang dilamar </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Posisi yang dilamar <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.positionApplied}
@@ -1421,7 +1432,7 @@ const Candidate: NextPage = () => {
                         </select>
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Sumber Informasi </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Sumber Informasi </label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
@@ -1446,12 +1457,17 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, birthCity: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Jakarta </option>
-                            <option value="1"> Bandung </option>
+                            {
+                                ((dataBirthCity !== undefined) ? dataBirthCity : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Alamat Email </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat Email </label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
@@ -1468,21 +1484,30 @@ const Candidate: NextPage = () => {
                             value={signUpData.gender}
                             onChange={(e) => setSignUpData({...signUpData, gender: e.target.value})}
                         >
-                            <option value="">- choose -</option>
-                            <option value="1"> Jakarta </option>
-                            <option value="1"> Bandung </option>
+                            {
+                                ((dataGender !== undefined) ? dataGender : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Kewarganegaraan </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kewarganegaraan </label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.nationality}
                             onChange={(e) => setSignUpData({...signUpData, nationality: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="219"> Pria </option>
-                            <option value="220"> Wanita </option>
+                            {
+                                ((dataNationality !== undefined) ? dataNationality : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                 </div>
@@ -1492,7 +1517,7 @@ const Candidate: NextPage = () => {
                         <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} />
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> No KTP </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No KTP </label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
@@ -1512,7 +1537,7 @@ const Candidate: NextPage = () => {
                         />
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Media Sosial </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Media Sosial </label>
                         
                         <div className="flex">
                             <svg
@@ -1679,8 +1704,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, bankName: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="219"> Pria </option>
-                            <option value="220"> Wanita </option>
+                            {
+                                ((dataBank !== undefined) ? dataBank : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full md:w-1/2 px-3 mt-6">
@@ -1806,9 +1836,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, bloodType: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataBloodType !== undefined) ? dataBloodType : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full md:w-1/2 px-3">
@@ -1819,9 +1853,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, maritalStatus: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataMaritalStatus !== undefined) ? dataMaritalStatus : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                 </div>
@@ -1834,9 +1872,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, taxType: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataTaxType !== undefined) ? dataTaxType : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full md:w-1/2 px-3">
@@ -1888,9 +1930,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, city2: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataBirthCity !== undefined) ? dataBirthCity : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full px-4 mb-6 md:mb-0">
@@ -1919,9 +1965,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, residenceSince2: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                generateYearCombo().map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full px-4 mb-6 md:mb-0">
@@ -1932,9 +1982,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, stayedStatus2: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataStayedStatus !== undefined) ? dataStayedStatus : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                 </div>
@@ -1943,7 +1997,7 @@ const Candidate: NextPage = () => {
                         <p className="font-bold text-md"> Alamat Orang Tua </p>
                     </div>
                     <div className="w-full px-4 py-2 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Alamat Orang Tua </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat Orang Tua </label>
                         <textarea
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.address3}
@@ -1959,9 +2013,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, city3: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataBirthCity !== undefined) ? dataBirthCity : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full px-4 mb-6 md:mb-0">
@@ -1990,9 +2048,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, residenceSince3: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                generateYearCombo().map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full px-4 mb-6 md:mb-0">
@@ -2003,9 +2065,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, stayedStatus3: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataStayedStatus !== undefined) ? dataStayedStatus : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                 </div>
@@ -2030,9 +2096,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, city1: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataBirthCity !== undefined) ? dataBirthCity : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full px-4 mb-6 md:mb-0">
@@ -2061,9 +2131,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, residenceSince1: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                generateYearCombo().map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                     <div className="w-full px-4 mb-6 md:mb-0">
@@ -2074,9 +2148,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, stayedStatus1: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataStayedStatus !== undefined) ? dataStayedStatus : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
                 </div>
@@ -2092,7 +2170,7 @@ const Candidate: NextPage = () => {
                         <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Nama Lengkap </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lengkap </label>
                                     <input
                                         type="text"
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
@@ -2102,20 +2180,24 @@ const Candidate: NextPage = () => {
                                     />
                                 </div>
                                 <div className="w-full lg:w-1/6 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Hubungan </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Hubungan </label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.contactShip[i]}
                                         onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataFamilyRelationship !== undefined) ? dataFamilyRelationship : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
                                 <div className="w-full lg:w-1/6 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> No Telephone </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No Telephone </label>
                                     <input
                                         type="text"
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
@@ -2124,7 +2206,7 @@ const Candidate: NextPage = () => {
                                     />
                                 </div>
                                 <div className="w-full lg:w-1/6 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> No Handphone </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No Handphone </label>
                                     <input
                                         type="text"
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
@@ -2133,20 +2215,18 @@ const Candidate: NextPage = () => {
                                     />
                                 </div>
                                 <div className="w-full lg:w-1/6 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Status </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status </label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.contactStatus[i]}
                                         onChange={(e) => changeNewContact(i, signUpData.contactStatus, 'contactStatus', e.target.value)}
                                     >
-                                        <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        <option value="Tidak dalam satu rumah"> Tidak dalam satu rumah </option>
+                                        <option value="Dalam satu rumah"> Dalam satu rumah </option>
                                     </select>
                                 </div>
                                 <div className="w-full lg:w-1/6 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Alamat </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat </label>
                                     <textarea
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.contactAddress[i]}
@@ -2165,8 +2245,9 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                         <button
-                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none leading-tight`}
                             onClick={cloneContact}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -2181,7 +2262,7 @@ const Candidate: NextPage = () => {
                     {
                         (signUpData.contactName.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                         <button
-                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteContact}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -2214,9 +2295,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewFamily(i, signUpData.familyRelationship, 'familyRelationship', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataFamilyRelationship !== undefined) ? dataFamilyRelationship : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2243,9 +2328,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewFamily(i, signUpData.familyRelationEducation, 'familyRelationEducation', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataEducation !== undefined) ? dataEducation : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2257,9 +2346,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewFamily(i, signUpData.familyRelationOccupation, 'familyRelationOccupation', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataOccupation !== undefined) ? dataOccupation : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2271,9 +2364,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewFamily(i, signUpData.familyRelationStatus, 'familyRelationStatus', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataFamilyStatus !== undefined) ? dataFamilyStatus : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -2286,8 +2383,9 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                         <button
-                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none leading-tight`}
                             onClick={cloneFamily}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -2302,7 +2400,7 @@ const Candidate: NextPage = () => {
                     {
                         (signUpData.familyRelationship.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                         <button
-                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteFamily}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -2335,9 +2433,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalGrade, 'educationFormalGrade', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataEducation !== undefined) ? dataEducation : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2349,9 +2451,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalInstitution, 'educationFormalInstitution', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataEducationInstantion !== undefined) ? dataEducationInstantion : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2379,9 +2485,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalCity, 'educationFormalCity', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataBirthCity !== undefined) ? dataBirthCity : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2393,9 +2503,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalStart, 'educationFormalStart', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            generateYearCombo().map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
 
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Selesai </label>
@@ -2405,9 +2519,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalEnd, 'educationFormalEnd', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            generateYearCombo().map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2430,8 +2548,9 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                         <button
-                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none leading-tight`}
                             onClick={cloneEducationFormal}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -2446,7 +2565,7 @@ const Candidate: NextPage = () => {
                     {
                         (signUpData.educationFormalGrade.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                         <button
-                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteEducationFormal}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -2473,26 +2592,30 @@ const Candidate: NextPage = () => {
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jenis Kursus </label>
-                                    <select
-                                        className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    <input
+                                        type="text"
+                                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationUnformalType[i]}
                                         onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalType, 'educationUnformalType', e.target.value)}
-                                    >
-                                        <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
-                                    </select>
+                                    />
                                 </div>
 
                                 <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lembaga </label>
-                                    <input
-                                        type="text"
-                                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    <select
+                                        className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationUnformalName[i]}
                                         onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalName, 'educationUnformalName', e.target.value)}
-                                    />
+                                    >
+                                        <option value="">- choose -</option>
+                                        {
+                                            ((dataEducationInstantion !== undefined) ? dataEducationInstantion : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
                                 </div>
 
                                 <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
@@ -2503,9 +2626,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalCity, 'educationUnformalCity', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataBirthCity !== undefined) ? dataBirthCity : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                     {/* <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} /> */}
                                 </div>
@@ -2524,10 +2651,8 @@ const Candidate: NextPage = () => {
                                         value={signUpData.educationUnformalCertificate[i]}
                                         onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalCertificate, 'educationUnformalCertificate', e.target.value)}
                                     >
-                                        <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        <option value="No"> No </option>
+                                        <option value="Yes"> Yes </option>
                                     </select>
                                 </div>
                             </div>
@@ -2540,8 +2665,9 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                         <button
-                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none leading-tight`}
                             onClick={cloneEducationUnformal}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -2556,7 +2682,7 @@ const Candidate: NextPage = () => {
                     {
                         (signUpData.educationUnformalType.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                         <button
-                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteEducationUnformal}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -2583,26 +2709,30 @@ const Candidate: NextPage = () => {
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jenis Kursus </label>
-                                    <select
-                                        className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    <input
+                                        type="text"
+                                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.workshopTitle[i]}
                                         onChange={(e) => changeNewWorkshop(i, signUpData.workshopTitle, 'workshopTitle', e.target.value)}
-                                    >
-                                        <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
-                                    </select>
+                                    />
                                 </div>
 
                                 <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
                                 <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lembaga </label>
-                                    <input
-                                        type="text"
-                                        className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                    <select
+                                        className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.workshopName[i]}
                                         onChange={(e) => changeNewWorkshop(i, signUpData.workshopName, 'workshopName', e.target.value)}
-                                    />
+                                    >
+                                        <option value="">- choose -</option>
+                                        {
+                                            ((dataEducationInstantion !== undefined) ? dataEducationInstantion : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
                                 </div>
 
                                 <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
@@ -2613,9 +2743,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewWorkshop(i, signUpData.workshopCity, 'workshopCity', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataBirthCity !== undefined) ? dataBirthCity : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                     {/* <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} /> */}
                                 </div>
@@ -2633,10 +2767,8 @@ const Candidate: NextPage = () => {
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         onChange={(e) => changeNewWorkshop(i, signUpData.workshopCertificate, 'workshopCertificate', e.target.value)}
                                     >
-                                        <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        <option value="No"> No </option>
+                                        <option value="Yes"> Yes </option>
                                     </select>
                                 </div>
                             </div>
@@ -2649,8 +2781,9 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                         <button
-                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none leading-tight`}
                             onClick={cloneWorkshop}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -2665,7 +2798,7 @@ const Candidate: NextPage = () => {
                     {
                         (signUpData.workshopTitle.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                         <button
-                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteWorkshop}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -2718,9 +2851,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewOrganization(i, signUpData.organizationCity, 'organizationCity', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataBirthCity !== undefined) ? dataBirthCity : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2740,8 +2877,9 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                         <button
-                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none leading-tight`}
                             onClick={cloneOrganization}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -2756,7 +2894,7 @@ const Candidate: NextPage = () => {
                     {
                         (signUpData.organizationName.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                         <button
-                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteOrganization}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -2860,8 +2998,9 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                         <button
-                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none leading-tight`}
                             onClick={cloneLanguage}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -2876,7 +3015,7 @@ const Candidate: NextPage = () => {
                     {
                         (signUpData.languageName.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                         <button
-                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteLanguage}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -2930,8 +3069,9 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                         <button
-                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none leading-tight`}
                             onClick={cloneComputerSkill}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -2946,7 +3086,7 @@ const Candidate: NextPage = () => {
                     {
                         (signUpData.skillProgram.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                         <button
-                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteComputerSkill}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -3000,8 +3140,9 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                         <button
-                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none leading-tight`}
                             onClick={cloneSkill}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -3016,7 +3157,7 @@ const Candidate: NextPage = () => {
                     {
                         (signUpData.skillProgram.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                         <button
-                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteSkill}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -3164,8 +3305,9 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full lg:w-44 md:1/2 px-3 mb-6 md:mb-2">
                         <button
-                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-blue-500 text-white border-2 border-blue-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-blue-700 appearance-none leading-tight`}
                             onClick={cloneWorkExp}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -3180,7 +3322,7 @@ const Candidate: NextPage = () => {
                     {
                         (signUpData.workExpName.length > 1) ? <div className="w-full lg:w-44 md:1/2 px-3">
                         <button
-                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none block leading-tight`}
+                            className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteWorkExp}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -11,7 +11,7 @@ module.exports = {
         return [{
             source: '/',
             destination: '/candidateform',
-            permanent: true
+            permanent: false
         }]
     }
 }
