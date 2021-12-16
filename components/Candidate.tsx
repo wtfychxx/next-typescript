@@ -1,7 +1,7 @@
 import moment from 'moment'
 import type { NextPage } from 'next'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import { useStoreOption } from '../lib/candidate'
@@ -144,21 +144,25 @@ export interface isSignUpData{
 }
 
 const Candidate: NextPage = () => {
-    const { dataPositionApplied, dataGender, dataBirthCity, dataNationality, dataBank, dataBloodType, dataMaritalStatus, dataTaxType, dataStayedStatus, dataFamilyRelationship, dataFamilyStatus, dataEducation, dataOccupation, dataEducationInstantion, dataBusinessLine, dataTerminationType, dataWorkLocation } = useStoreOption()
+    const { dataPositionApplied, dataGender, dataBirthCity, dataNationality, dataBank, dataBloodType, dataMaritalStatus, dataTaxType, dataStayedStatus, dataFamilyRelationship, dataFamilyStatus, dataEducation, dataOccupation, dataEducationInstantion, dataBusinessLine, dataTerminationType, dataSkillLanguage, dataSkillLevel, dataWorkLocation, dataExistsOrNo } = useStoreOption()
 
     const [signUpData, setSignUpData] = useState({
         officialName: "",
         nickName: "",
         positionApplied: "",
+        positionAppliedName: "",
         informationSource: "",
         birthCity: "",
+        birthCityName: "",
         email: "",
         gender: "",
         nationality: "",
         birthDate: new Date(),
+        birthDateFix: moment(new Date()).format('YYYY-MM-DD'),
         idCardNumber: "",
         phoneNumber: "",
         instagramAccount: "",
+        bank: "",
         bankName: "",
         whatsappAccount: "",
         accountNumber: "",
@@ -172,13 +176,15 @@ const Candidate: NextPage = () => {
         taxType: "",
         npwp: "",
         addressTax: "",
-        birthDateFix: "",
         address1: "",
         address2: "",
         address3: "",
         city1: "",
+        cityName1: "",
         city2: "",
+        cityName2: "",
         city3: "",
+        cityName3: "",
         posCode1: "",
         posCode2: "",
         posCode3: "",
@@ -203,25 +209,33 @@ const Candidate: NextPage = () => {
         familyRelationBirthFix: ["", ""],
         familyRelationEducation: ["", ""],
         familyRelationOccupation: ["", ""],
+        familyRelationOccupationName: ["", ""],
         familyRelationStatus: ["", ""],
         educationFormalGrade: [""],
         educationFormalInstitution: [""],
+        educationFormalInstitutionName: [""],
         educationFormalMajor: [""],
+        educationFormalMajorName: [""],
         educationFormalCity: [""],
+        educationFormalCityName: [""],
         educationFormalStart: [""],
         educationFormalEnd: [""],
         educationFormalGpa: [""],
         educationUnformalType: [""],
         educationUnformalName: [""],
+        educationUnformalNameInstitution: [""],
         educationUnformalCity: [""],
+        educationUnformalCityName: [""],
         educationUnformalStart: [new Date()],
         educationUnformalStartFix: [""],
         educationUnformalEnd: [new Date()],
         educationUnformalEndFix: [""],
-        educationUnformalCertificate: [""],
+        educationUnformalCertificate: ["No"],
         workshopTitle: [""],
         workshopName: [""],
+        workshopNameInstitution: [""],
         workshopCity: [""],
+        workshopCityName: [""],
         workshopStart: [new Date()],
         workshopStartFix: [""],
         workshopEnd: [new Date()],
@@ -230,6 +244,7 @@ const Candidate: NextPage = () => {
         organizationName: [""],
         organizationPosition: [""],
         organizationCity: [""],
+        organizationCityName: [""],
         organizationStart: [new Date()],
         organizationStartFix: [""],
         organizationEnd: [new Date()],
@@ -246,6 +261,7 @@ const Candidate: NextPage = () => {
         workExpName: [""],
         workExpAddress: [""],
         workExpBusinessField: [""],
+        workExpBusinessFieldName: [""],
         workExpPosition: [""],
         workExpTelephone: [""],
         workExpStart: [new Date()],
@@ -260,7 +276,7 @@ const Candidate: NextPage = () => {
         jobTypePrefer: "",
         workLocationPrefer: "",
         startWorking: new Date(),
-        startWorkingFix: "",
+        startWorkingFix: moment(new Date()).format('YYYY-MM-DD'),
         expectedSalary: "",
         expectedFacility: "",
         personKnow: ["", "", ""],
@@ -285,9 +301,6 @@ const Candidate: NextPage = () => {
 
     const handleSubmit = async (event: any) => {
         event.preventDefault()
-
-        const dateFix = moment(signUpData.birthDate).format('YYYY-MM-DD')
-        setSignUpData({...signUpData, birthDateFix: dateFix})
 
         signUpData.familyRelationBirth.map((entry, i) => {
             const temporary: string[] = signUpData.familyRelationBirthFix
@@ -358,11 +371,8 @@ const Candidate: NextPage = () => {
 
             temporary[i] = moment(entry).format('YYYY-MM-DD')
 
-            setSignUpData({...signUpData, workExpStartFix: temporary})
+            setSignUpData({...signUpData, workExpEndFix: temporary})
         })
-
-        const dateWorkFix = moment(signUpData.startWorking).format('YYYY-MM-DD')
-        setSignUpData({...signUpData, startWorkingFix: dateWorkFix})
 
         const result = await saveCandidate(signUpData)
     }
@@ -416,6 +426,9 @@ const Candidate: NextPage = () => {
         const familyRelationOccupationDefault: string[] = signUpData.familyRelationOccupation
         familyRelationOccupationDefault.push("")
 
+        const familyRelationOccupationNameDefault: string[] = signUpData.familyRelationOccupationName
+        familyRelationOccupationNameDefault.push("")
+
         const familyRelationStatusDefault: string[] = signUpData.familyRelationStatus
         familyRelationStatusDefault.push("")
 
@@ -427,6 +440,7 @@ const Candidate: NextPage = () => {
             familyRelationBirthFix: familyRelationBirthFixDefault,
             familyRelationEducation: familyRelationEducationDefault,
             familyRelationOccupation: familyRelationOccupationDefault,
+            familyRelationOccupationName: familyRelationOccupationNameDefault,
             familyRelationStatus: familyRelationStatusDefault
         })
     }
@@ -437,12 +451,21 @@ const Candidate: NextPage = () => {
         
         const educationFormalInstitutionDefault: string[] = signUpData.educationFormalInstitution
         educationFormalInstitutionDefault.push("")
+
+        const educationFormalInstitutionNameDefault: string[] = signUpData.educationFormalInstitutionName
+        educationFormalInstitutionNameDefault.push("")
         
         const educationFormalMajorDefault: string[] = signUpData.educationFormalMajor
         educationFormalMajorDefault.push("")
 
+        const educationFormalMajorNameDefault: string[] = signUpData.educationFormalMajorName
+        educationFormalMajorNameDefault.push("")
+
         const educationFormalCityDefault: string[] = signUpData.educationFormalCity
         educationFormalCityDefault.push("")
+
+        const educationFormalCityNameDefault: string[] = signUpData.educationFormalCityName
+        educationFormalCityNameDefault.push("")
 
         const educationFormalStartDefault: string[] = signUpData.educationFormalStart
         educationFormalStartDefault.push("")
@@ -457,8 +480,11 @@ const Candidate: NextPage = () => {
             ...signUpData,
             educationFormalGrade: educationFormalGradeDefault,
             educationFormalInstitution: educationFormalInstitutionDefault,
+            educationFormalInstitutionName: educationFormalInstitutionNameDefault,
             educationFormalMajor: educationFormalMajorDefault,
+            educationFormalMajorName: educationFormalMajorNameDefault,
             educationFormalCity: educationFormalCityDefault,
+            educationFormalCityName: educationFormalCityNameDefault,
             educationFormalStart: educationFormalStartDefault,
             educationFormalEnd: educationFormalEndDefault,
             educationFormalGpa: educationFormalGpaDefault
@@ -472,9 +498,15 @@ const Candidate: NextPage = () => {
         
         const educationUnformalNameDefault: string[] = signUpData.educationUnformalName
         educationUnformalNameDefault.push("")
+
+        const educationUnformalNameInstitutionDefault: string[] = signUpData.educationUnformalNameInstitution
+        educationUnformalNameInstitutionDefault.push("")
         
         const educationUnformalCityDefault: string[] = signUpData.educationUnformalCity
         educationUnformalCityDefault.push("")
+
+        const educationUnformalCityNameDefault: string[] = signUpData.educationUnformalCityName
+        educationUnformalCityNameDefault.push("")
 
         const educationUnformalStartDefault: Date[] = signUpData.educationUnformalStart
         educationUnformalStartDefault.push(new Date())
@@ -489,13 +521,15 @@ const Candidate: NextPage = () => {
         educationUnformalEndFixDefault.push("")
 
         const educationUnformalCertificateDefault: string[] = signUpData.educationUnformalCertificate
-        educationUnformalCertificateDefault.push("")
+        educationUnformalCertificateDefault.push("No")
 
         setSignUpData({
             ...signUpData,
             educationUnformalType: educationUnformalTypeDefault,
             educationUnformalName: educationUnformalNameDefault,
+            educationUnformalNameInstitution: educationUnformalNameInstitutionDefault,
             educationUnformalCity: educationUnformalCityDefault,
+            educationUnformalCityName: educationUnformalCityNameDefault,
             educationUnformalStart: educationUnformalStartDefault,
             educationUnformalStartFix: educationUnformalStartFixDefault,
             educationUnformalEnd: educationUnformalEndDefault,
@@ -511,9 +545,15 @@ const Candidate: NextPage = () => {
         
         const workshopNameDefault: string[] = signUpData.workshopName
         workshopNameDefault.push("")
+
+        const workshopNameInstitutionDefault: string[] = signUpData.workshopNameInstitution
+        workshopNameInstitutionDefault.push("")
         
         const workshopCityDefault: string[] = signUpData.workshopCity
         workshopCityDefault.push("")
+        
+        const workshopCityNameDefault: string[] = signUpData.workshopCityName
+        workshopCityNameDefault.push("")
 
         const workshopStartDefault: Date[] = signUpData.workshopStart
         workshopStartDefault.push(new Date())
@@ -528,13 +568,15 @@ const Candidate: NextPage = () => {
         workshopEndFixDefault.push("")
 
         const workshopCertificateDefault: string[] = signUpData.workshopCertificate
-        workshopCertificateDefault.push("")
+        workshopCertificateDefault.push("No")
 
         setSignUpData({
             ...signUpData,
             workshopTitle: workshopTitleDefault,
             workshopName: workshopNameDefault,
+            workshopNameInstitution: workshopNameInstitutionDefault,
             workshopCity: workshopCityDefault,
+            workshopCityName: workshopCityNameDefault,
             workshopStart: workshopStartDefault,
             workshopStartFix: workshopStartFixDefault,
             workshopEnd: workshopEndDefault,
@@ -554,6 +596,9 @@ const Candidate: NextPage = () => {
         const organizationCityDefault: string[] = signUpData.organizationCity
         organizationCityDefault.push("")
 
+        const organizationCityNameDefault: string[] = signUpData.organizationCityName
+        organizationCityNameDefault.push("")
+
         const organizationStartDefault: Date[] = signUpData.organizationStart
         organizationStartDefault.push(new Date())
 
@@ -571,6 +616,7 @@ const Candidate: NextPage = () => {
             organizationName: organizationNameDefault,
             organizationPosition: organizationPositionDefault,
             organizationCity: organizationCityDefault,
+            organizationCityName: organizationCityNameDefault,
             organizationStart: organizationStartDefault,
             organizationStartFix: organizationStartFixDefault,
             organizationEnd: organizationEndDefault,
@@ -644,6 +690,9 @@ const Candidate: NextPage = () => {
         const workExpBusinessFieldDefault: string[] = signUpData.workExpBusinessField
         workExpBusinessFieldDefault.push("")
 
+        const workExpBusinessFieldNameDefault: string[] = signUpData.workExpBusinessFieldName
+        workExpBusinessFieldNameDefault.push("")
+
         const workExpPositionDefault: string[] = signUpData.workExpPosition
         workExpPositionDefault.push("")
 
@@ -682,6 +731,7 @@ const Candidate: NextPage = () => {
             workExpName: workExpNameDefault,
             workExpAddress: workExpAddressDefault,
             workExpBusinessField: workExpBusinessFieldDefault,
+            workExpBusinessFieldName: workExpBusinessFieldNameDefault,
             workExpPosition: workExpPositionDefault,
             workExpTelephone: workExpTelephoneDefault,
             workExpStart: workExpStartDefault,
@@ -743,6 +793,9 @@ const Candidate: NextPage = () => {
         const familyLengthOccupation: number = signUpData.familyRelationOccupation.length
         const afterOccupation = signUpData.familyRelationOccupation.slice(0, familyLengthOccupation - 1)
 
+        const familyLengthOccupationName: number = signUpData.familyRelationOccupationName.length
+        const afterOccupationName = signUpData.familyRelationOccupationName.slice(0, familyLengthOccupationName - 1)
+
         const familyLengthStatus: number = signUpData.familyRelationStatus.length
         const afterStatus = signUpData.familyRelationStatus.slice(0, familyLengthStatus - 1)
 
@@ -753,6 +806,7 @@ const Candidate: NextPage = () => {
             familyRelationBirth: afterBirth,
             familyRelationEducation: afterEducation,
             familyRelationOccupation: afterOccupation,
+            familyRelationOccupationName: afterOccupationName,
             familyRelationStatus: afterStatus
         })
 
@@ -765,11 +819,20 @@ const Candidate: NextPage = () => {
         const educationFormalInstitutionLength: number = signUpData.educationFormalInstitution.length
         const afterInstitution = signUpData.educationFormalInstitution.slice(0, educationFormalInstitutionLength - 1)
 
+        const educationFormalInstitutionNameLength: number = signUpData.educationFormalInstitutionName.length
+        const afterInstitutionName = signUpData.educationFormalInstitutionName.slice(0, educationFormalInstitutionNameLength - 1)
+
         const educationFormalMajorLength: number = signUpData.educationFormalMajor.length
         const afterMajor = signUpData.educationFormalMajor.slice(0, educationFormalMajorLength - 1)
 
+        const educationFormalMajorNameLength: number = signUpData.educationFormalMajorName.length
+        const afterMajorName = signUpData.educationFormalMajorName.slice(0, educationFormalMajorNameLength - 1)
+
         const educationFormalCity: number = signUpData.educationFormalCity.length
         const afterCity = signUpData.educationFormalCity.slice(0, educationFormalCity - 1)
+        
+        const educationFormalCityName: number = signUpData.educationFormalCityName.length
+        const afterCityName = signUpData.educationFormalCityName.slice(0, educationFormalCityName - 1)
 
         const educationFormalStartLength: number = signUpData.educationFormalStart.length
         const afterStart = signUpData.educationFormalStart.slice(0, educationFormalStartLength - 1)
@@ -784,8 +847,11 @@ const Candidate: NextPage = () => {
             ...signUpData,
             educationFormalGrade: afterGrade,
             educationFormalInstitution: afterInstitution,
+            educationFormalInstitutionName: afterInstitutionName,
             educationFormalMajor: afterMajor,
+            educationFormalMajorName: afterMajorName,
             educationFormalCity: afterCity,
+            educationFormalCityName: afterCityName,
             educationFormalStart: afterStart,
             educationFormalEnd: afterEnd,
             educationFormalGpa: afterGpa
@@ -838,9 +904,15 @@ const Candidate: NextPage = () => {
         
         const workshopNameLength: number = signUpData.workshopName.length
         const afterName = signUpData.workshopName.slice(0, workshopNameLength - 1)
+
+        const workshopNameInstitutionLength: number = signUpData.workshopNameInstitution.length
+        const afterNameInstitution = signUpData.workshopNameInstitution.slice(0, workshopNameInstitutionLength - 1)
         
         const workshopCityLength: number = signUpData.workshopCity.length
         const afterCity = signUpData.workshopCity.slice(0, workshopCityLength - 1)
+
+        const workshopCityNameLength: number = signUpData.workshopCityName.length
+        const afterCityName = signUpData.workshopCityName.slice(0, workshopCityNameLength - 1)
 
         const workshopStartLength: number = signUpData.workshopStart.length
         const afterStart = signUpData.workshopStart.slice(0, workshopStartLength - 1)
@@ -861,7 +933,9 @@ const Candidate: NextPage = () => {
             ...signUpData,
             workshopTitle: afterTitle,
             workshopName: afterName,
+            workshopNameInstitution: afterNameInstitution,
             workshopCity: afterCity,
+            workshopCityName: afterCityName,
             workshopStart: afterStart,
             workshopStartFix: afterStartFix,
             workshopEnd: afterEnd,
@@ -881,6 +955,9 @@ const Candidate: NextPage = () => {
         const organizationCityLength: number = signUpData.organizationCity.length
         const afterCity = signUpData.organizationCity.slice(0, organizationCityLength - 1)
 
+        const organizationCityNameLength: number = signUpData.organizationCityName.length
+        const afterCityName = signUpData.organizationCityName.slice(0, organizationCityNameLength - 1)
+
         const organizationStartLength: number = signUpData.organizationStart.length
         const afterStart = signUpData.organizationStart.slice(0, organizationStartLength - 1)
 
@@ -898,6 +975,7 @@ const Candidate: NextPage = () => {
             organizationName: afterTitle,
             organizationPosition: afterName,
             organizationCity: afterCity,
+            organizationCityName: afterCityName,
             organizationStart: afterStart,
             organizationStartFix: afterStartFix,
             organizationEnd: afterEnd,
@@ -972,6 +1050,9 @@ const Candidate: NextPage = () => {
         
         const workExpBusinessFieldLength: number = signUpData.workExpBusinessField.length
         const afterBusinessField = signUpData.workExpBusinessField.slice(0, workExpBusinessFieldLength - 1)
+
+        const workExpBusinessFieldNameLength: number = signUpData.workExpBusinessFieldName.length
+        const afterBusinessFieldName = signUpData.workExpBusinessFieldName.slice(0, workExpBusinessFieldNameLength - 1)
         
         const workExpPositionLength: number = signUpData.workExpPosition.length
         const afterPosition = signUpData.workExpPosition.slice(0, workExpPositionLength - 1)
@@ -1011,6 +1092,7 @@ const Candidate: NextPage = () => {
             workExpName: afterName,
             workExpAddress: afterAddress,
             workExpBusinessField: afterBusinessField,
+            workExpBusinessFieldName: afterBusinessFieldName,
             workExpPosition: afterPosition,
             workExpTelephone: afterTelephone,
             workExpStart: afterStart,
@@ -1071,6 +1153,9 @@ const Candidate: NextPage = () => {
             case 'familyRelationOccupation':
                 setSignUpData({...signUpData, familyRelationOccupation: temporary})
             break
+            case 'familyRelationOccupationName':
+                setSignUpData({...signUpData, familyRelationOccupationName: temporary})
+            break
             case 'familyRelationStatus':
                 setSignUpData({...signUpData, familyRelationStatus: temporary})
             break
@@ -1088,11 +1173,20 @@ const Candidate: NextPage = () => {
             case 'educationFormalInstitution':
                 setSignUpData({...signUpData, educationFormalInstitution: temporary})
             break
+            case 'educationFormalInstitutionName':
+                setSignUpData({...signUpData, educationFormalInstitutionName: temporary})
+            break
             case 'educationFormalMajor':
                 setSignUpData({...signUpData, educationFormalMajor: temporary})
             break
+            case 'educationFormalMajorName':
+                setSignUpData({...signUpData, educationFormalMajorName: temporary})
+            break
             case 'educationFormalCity':
                 setSignUpData({...signUpData, educationFormalCity: temporary})
+            break
+            case 'educationFormalCityName':
+                setSignUpData({...signUpData, educationFormalCityName: temporary})
             break
             case 'educationFormalStart':
                 setSignUpData({...signUpData, educationFormalStart: temporary})
@@ -1117,8 +1211,14 @@ const Candidate: NextPage = () => {
             case 'educationUnformalName':
                 setSignUpData({...signUpData, educationUnformalName: temporary})
             break
+            case 'educationUnformalNameInstitution':
+                setSignUpData({...signUpData, educationUnformalNameInstitution: temporary})
+            break
             case 'educationUnformalCity':
                 setSignUpData({...signUpData, educationUnformalCity: temporary})
+            break
+            case 'educationUnformalCityName':
+                setSignUpData({...signUpData, educationUnformalCityName: temporary})
             break
             case 'educationUnformalStart':
                 setSignUpData({...signUpData, educationUnformalStart: temporary})
@@ -1143,8 +1243,14 @@ const Candidate: NextPage = () => {
             case 'workshopName':
                 setSignUpData({...signUpData, workshopName: temporary})
             break
+            case 'workshopNameInstitution':
+                setSignUpData({...signUpData, workshopNameInstitution: temporary})
+            break
             case 'workshopCity':
                 setSignUpData({...signUpData, workshopCity: temporary})
+            break
+            case 'workshopCityName':
+                setSignUpData({...signUpData, workshopCityName: temporary})
             break
             case 'workshopStart':
                 setSignUpData({...signUpData, workshopStart: temporary})
@@ -1171,6 +1277,9 @@ const Candidate: NextPage = () => {
             break
             case 'organizationCity':
                 setSignUpData({...signUpData, organizationCity: temporary})
+            break
+            case 'organizationCityName':
+                setSignUpData({...signUpData, organizationCityName: temporary})
             break
             case 'organizationStart':
                 setSignUpData({...signUpData, organizationStart: temporary})
@@ -1245,6 +1354,9 @@ const Candidate: NextPage = () => {
             break
             case 'workExpBusinessField':
                 setSignUpData({...signUpData, workExpBusinessField: temporary})
+            break
+            case 'workExpBusinessFieldName':
+                setSignUpData({...signUpData, workExpBusinessFieldName: temporary})
             break
             case 'workExpPosition':
                 setSignUpData({...signUpData, workExpPosition: temporary})
@@ -1361,14 +1473,16 @@ const Candidate: NextPage = () => {
     }
 
     const generateYearCombo = (startYear: number = 1960) => {
-        const currentYear = new Date().getFullYear(),
-            years = []
+        const currentYear = new Date().getFullYear()
+        const years = []
     
         while (startYear <= currentYear) {
-            years.push({value: startYear++, label: startYear++})
+            years.push({value: startYear, label: startYear})
+            startYear++
         }
+
     
-        return years
+        return years.reverse()
     }
     
     return(
@@ -1419,7 +1533,9 @@ const Candidate: NextPage = () => {
                         <select
                             className={`appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.positionApplied}
-                            onChange={(e) => setSignUpData({...signUpData, positionApplied: e.target.value})}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                setSignUpData({...signUpData, positionAppliedName: e.target.options[e.target.options.selectedIndex].text, positionApplied: e.target.value})
+                            }}
                         >
                             <option value="">- choose -</option>
                             {
@@ -1454,7 +1570,9 @@ const Candidate: NextPage = () => {
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.birthCity}
-                            onChange={(e) => setSignUpData({...signUpData, birthCity: e.target.value})}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                setSignUpData({...signUpData, birthCityName: e.target.options[e.target.options.selectedIndex].text, birthCity: e.target.value})
+                            }}
                         >
                             <option value="">- choose -</option>
                             {
@@ -1514,7 +1632,14 @@ const Candidate: NextPage = () => {
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tanggal Lahir </label>
-                        <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} />
+                        <DatePicker
+                            className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                            dateFormat="yyyy-MM-dd"
+                            selected={signUpData.birthDate}
+                            onChange={(date: any) => {
+                                setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate(), birthDateFix: moment(date).format('YYYY-MM-DD')})
+                            }}
+                        />
                     </div>
                     <div className="w-full md:w-1/2 px-3">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No KTP </label>
@@ -1700,8 +1825,8 @@ const Candidate: NextPage = () => {
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Bank </label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.bankName}
-                            onChange={(e) => setSignUpData({...signUpData, bankName: e.target.value})}
+                            value={signUpData.bank}
+                            onChange={(e) => setSignUpData({...signUpData, bank: e.target.value, bankName: e.target.options[e.target.options.selectedIndex].text})}
                         >
                             <option value="">- choose -</option>
                             {
@@ -1927,7 +2052,7 @@ const Candidate: NextPage = () => {
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.city2}
-                            onChange={(e) => setSignUpData({...signUpData, city2: e.target.value})}
+                            onChange={(e) => setSignUpData({...signUpData, city2: e.target.value, cityName2: e.target.options[e.target.options.selectedIndex].text})}
                         >
                             <option value="">- choose -</option>
                             {
@@ -2010,7 +2135,7 @@ const Candidate: NextPage = () => {
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.city3}
-                            onChange={(e) => setSignUpData({...signUpData, city3: e.target.value})}
+                            onChange={(e) => setSignUpData({...signUpData, city3: e.target.value, cityName3: e.target.options[e.target.options.selectedIndex].text})}
                         >
                             <option value="">- choose -</option>
                             {
@@ -2093,7 +2218,7 @@ const Candidate: NextPage = () => {
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.city1}
-                            onChange={(e) => setSignUpData({...signUpData, city1: e.target.value})}
+                            onChange={(e) => setSignUpData({...signUpData, city1: e.target.value, cityName1: e.target.options[e.target.options.selectedIndex].text})}
                         >
                             <option value="">- choose -</option>
                             {
@@ -2221,6 +2346,7 @@ const Candidate: NextPage = () => {
                                         value={signUpData.contactStatus[i]}
                                         onChange={(e) => changeNewContact(i, signUpData.contactStatus, 'contactStatus', e.target.value)}
                                     >
+                                        <option value="">- choose -</option>
                                         <option value="Tidak dalam satu rumah"> Tidak dalam satu rumah </option>
                                         <option value="Dalam satu rumah"> Dalam satu rumah </option>
                                     </select>
@@ -2343,7 +2469,10 @@ const Candidate: NextPage = () => {
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.familyRelationOccupation[i]}
-                                        onChange={(e) => changeNewFamily(i, signUpData.familyRelationOccupation, 'familyRelationOccupation', e.target.value)}
+                                        onChange={(e) => {
+                                            changeNewFamily(i, signUpData.familyRelationOccupation, 'familyRelationOccupation', e.target.value)
+                                            changeNewFamily(i, signUpData.familyRelationOccupationName, 'familyRelationOccupationName', e.target.options[e.target.options.selectedIndex].text)
+                                        }}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2448,7 +2577,10 @@ const Candidate: NextPage = () => {
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationFormalInstitution[i]}
-                                        onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalInstitution, 'educationFormalInstitution', e.target.value)}
+                                        onChange={(e) => {
+                                            changeNewEduFormal(i, signUpData.educationFormalInstitution, 'educationFormalInstitution', e.target.value)
+                                            changeNewEduFormal(i, signUpData.educationFormalInstitutionName, 'educationFormalInstitutionName', e.target.options[e.target.options.selectedIndex].text)
+                                        }}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2466,7 +2598,10 @@ const Candidate: NextPage = () => {
                                     <select
                                         className={`appearance-none hidden w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationFormalMajor[i]}
-                                        onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalMajor, 'educationFormalMajor', e.target.value)}
+                                        onChange={(e) => {
+                                            changeNewEduFormal(i, signUpData.educationFormalMajor, 'educationFormalMajor', e.target.value)
+                                            changeNewEduFormal(i, signUpData.educationFormalMajorName, 'educationFormalMajorName', e.target.options[e.target.options.selectedIndex].text)
+                                        }}
                                         id="majorSelect"
                                     >
                                         <option value="">- choose -</option>
@@ -2482,7 +2617,10 @@ const Candidate: NextPage = () => {
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationFormalCity[i]}
-                                        onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalCity, 'educationFormalCity', e.target.value)}
+                                        onChange={(e) => {
+                                            changeNewEduFormal(i, signUpData.educationFormalCity, 'educationFormalCity', e.target.value)
+                                            changeNewEduFormal(i, signUpData.educationFormalCityName, 'educationFormalCityName', e.target.options[e.target.options.selectedIndex].text)
+                                        }}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2605,7 +2743,10 @@ const Candidate: NextPage = () => {
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationUnformalName[i]}
-                                        onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalName, 'educationUnformalName', e.target.value)}
+                                        onChange={(e) => {
+                                            changeNewEduUnformal(i, signUpData.educationUnformalName, 'educationUnformalName', e.target.value)
+                                            changeNewEduUnformal(i, signUpData.educationUnformalNameInstitution, 'educationUnformalNameInstitution', e.target.options[e.target.options.selectedIndex].text)
+                                        }}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2623,7 +2764,10 @@ const Candidate: NextPage = () => {
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationUnformalCity[i]}
-                                        onChange={(e) => changeNewEduUnformal(i, signUpData.educationUnformalCity, 'educationUnformalCity', e.target.value)}
+                                        onChange={(e) => {
+                                            changeNewEduUnformal(i, signUpData.educationUnformalCity, 'educationUnformalCity', e.target.value)
+                                            changeNewEduUnformal(i, signUpData.educationUnformalCityName, 'educationUnformalCityName', e.target.options[e.target.options.selectedIndex].text)
+                                        }}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2641,7 +2785,7 @@ const Candidate: NextPage = () => {
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Periode </label>
                                     <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.educationUnformalStart[i]} onChange={(date: any) => changeNewEduUnformal(i, signUpData.educationUnformalStart, 'educationUnformalStart', moment(date, "YYYY-MM-DD").toDate())} />
 
-                                    <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.educationUnformalStart[i]} onChange={(date: any) => changeNewEduUnformal(i, signUpData.educationUnformalEnd, 'educationUnformalEnd', moment(date, "YYYY-MM-DD").toDate())} />
+                                    <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.educationUnformalEnd[i]} onChange={(date: any) => changeNewEduUnformal(i, signUpData.educationUnformalEnd, 'educationUnformalEnd', moment(date, "YYYY-MM-DD").toDate())} />
                                 </div>
 
                                 <div className="w-full lg:w-1/5 px-3 mb-6 md:mb-0">
@@ -2722,7 +2866,10 @@ const Candidate: NextPage = () => {
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.workshopName[i]}
-                                        onChange={(e) => changeNewWorkshop(i, signUpData.workshopName, 'workshopName', e.target.value)}
+                                        onChange={(e) => {
+                                            changeNewWorkshop(i, signUpData.workshopName, 'workshopName', e.target.value)
+                                            changeNewWorkshop(i, signUpData.workshopNameInstitution, 'workshopNameInstitution', e.target.options[e.target.options.selectedIndex].text)
+                                        }}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2740,7 +2887,10 @@ const Candidate: NextPage = () => {
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.workshopCity[i]}
-                                        onChange={(e) => changeNewWorkshop(i, signUpData.workshopCity, 'workshopCity', e.target.value)}
+                                        onChange={(e) => {
+                                            changeNewWorkshop(i, signUpData.workshopCity, 'workshopCity', e.target.value)
+                                            changeNewWorkshop(i, signUpData.workshopCityName, 'workshopCityName', e.target.options[e.target.options.selectedIndex].text)
+                                        }}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2848,7 +2998,10 @@ const Candidate: NextPage = () => {
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.organizationCity[i]}
-                                        onChange={(e) => changeNewOrganization(i, signUpData.organizationCity, 'organizationCity', e.target.value)}
+                                        onChange={(e) => {
+                                            changeNewOrganization(i, signUpData.organizationCity, 'organizationCity', e.target.value)
+                                            changeNewOrganization(i, signUpData.organizationCityName, 'organizationCityName', e.target.value)
+                                        }}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2927,9 +3080,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewLanguage(i, signUpData.languageName, 'languageName', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataSkillLanguage !== undefined) ? dataSkillLanguage : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2941,9 +3098,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewLanguage(i, signUpData.languageReading, 'languageReading', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataSkillLevel !== undefined) ? dataSkillLevel : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2955,9 +3116,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewLanguage(i, signUpData.languageWriting, 'languageWriting', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataSkillLevel !== undefined) ? dataSkillLevel : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2969,9 +3134,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewLanguage(i, signUpData.languageListening, 'languageListening', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataSkillLevel !== undefined) ? dataSkillLevel : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -2983,9 +3152,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewLanguage(i, signUpData.languageSpeaking, 'languageSpeaking', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataSkillLevel !== undefined) ? dataSkillLevel : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
                             </div>
@@ -3207,12 +3380,19 @@ const Candidate: NextPage = () => {
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.workExpBusinessField[i]}
-                                        onChange={(e) => changeNewWorkExp(i, signUpData.workExpBusinessField, 'workExpBusinessField', e.target.value)}
+                                        onChange={(e) => {
+                                            changeNewWorkExp(i, signUpData.workExpBusinessField, 'workExpBusinessField', e.target.value)
+                                            changeNewWorkExp(i, signUpData.workExpBusinessFieldName, 'workExpBusinessFieldName', e.target.options[e.target.options.selectedIndex].text)
+                                        }}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataBusinessLine !== undefined) ? dataBusinessLine : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -3280,9 +3460,13 @@ const Candidate: NextPage = () => {
                                         onChange={(e) => changeNewWorkExp(i, signUpData.workExpLeavingReason, 'workExpLeavingReason', e.target.value)}
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataTerminationType !== undefined) ? dataTerminationType : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
 
@@ -3362,9 +3546,13 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, workLocationPrefer: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataWorkLocation !== undefined) ? dataWorkLocation : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                     </div>
 
@@ -3373,8 +3561,10 @@ const Candidate: NextPage = () => {
                         <DatePicker
                             className={`appearance-none block text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             dateFormat="yyyy-MM-dd"
-                            selected={signUpData.birthDate}
-                            onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})}
+                            selected={signUpData.startWorking}
+                            onChange={(date: any) => {
+                                setSignUpData({...signUpData, startWorking: moment(date, "YYYY-MM-DD").toDate(), startWorkingFix: moment(date).format('YYYY-MM-DD')})
+                            }}
                         />
                     </div>
 
@@ -3517,14 +3707,20 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, ilnessStatus: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataExistsOrNo !== undefined) ? dataExistsOrNo : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                         <input
                             type="text"
-                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.ilness[0]}
+                            className={
+                                `appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700 ${(signUpData.ilnessStatus === '718') ? '' : 'hidden'}`
+                            }
+                            value={signUpData.ilness[0] || ''}
                             onChange={(e) => {
                                 const temporary: string[] = signUpData.ilness
 
@@ -3535,8 +3731,10 @@ const Candidate: NextPage = () => {
 
                         <input
                             type="text"
-                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.ilness[1]}
+                            className={
+                                `appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700 ${(signUpData.ilnessStatus === '718') ? '' : 'hidden'}`
+                            }
+                            value={signUpData.ilness[1] || ''}
                             onChange={(e) => {
                                 const temporary: string[] = signUpData.ilness
 
@@ -3554,14 +3752,20 @@ const Candidate: NextPage = () => {
                             onChange={(e) => setSignUpData({...signUpData, criminalStatus: e.target.value})}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataExistsOrNo !== undefined) ? dataExistsOrNo : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
                         <input
                             type="text"
-                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.criminal[0]}
+                            className={
+                                `appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700 ${(signUpData.criminalStatus === '718') ? '' : 'hidden'}`
+                            }
+                            value={signUpData.criminal[0] || ''}
                             onChange={(e) => {
                                 const temporary: string[] = signUpData.criminal
 
@@ -3571,8 +3775,10 @@ const Candidate: NextPage = () => {
                         />
                         <input
                             type="text"
-                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.criminal[1]}
+                            className={
+                                `appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700 ${(signUpData.criminalStatus === '718') ? '' : 'hidden'}`
+                            }
+                            value={signUpData.criminal[1] || ''}
                             onChange={(e) => {
                                 const temporary: string[] = signUpData.criminal
 

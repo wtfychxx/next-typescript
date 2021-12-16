@@ -33,8 +33,14 @@ type State = {
     setBusinessLine: (dataBusinessLine: Array<any>) => void;
     dataTerminationType: Array<any>;
     setTerminationType: (dataTerminationType: Array<any>) => void;
+    dataSkillLanguage: Array<any>;
+    setSkillLanguage: (dataSkillLanguage: Array<any>) => void;
+    dataSkillLevel: Array<any>;
+    setSkillLevel: (dataSkillLevel: Array<any>) => void;
     dataWorkLocation: Array<any>;
     setWorkLocation: (dataWorkLocation: Array<any>) => void;
+    dataExistsOrNo: Array<any>;
+    setExistsOrNo: (dataExistsOrNo: Array<any>) => void;
 }
 
 export const useStoreOption = create<State>((set) => ({
@@ -70,6 +76,12 @@ export const useStoreOption = create<State>((set) => ({
     setBusinessLine: (data: any) => set(() => ({dataBusinessLine: data})),
     dataTerminationType: [],
     setTerminationType: (data: any) => set(() => ({dataTerminationType: data})),
+    dataSkillLanguage: [],
+    setSkillLanguage: (data: any) => set(() => ({dataSkillLanguage: data})),
+    dataSkillLevel: [],
+    setSkillLevel: (data: any) => set(() => ({dataSkillLevel: data})),
     dataWorkLocation: [],
     setWorkLocation: (data: any) => set(() => ({dataWorkLocation: data})),
+    dataExistsOrNo: [],
+    setExistsOrNo: (data: any) => set(() => ({dataExistsOrNo: data})),
 }))

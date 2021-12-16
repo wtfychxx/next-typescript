@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import Candidate from '../components/Candidate'
@@ -23,11 +23,14 @@ interface propsData {
     educationInstantion: any[],
     businessLine: any[],
     terminationType: any[],
-    workLocation: any[]
+    skillLanguage: any[],
+    skillLevel: any[],
+    workLocation: any[],
+    existsOrNo: any[]
 }
 
-const CandidateForm: NextPage<propsData> = ({positionApplied, gender, birthCity, nationality, bank, bloodType, maritalStatus, taxType, stayedStatus, familyRelationship, familyStatus, education, occupation, educationInstantion, businessLine, terminationType, workLocation}) => {
-    const { setPositionApplied, setGender, setBirthCity, setNationality, setBank, setBloodType, setMaritalStatus, setTaxType, setStayedStatus, setFamilyRelationship, setFamilyStatus, setEducation, setOccupation, setEducationInstantion, setBusinessLine, setTerminationType, setWorkLocation } = useStoreOption()
+const CandidateForm: NextPage<propsData> = ({positionApplied, gender, birthCity, nationality, bank, bloodType, maritalStatus, taxType, stayedStatus, familyRelationship, familyStatus, education, occupation, educationInstantion, businessLine, terminationType, skillLanguage, skillLevel, workLocation, existsOrNo}) => {
+    const { setPositionApplied, setGender, setBirthCity, setNationality, setBank, setBloodType, setMaritalStatus, setTaxType, setStayedStatus, setFamilyRelationship, setFamilyStatus, setEducation, setOccupation, setEducationInstantion, setBusinessLine, setTerminationType, setSkillLanguage, setSkillLevel, setWorkLocation, setExistsOrNo } = useStoreOption()
 
     useEffect(() => {
         setPositionApplied(positionApplied)
@@ -46,7 +49,10 @@ const CandidateForm: NextPage<propsData> = ({positionApplied, gender, birthCity,
         setEducationInstantion(educationInstantion)
         setBusinessLine(businessLine)
         setTerminationType(terminationType)
+        setSkillLanguage(skillLanguage)
+        setSkillLevel(skillLevel)
         setWorkLocation(workLocation)
+        setExistsOrNo(existsOrNo)
     }, [])
 
     return(
@@ -64,7 +70,7 @@ const CandidateForm: NextPage<propsData> = ({positionApplied, gender, birthCity,
     )
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
     const positionAppliedData = await getCombo("positionApplied", 0);
     const genderData = await getCombo("gender", 0);
     const birthCityData = await getCombo("birthCity", 0)
@@ -81,7 +87,10 @@ export const getStaticProps = async () => {
     const educationInstantionData = await getCombo("educationInstantion", 0)
     const businessLineData = await getCombo("businessLine", 0)
     const terminationTypeData = await getCombo("terminationType", 0)
+    const skillLanguageData = await getCombo("skillLanguage", 0)
+    const skillLevelData = await getCombo("skillLevel", 0)
     const workLocationData = await getCombo("workLocation", 0)
+    const existsOrNoData = await getCombo("existsOrNo", 0)
 
     const positionApplied: any[] = [];
     const gender: any[] = [];
@@ -99,7 +108,10 @@ export const getStaticProps = async () => {
     const educationInstantion: any[] = [];
     const businessLine: any[] = [];
     const terminationType: any[] = [];
+    const skillLanguage: any[] = [];
+    const skillLevel: any[] = [];
     const workLocation: any[] = [];
+    const existsOrNo: any[] = [];
 
     positionAppliedData.map((key:any) => {
         positionApplied.push({value: key.combo_key, label: key.combo_name})
@@ -165,8 +177,20 @@ export const getStaticProps = async () => {
         terminationType.push({value: key.combo_key, label: key.combo_name})
     })
 
+    skillLanguageData.map((key:any) => {
+        skillLanguage.push({value: key.combo_key, label: key.combo_name})
+    })
+
+    skillLevelData.map((key:any) => {
+        skillLevel.push({value: key.combo_key, label: key.combo_name})
+    })
+
     workLocationData.map((key:any) => {
         workLocation.push({value: key.combo_key, label: key.combo_name})
+    })
+
+    existsOrNoData.map((key:any) => {
+        existsOrNo.push({value: key.combo_key, label: key.combo_name})
     })
 
     return {
@@ -187,7 +211,10 @@ export const getStaticProps = async () => {
             educationInstantion,
             businessLine,
             terminationType,
-            workLocation
+            skillLanguage,
+            skillLevel,
+            workLocation,
+            existsOrNo
         }
     }
 }

@@ -6,7 +6,7 @@ export default async function getCombo(
     id: number = 0
 ) {
 
-    const res: any = await http.get(`/getCombo/${type}/${id}`)
+    const res: any = await http.get(`/api/getCombo/${type}/${id}`)
 
     return res
 }
