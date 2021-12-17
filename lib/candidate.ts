@@ -1,6 +1,8 @@
 import create from "zustand"
 
 type State = {
+    dataReligion: Array<any>;
+    setReligion: (dataReligion: Array<any>) => void;
     dataPositionApplied: Array<any>;
     setPositionApplied: (dataPositionApplied: Array<any>) => void;
     dataGender: Array<any>;
@@ -27,6 +29,8 @@ type State = {
     setEducation: (dataEducation: Array<any>) => void;
     dataOccupation: Array<any>;
     setOccupation: (dataOccupation: Array<any>) => void;
+    dataMajor: Array<any>;
+    setMajor: (dataMajor: Array<any>) => void;
     dataEducationInstantion: Array<any>;
     setEducationInstantion: (dataEducationInstantion: Array<any>) => void;
     dataBusinessLine: Array<any>;
@@ -44,6 +48,8 @@ type State = {
 }
 
 export const useStoreOption = create<State>((set) => ({
+    dataReligion: [],
+    setReligion: (data: any) => set(() => ({ dataReligion: data })),
     dataPositionApplied: [],
     setPositionApplied: (data: any) => set(() => ({ dataPositionApplied: data })),
     dataGender: [],
@@ -70,6 +76,8 @@ export const useStoreOption = create<State>((set) => ({
     setEducation: (data: any) => set(() => ({dataEducation: data})),
     dataOccupation: [],
     setOccupation: (data: any) => set(() => ({dataOccupation: data})),
+    dataMajor: [],
+    setMajor: (data: any) => set(() => ({ dataMajor: data })),
     dataEducationInstantion: [],
     setEducationInstantion: (data: any) => set(() => ({dataEducationInstantion: data})),
     dataBusinessLine: [],

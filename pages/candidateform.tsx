@@ -5,8 +5,8 @@ import Candidate from '../components/Candidate'
 import getCombo from './api/combobox'
 import { useStoreOption } from '../lib/candidate'
 
-
 interface propsData {
+    religion: any[],
     positionApplied: any[],
     gender: any[],
     birthCity: any[],
@@ -21,6 +21,7 @@ interface propsData {
     education: any[],
     occupation: any[],
     educationInstantion: any[],
+    major: any[],
     businessLine: any[],
     terminationType: any[],
     skillLanguage: any[],
@@ -29,10 +30,11 @@ interface propsData {
     existsOrNo: any[]
 }
 
-const CandidateForm: NextPage<propsData> = ({positionApplied, gender, birthCity, nationality, bank, bloodType, maritalStatus, taxType, stayedStatus, familyRelationship, familyStatus, education, occupation, educationInstantion, businessLine, terminationType, skillLanguage, skillLevel, workLocation, existsOrNo}) => {
-    const { setPositionApplied, setGender, setBirthCity, setNationality, setBank, setBloodType, setMaritalStatus, setTaxType, setStayedStatus, setFamilyRelationship, setFamilyStatus, setEducation, setOccupation, setEducationInstantion, setBusinessLine, setTerminationType, setSkillLanguage, setSkillLevel, setWorkLocation, setExistsOrNo } = useStoreOption()
+const CandidateForm: NextPage<propsData> = ({religion, positionApplied, gender, birthCity, nationality, bank, bloodType, maritalStatus, taxType, stayedStatus, familyRelationship, familyStatus, education, occupation, educationInstantion, major, businessLine, terminationType, skillLanguage, skillLevel, workLocation, existsOrNo}) => {
+    const { setReligion, setPositionApplied, setGender, setBirthCity, setNationality, setBank, setBloodType, setMaritalStatus, setTaxType, setStayedStatus, setFamilyRelationship, setFamilyStatus, setEducation, setOccupation, setEducationInstantion, setMajor, setBusinessLine, setTerminationType, setSkillLanguage, setSkillLevel, setWorkLocation, setExistsOrNo } = useStoreOption()
 
     useEffect(() => {
+        setReligion(religion)
         setPositionApplied(positionApplied)
         setGender(gender)
         setBirthCity(birthCity)
@@ -47,6 +49,7 @@ const CandidateForm: NextPage<propsData> = ({positionApplied, gender, birthCity,
         setEducation(education)
         setOccupation(occupation)
         setEducationInstantion(educationInstantion)
+        setMajor(major)
         setBusinessLine(businessLine)
         setTerminationType(terminationType)
         setSkillLanguage(skillLanguage)
@@ -71,6 +74,7 @@ const CandidateForm: NextPage<propsData> = ({positionApplied, gender, birthCity,
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
+    const religionData = await getCombo("religion", 0);
     const positionAppliedData = await getCombo("positionApplied", 0);
     const genderData = await getCombo("gender", 0);
     const birthCityData = await getCombo("birthCity", 0)
@@ -85,6 +89,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     const occupationData = await getCombo("occupation", 0)
     const educationData = await getCombo("education", 0)
     const educationInstantionData = await getCombo("educationInstantion", 0)
+    const majorData = await getCombo("major", 0)
     const businessLineData = await getCombo("businessLine", 0)
     const terminationTypeData = await getCombo("terminationType", 0)
     const skillLanguageData = await getCombo("skillLanguage", 0)
@@ -92,6 +97,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     const workLocationData = await getCombo("workLocation", 0)
     const existsOrNoData = await getCombo("existsOrNo", 0)
 
+    const religion: any[] = [];
     const positionApplied: any[] = [];
     const gender: any[] = [];
     const birthCity: any[] = [];
@@ -106,12 +112,17 @@ export const getServerSideProps: GetServerSideProps = async () => {
     const education: any[] = [];
     const occupation: any[] = [];
     const educationInstantion: any[] = [];
+    const major: any[] = [];
     const businessLine: any[] = [];
     const terminationType: any[] = [];
     const skillLanguage: any[] = [];
     const skillLevel: any[] = [];
     const workLocation: any[] = [];
     const existsOrNo: any[] = [];
+
+    religionData.map((key:any) => {
+        religion.push({value: key.combo_key, label: key.combo_name})
+    })
 
     positionAppliedData.map((key:any) => {
         positionApplied.push({value: key.combo_key, label: key.combo_name})
@@ -169,6 +180,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
         educationInstantion.push({value: key.combo_key, label: key.combo_name})
     })
 
+    majorData.map((key:any) => {
+        major.push({value: key.combo_key, label: key.combo_name})
+    })
+
     businessLineData.map((key:any) => {
         businessLine.push({value: key.combo_key, label: key.combo_name})
     })
@@ -195,6 +210,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
     return {
         props: {
+            religion,
             positionApplied,
             gender,
             birthCity,
@@ -209,6 +225,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
             education,
             occupation,
             educationInstantion,
+            major,
             businessLine,
             terminationType,
             skillLanguage,

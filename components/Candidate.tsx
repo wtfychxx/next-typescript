@@ -144,7 +144,7 @@ export interface isSignUpData{
 }
 
 const Candidate: NextPage = () => {
-    const { dataPositionApplied, dataGender, dataBirthCity, dataNationality, dataBank, dataBloodType, dataMaritalStatus, dataTaxType, dataStayedStatus, dataFamilyRelationship, dataFamilyStatus, dataEducation, dataOccupation, dataEducationInstantion, dataBusinessLine, dataTerminationType, dataSkillLanguage, dataSkillLevel, dataWorkLocation, dataExistsOrNo } = useStoreOption()
+    const { dataReligion, dataPositionApplied, dataGender, dataBirthCity, dataNationality, dataBank, dataBloodType, dataMaritalStatus, dataTaxType, dataStayedStatus, dataFamilyRelationship, dataFamilyStatus, dataEducation, dataOccupation, dataEducationInstantion, dataMajor, dataBusinessLine, dataTerminationType, dataSkillLanguage, dataSkillLevel, dataWorkLocation, dataExistsOrNo } = useStoreOption()
 
     const [signUpData, setSignUpData] = useState({
         officialName: "",
@@ -299,16 +299,232 @@ const Candidate: NextPage = () => {
         vaccinePhoto: ""
     })
 
+    const [errors, setErrors] = useState({
+        officialName: '',
+        positionApplied: '',
+        informationSource: '',
+        birthCity: '',
+        email: '',
+        gender: '',
+        nationality: '',
+        birthDate: '',
+        idCardNumber: '',
+        phoneNumber: '',
+        religion: '',
+        ethnic: '',
+        maritalStatus: '',
+        taxType: '',
+        address1: '',
+        address2: '',
+        city1: '',
+        city2: '',
+        addressPhoneNumber1: '',
+        addressPhoneNumber2: '',
+        residenceSince1: '',
+        residenceSince2: '',
+        stayedStatus1: '',
+        stayedStatus2: '',
+        contactName: [''],
+        contactShip: [''],
+        contactPhone: [''],
+        contactStatus: [''],
+        contactAddress: [''],
+        familyRelationship: ['', ''],
+        familyRelationName: ['', ''],
+        familyRelationBirth: ['', ''],
+        familyRelationEducation: ['', ''],
+        familyRelationOccupation: ['', ''],
+        familyRelationStatus: ['', ''],
+        educationFormalGrade: [''],
+        educationFormalInstitution: [''],
+        educationFormalMajor: [''],
+        educationFormalCity: [''],
+        educationFormalStart: [''],
+        educationFormalEnd: ['']
+    })
+
+    const apiurl = 'http://localhost:3210'
+
     const handleSubmit = async (event: any) => {
         event.preventDefault()
 
-        signUpData.familyRelationBirth.map((entry, i) => {
-            const temporary: string[] = signUpData.familyRelationBirthFix
+        // if(signUpData.officialName === "" || signUpData.positionApplied === "" || signUpData.informationSource === '' || signUpData.birthCity === '' || signUpData.email === '' || signUpData.gender === '' || signUpData.nationality === '' || signUpData.idCardNumber === '' || signUpData.phoneNumber === '' || signUpData.religion === '' || signUpData.ethnic === '' || signUpData.maritalStatus === '' || signUpData.taxType === '' || signUpData.address2 === '' || signUpData.address3 === '' || signUpData.city2 === '' || signUpData.city3 === '' || signUpData.residenceSince2 === '' || signUpData.residenceSince3 === '' || signUpData.stayedStatus2 === '' || signUpData.stayedStatus3 === ''){
+        //     setErrors({...errors,
+        //         officialName: (signUpData.officialName === '') ? 'Kolom ini wajib diisi!' : '',
+        //         positionApplied: (signUpData.positionApplied === '') ? 'Kolom ini wajib diisi!' : '',
+        //         informationSource: (signUpData.informationSource === "") ? 'Kolom ini wajib diisi!' : '',
+        //         birthCity: (signUpData.birthCity === "") ? 'Kolom ini wajib diisi!' : '',
+        //         email: (signUpData.email === "") ? 'Kolom ini wajib diisi!' : '',
+        //         gender: (signUpData.gender === "") ? 'Kolom ini wajib diisi!' : '',
+        //         nationality: (signUpData.nationality === "") ? 'Kolom ini wajib diisi!' : '',
+        //         idCardNumber: (signUpData.idCardNumber === "") ? 'Kolom ini wajib diisi!' : '',
+        //         phoneNumber: (signUpData.phoneNumber === "") ? 'Kolom ini wajib diisi!' : '',
+        //         religion: (signUpData.religion === "") ? 'Kolom ini wajib diisi!' : '',
+        //         ethnic: (signUpData.ethnic === "") ? 'Kolom ini wajib diisi!' : '',
+        //         maritalStatus: (signUpData.maritalStatus === "") ? 'Kolom ini wajib diisi!' : '',
+        //         taxType: (signUpData.taxType === "") ? 'Kolom ini wajib diisi!' : '',
+        //         address1: (signUpData.address1 === "") ? 'Kolom ini wajib diisi!' : '',
+        //         address2: (signUpData.address2 === "") ? 'Kolom ini wajib diisi!' : '',
+        //         city1: (signUpData.city1 === "") ? 'Kolom ini wajib diisi!' : '',
+        //         city2: (signUpData.city2 === "") ? 'Kolom ini wajib diisi!' : '',
+        //         addressPhoneNumber1: (signUpData.addressPhoneNumber1 === "") ? 'Kolom ini wajib diisi!' : '',
+        //         addressPhoneNumber2: (signUpData.addressPhoneNumber2 === "") ? 'Kolom ini wajib diisi!' : '',
+        //         residenceSince1: (signUpData.residenceSince1 === "") ? 'Kolom ini wajib diisi!' : '',
+        //         residenceSince2: (signUpData.residenceSince2 === "") ? 'Kolom ini wajib diisi!' : '',
+        //         stayedStatus1: (signUpData.stayedStatus1 === "") ? 'Kolom ini wajib diisi!' : '',
+        //         stayedStatus2: (signUpData.stayedStatus2 === "") ? 'Kolom ini wajib diisi!' : ''
+        //     })
 
-            temporary[i] = moment(entry).format('YYYY-MM-DD')
+        //     for(const [key, val] of Object.entries(errors)){
+        //         document.getElementById(key)?.focus()
+        //         return
+        //     }
 
-            setSignUpData({...signUpData, familyRelationBirthFix: temporary})
-        })
+        //     return
+        // }
+
+        for(let i = 0; i < signUpData.contactName.length; i++){
+            if(signUpData.contactName[i] === ''){
+                const temporary: string[] = errors.contactName
+
+                temporary[i] = 'Kolom ini wajib diisi!'
+
+                setErrors({...errors, contactName: temporary})
+            }
+
+            if(signUpData.contactShip[i] === ''){
+                const temporary: string[] = errors.contactShip
+
+                temporary[i] = 'Kolom ini wajib diisi!'
+
+                setErrors({...errors, contactShip: temporary})
+            }
+
+            if(signUpData.contactPhone[i] === ''){
+                const temporary: string[] = errors.contactPhone
+
+                temporary[i] = 'Kolom ini wajib diisi!'
+
+                setErrors({...errors, contactPhone: temporary})
+            }
+
+            if(signUpData.contactStatus[i] === ''){
+                const temporary: string[] = errors.contactStatus
+
+                temporary[i] = 'Kolom ini wajib diisi!'
+
+                setErrors({...errors, contactStatus: temporary})
+            }
+
+            if(signUpData.contactAddress[i] === ''){
+                const temporary: string[] = errors.contactAddress
+
+                temporary[i] = 'Kolom ini wajib diisi!'
+
+                setErrors({...errors, contactAddress: temporary})
+            }
+        }
+
+        // for(let i = 0; i < signUpData.familyRelationName.length; i++){
+        //     const temporary: string[] = signUpData.familyRelationBirthFix
+
+        //     temporary[i] = moment(signUpData.familyRelationBirth[i]).format('YYYY-MM-DD')
+
+        //     setSignUpData({...signUpData, familyRelationBirthFix: temporary})
+
+        //     if(signUpData.familyRelationship[i] === ''){
+        //         const temporary: string[] = errors.familyRelationship
+
+        //         temporary[i] = 'Kolom ini wajib diisi!'
+
+        //         setErrors({...errors, familyRelationship: temporary})
+        //     }
+
+        //     if(signUpData.familyRelationName[i] === ''){
+        //         console.log(errors.familyRelationName)
+        //         const temporary: string[] = errors.familyRelationName
+
+        //         temporary[i] = 'Kolom ini wajib diisi!'
+
+        //         setErrors({...errors, familyRelationName: temporary})
+        //     }
+
+        //     if(signUpData.familyRelationEducation[i] === ''){
+        //         const temporary: string[] = errors.familyRelationEducation
+
+        //         temporary[i] = 'Kolom ini wajib diisi!'
+
+        //         setErrors({...errors, familyRelationEducation: temporary})
+        //     }
+
+        //     if(signUpData.familyRelationOccupation[i] === ''){
+        //         const temporary: string[] = errors.familyRelationOccupation
+
+        //         temporary[i] = 'Kolom ini wajib diisi!'
+
+        //         setErrors({...errors, familyRelationOccupation: temporary})
+        //     }
+
+        //     if(signUpData.familyRelationStatus[i] === ''){
+        //         const temporary: string[] = errors.familyRelationStatus
+
+        //         temporary[i] = 'Kolom ini wajib diisi!'
+
+        //         setErrors({...errors, familyRelationStatus: temporary})
+        //     }
+
+        //     for(const [key, val] of Object.entries(errors)){
+        //         document.getElementById(key)?.focus()
+        //     }
+        // }
+
+        for(let i = 0; i < signUpData.educationFormalGrade.length; i++){
+            if(signUpData.educationFormalGrade[i] === ''){
+                const temporary: string[] = errors.educationFormalGrade
+
+                temporary[i] = 'Kolom ini wajib diisi!'
+
+                setErrors({...errors, educationFormalGrade: temporary})
+            }
+
+            if(signUpData.educationFormalInstitution[i] === ''){
+                const temporary: string[] = errors.educationFormalInstitution
+
+                temporary[i] = 'Kolom ini wajib diisi!'
+
+                setErrors({...errors, educationFormalInstitution: temporary})
+            }
+
+            if(signUpData.educationFormalCity[i] === ''){
+                const temporary: string[] = errors.educationFormalCity
+
+                temporary[i] = 'Kolom ini wajib diisi!'
+
+                setErrors({...errors, educationFormalCity: temporary})
+            }
+
+            if(signUpData.educationFormalStart[i] === ''){
+                const temporary: string[] = errors.educationFormalStart
+
+                temporary[i] = 'Kolom ini wajib diisi!'
+
+                setErrors({...errors, educationFormalStart: temporary})
+            }
+
+            if(signUpData.educationFormalEnd[i] === ''){
+                const temporary: string[] = errors.educationFormalEnd
+
+                temporary[i] = 'Kolom ini wajib diisi!'
+
+                setErrors({...errors, educationFormalEnd: temporary})
+            }
+
+            for(const [key, val] of Object.entries(errors)){
+                document.getElementById(key)?.focus()
+            }
+        }
+
+        return
 
         signUpData.educationUnformalStart.map((entry, i) => {
             const temporary: string[] = signUpData.educationUnformalStartFix
@@ -381,8 +597,14 @@ const Candidate: NextPage = () => {
         const contactNameDefault: string[] = signUpData.contactName
         contactNameDefault.push("")
 
+        const contactNameDefaultError: string[] = errors.contactName
+        contactNameDefaultError.push("")
+
         const contactShipDefault: string[] = signUpData.contactShip
         contactShipDefault.push("")
+
+        const contactShipDefaultError: string[] = errors.contactShip
+        contactShipDefaultError.push("")
 
         const contactTelephoneDefault: string[] = signUpData.contactTelephone
         contactTelephoneDefault.push("")
@@ -390,11 +612,20 @@ const Candidate: NextPage = () => {
         const contactPhoneDefault: string[] = signUpData.contactPhone
         contactPhoneDefault.push("")
 
+        const contactPhoneDefaultError: string[] = errors.contactPhone
+        contactPhoneDefaultError.push("")
+
         const contactStatusDefault: string[] = signUpData.contactStatus
         contactStatusDefault.push("")
 
+        const contactStatusDefaultError: string[] = errors.contactStatus
+        contactStatusDefaultError.push("")
+
         const contactAddressDefault: string[] = signUpData.contactAddress
         contactAddressDefault.push("")
+
+        const contactAddressDefaultError: string[] = errors.contactAddress
+        contactAddressDefaultError.push("")
 
         setSignUpData({
             ...signUpData,
@@ -405,32 +636,59 @@ const Candidate: NextPage = () => {
             contactStatus: contactStatusDefault,
             contactAddress: contactAddressDefault
         })
+
+        setErrors({
+            ...errors,
+            contactName: contactNameDefaultError,
+            contactShip: contactShipDefaultError,
+            contactPhone: contactPhoneDefaultError,
+            contactStatus: contactStatusDefaultError,
+            contactAddress: contactAddressDefaultError
+        })
     }
 
     const cloneFamily = () => {
         const familyRelationshipDefault: string[] = signUpData.familyRelationship
         familyRelationshipDefault.push("")
 
+        const familyRelationshipDefaultError: string[] = errors.familyRelationship
+        familyRelationshipDefaultError.push("")
+
         const familyRelationNameDefault: string[] = signUpData.familyRelationName
         familyRelationNameDefault.push("")
 
+        const familyRelationNameDefaultError: string[] = errors.familyRelationName
+        familyRelationNameDefaultError.push("")
+
         const familyRelationBirthDefault: Date[] = signUpData.familyRelationBirth
         familyRelationBirthDefault.push(new Date())
+        
+        const familyRelationBirthDefaultError: string[] = errors.familyRelationBirth
+        familyRelationBirthDefaultError.push("")
 
         const familyRelationBirthFixDefault: string[] = signUpData.familyRelationBirthFix
         familyRelationBirthFixDefault.push("")
 
         const familyRelationEducationDefault: string[] = signUpData.familyRelationEducation
         familyRelationEducationDefault.push("")
+        
+        const familyRelationEducationDefaultError: string[] = errors.familyRelationEducation
+        familyRelationEducationDefaultError.push("")
 
         const familyRelationOccupationDefault: string[] = signUpData.familyRelationOccupation
         familyRelationOccupationDefault.push("")
+
+        const familyRelationOccupationDefaultError: string[] = errors.familyRelationOccupation
+        familyRelationOccupationDefaultError.push("")
 
         const familyRelationOccupationNameDefault: string[] = signUpData.familyRelationOccupationName
         familyRelationOccupationNameDefault.push("")
 
         const familyRelationStatusDefault: string[] = signUpData.familyRelationStatus
         familyRelationStatusDefault.push("")
+
+        const familyRelationStatusDefaultError: string[] = errors.familyRelationStatus
+        familyRelationStatusDefaultError.push("")
 
         setSignUpData({
             ...signUpData,
@@ -443,14 +701,30 @@ const Candidate: NextPage = () => {
             familyRelationOccupationName: familyRelationOccupationNameDefault,
             familyRelationStatus: familyRelationStatusDefault
         })
+
+        setErrors({
+            ...errors,
+            familyRelationship: familyRelationshipDefaultError,
+            familyRelationName: familyRelationNameDefaultError,
+            familyRelationBirth: familyRelationBirthDefaultError,
+            familyRelationEducation: familyRelationEducationDefaultError,
+            familyRelationOccupation: familyRelationOccupationDefaultError,
+            familyRelationStatus: familyRelationStatusDefaultError
+        })
     }
 
     const cloneEducationFormal = () => {
         const educationFormalGradeDefault: string[] = signUpData.educationFormalGrade
         educationFormalGradeDefault.push("")
+
+        const educationFormalGradeDefaultError: string[] = errors.educationFormalGrade
+        educationFormalGradeDefaultError.push("")
         
         const educationFormalInstitutionDefault: string[] = signUpData.educationFormalInstitution
         educationFormalInstitutionDefault.push("")
+
+        const educationFormalInstitutionDefaultError: string[] = errors.educationFormalInstitution
+        educationFormalInstitutionDefaultError.push("")
 
         const educationFormalInstitutionNameDefault: string[] = signUpData.educationFormalInstitutionName
         educationFormalInstitutionNameDefault.push("")
@@ -458,11 +732,17 @@ const Candidate: NextPage = () => {
         const educationFormalMajorDefault: string[] = signUpData.educationFormalMajor
         educationFormalMajorDefault.push("")
 
+        const educationFormalMajorDefaultError: string[] = errors.educationFormalMajor
+        educationFormalMajorDefaultError.push("")
+
         const educationFormalMajorNameDefault: string[] = signUpData.educationFormalMajorName
         educationFormalMajorNameDefault.push("")
 
         const educationFormalCityDefault: string[] = signUpData.educationFormalCity
         educationFormalCityDefault.push("")
+
+        const educationFormalCityDefaultError: string[] = errors.educationFormalCity
+        educationFormalCityDefaultError.push("")
 
         const educationFormalCityNameDefault: string[] = signUpData.educationFormalCityName
         educationFormalCityNameDefault.push("")
@@ -470,8 +750,14 @@ const Candidate: NextPage = () => {
         const educationFormalStartDefault: string[] = signUpData.educationFormalStart
         educationFormalStartDefault.push("")
 
+        const educationFormalStartDefaultError: string[] = errors.educationFormalStart
+        educationFormalStartDefaultError.push("")
+
         const educationFormalEndDefault: string[] = signUpData.educationFormalEnd
         educationFormalEndDefault.push("")
+
+        const educationFormalEndDefaultError: string[] = errors.educationFormalEnd
+        educationFormalEndDefaultError.push("")
 
         const educationFormalGpaDefault: string[] = signUpData.educationFormalGpa
         educationFormalGpaDefault.push("")
@@ -488,6 +774,16 @@ const Candidate: NextPage = () => {
             educationFormalStart: educationFormalStartDefault,
             educationFormalEnd: educationFormalEndDefault,
             educationFormalGpa: educationFormalGpaDefault
+        })
+
+        setErrors({
+            ...errors,
+            educationFormalGrade: educationFormalGradeDefaultError,
+            educationFormalInstitution: educationFormalInstitutionDefaultError,
+            educationFormalMajor: educationFormalMajorDefaultError,
+            educationFormalCity: educationFormalCityDefaultError,
+            educationFormalStart: educationFormalStartDefaultError,
+            educationFormalEnd: educationFormalEndDefaultError,
         })
 
     }
@@ -750,8 +1046,14 @@ const Candidate: NextPage = () => {
         const cloneLengthName: number = signUpData.contactName.length
         const afterName = signUpData.contactName.slice(0, cloneLengthName - 1)
 
+        const cloneLengthNameError: number = errors.contactName.length
+        const afterNameError = errors.contactName.slice(0, cloneLengthNameError - 1)
+
         const cloneLengthShip: number = signUpData.contactShip.length
         const afterShip = signUpData.contactShip.slice(0, cloneLengthShip - 1)
+
+        const cloneLengthShipError: number = errors.contactShip.length
+        const afterShipError = errors.contactShip.slice(0, cloneLengthShipError - 1)
 
         const cloneLengthTelephone: number = signUpData.contactTelephone.length
         const afterTelephone = signUpData.contactTelephone.slice(0, cloneLengthTelephone - 1)
@@ -759,11 +1061,20 @@ const Candidate: NextPage = () => {
         const cloneLengthPhone: number = signUpData.contactPhone.length
         const afterPhone = signUpData.contactPhone.slice(0, cloneLengthPhone - 1)
 
+        const cloneLengthPhoneError: number = errors.contactPhone.length
+        const afterPhoneError = errors.contactPhone.slice(0, cloneLengthPhoneError - 1)
+
         const cloneLengthStatus: number = signUpData.contactStatus.length
         const afterStatus = signUpData.contactStatus.slice(0, cloneLengthStatus - 1)
 
+        const cloneLengthStatusError: number = errors.contactStatus.length
+        const afterStatusError = errors.contactStatus.slice(0, cloneLengthStatusError - 1)
+
         const cloneLengthAddress: number = signUpData.contactAddress.length
         const afterAddress = signUpData.contactAddress.slice(0, cloneLengthAddress - 1)
+
+        const cloneLengthAddressError: number = errors.contactAddress.length
+        const afterAddressError = errors.contactAddress.slice(0, cloneLengthAddressError - 1)
 
         setSignUpData({
             ...signUpData,
@@ -775,23 +1086,50 @@ const Candidate: NextPage = () => {
             contactAddress: afterAddress
         })
 
+        setErrors({
+            ...errors,
+            contactName: afterNameError,
+            contactShip: afterShipError,
+            contactPhone: afterPhoneError,
+            contactStatus: afterStatusError,
+            contactAddress: afterAddressError
+        })
+
     }
 
     const deleteFamily = () => {
         const familyLengthRelationship: number = signUpData.familyRelationship.length
         const afterRelationship = signUpData.familyRelationship.slice(0, familyLengthRelationship - 1)
 
+        const familyLengthRelationshipError: number = errors.familyRelationship.length
+        const afterRelationshipError = errors.familyRelationship.slice(0, familyLengthRelationshipError - 1)
+
         const familyLengthName: number = signUpData.familyRelationName.length
         const afterName = signUpData.familyRelationName.slice(0, familyLengthName - 1)
+
+        const familyLengthNameError: number = errors.familyRelationName.length
+        const afterNameError = errors.familyRelationName.slice(0, familyLengthNameError - 1)
 
         const familyLengthBirth: number = signUpData.familyRelationBirth.length
         const afterBirth = signUpData.familyRelationBirth.slice(0, familyLengthBirth - 1)
 
+        const familyLengthBirthError: number = errors.familyRelationBirth.length
+        const afterBirthError = errors.familyRelationBirth.slice(0, familyLengthBirthError - 1)
+
+        const familyLengthBirthFix: number = signUpData.familyRelationBirthFix.length
+        const afterBirthFix = signUpData.familyRelationBirthFix.slice(0, familyLengthBirthFix - 1)
+
         const familyLengthEducation: number = signUpData.familyRelationEducation.length
         const afterEducation = signUpData.familyRelationEducation.slice(0, familyLengthEducation - 1)
 
+        const familyLengthEducationError: number = errors.familyRelationEducation.length
+        const afterEducationError = errors.familyRelationEducation.slice(0, familyLengthEducationError - 1)
+
         const familyLengthOccupation: number = signUpData.familyRelationOccupation.length
         const afterOccupation = signUpData.familyRelationOccupation.slice(0, familyLengthOccupation - 1)
+
+        const familyLengthOccupationError: number = errors.familyRelationOccupation.length
+        const afterOccupationError = errors.familyRelationOccupation.slice(0, familyLengthOccupationError - 1)
 
         const familyLengthOccupationName: number = signUpData.familyRelationOccupationName.length
         const afterOccupationName = signUpData.familyRelationOccupationName.slice(0, familyLengthOccupationName - 1)
@@ -799,15 +1137,29 @@ const Candidate: NextPage = () => {
         const familyLengthStatus: number = signUpData.familyRelationStatus.length
         const afterStatus = signUpData.familyRelationStatus.slice(0, familyLengthStatus - 1)
 
+        const familyLengthStatusError: number = errors.familyRelationStatus.length
+        const afterStatusError = errors.familyRelationStatus.slice(0, familyLengthStatusError - 1)
+
         setSignUpData({
             ...signUpData,
             familyRelationship: afterRelationship,
             familyRelationName: afterName,
             familyRelationBirth: afterBirth,
+            familyRelationBirthFix: afterBirthFix,
             familyRelationEducation: afterEducation,
             familyRelationOccupation: afterOccupation,
             familyRelationOccupationName: afterOccupationName,
             familyRelationStatus: afterStatus
+        })
+
+        setErrors({
+            ...errors,
+            familyRelationship: afterRelationshipError,
+            familyRelationName: afterNameError,
+            familyRelationBirth: afterBirthError,
+            familyRelationEducation: afterEducationError,
+            familyRelationOccupation: afterOccupationError,
+            familyRelationStatus: afterStatusError
         })
 
     }
@@ -816,8 +1168,14 @@ const Candidate: NextPage = () => {
         const educationFormalGradeLength: number = signUpData.educationFormalGrade.length
         const afterGrade = signUpData.educationFormalGrade.slice(0, educationFormalGradeLength - 1)
 
+        const educationFormalGradeLengthError: number = errors.educationFormalGrade.length
+        const afterGradeError = errors.educationFormalGrade.slice(0, educationFormalGradeLengthError - 1)
+
         const educationFormalInstitutionLength: number = signUpData.educationFormalInstitution.length
         const afterInstitution = signUpData.educationFormalInstitution.slice(0, educationFormalInstitutionLength - 1)
+
+        const educationFormalInstitutionLengthError: number = errors.educationFormalInstitution.length
+        const afterInstitutionError = errors.educationFormalInstitution.slice(0, educationFormalInstitutionLengthError - 1)
 
         const educationFormalInstitutionNameLength: number = signUpData.educationFormalInstitutionName.length
         const afterInstitutionName = signUpData.educationFormalInstitutionName.slice(0, educationFormalInstitutionNameLength - 1)
@@ -825,11 +1183,17 @@ const Candidate: NextPage = () => {
         const educationFormalMajorLength: number = signUpData.educationFormalMajor.length
         const afterMajor = signUpData.educationFormalMajor.slice(0, educationFormalMajorLength - 1)
 
+        const educationFormalMajorLengthError: number = errors.educationFormalMajor.length
+        const afterMajorError = errors.educationFormalMajor.slice(0, educationFormalMajorLengthError - 1)
+
         const educationFormalMajorNameLength: number = signUpData.educationFormalMajorName.length
         const afterMajorName = signUpData.educationFormalMajorName.slice(0, educationFormalMajorNameLength - 1)
 
         const educationFormalCity: number = signUpData.educationFormalCity.length
         const afterCity = signUpData.educationFormalCity.slice(0, educationFormalCity - 1)
+
+        const educationFormalCityError: number = errors.educationFormalCity.length
+        const afterCityError = errors.educationFormalCity.slice(0, educationFormalCityError - 1)
         
         const educationFormalCityName: number = signUpData.educationFormalCityName.length
         const afterCityName = signUpData.educationFormalCityName.slice(0, educationFormalCityName - 1)
@@ -837,8 +1201,14 @@ const Candidate: NextPage = () => {
         const educationFormalStartLength: number = signUpData.educationFormalStart.length
         const afterStart = signUpData.educationFormalStart.slice(0, educationFormalStartLength - 1)
 
+        const educationFormalStartLengthError: number = errors.educationFormalStart.length
+        const afterStartError = errors.educationFormalStart.slice(0, educationFormalStartLengthError - 1)
+
         const educationFormalEndLength: number = signUpData.educationFormalEnd.length
         const afterEnd = signUpData.educationFormalEnd.slice(0, educationFormalEndLength - 1)
+
+        const educationFormalEndLengthError: number = errors.educationFormalEnd.length
+        const afterEndError = errors.educationFormalEnd.slice(0, educationFormalEndLengthError - 1)
 
         const educationFormalGpaLength: number = signUpData.educationFormalGpa.length
         const afterGpa = signUpData.educationFormalGpa.slice(0, educationFormalGpaLength - 1)
@@ -855,6 +1225,16 @@ const Candidate: NextPage = () => {
             educationFormalStart: afterStart,
             educationFormalEnd: afterEnd,
             educationFormalGpa: afterGpa
+        })
+
+        setErrors({
+            ...errors,
+            educationFormalGrade: afterGradeError,
+            educationFormalInstitution: afterInstitutionError,
+            educationFormalMajor: afterMajorError,
+            educationFormalCity: afterCityError,
+            educationFormalStart: afterStartError,
+            educationFormalEnd: afterEndError,
         })
 
     }
@@ -1108,91 +1488,140 @@ const Candidate: NextPage = () => {
 
     }
 
-    const changeNewContact = (id: number=0, stateName: string[] | undefined= [], type: string = "", value: string= "") => {
+    const changeNewContact = (id: number=0, stateName: string[] | undefined= [], type: string = "", value: string= "", errorState: string[] = []) => {
         const temporary:string[] = stateName
+        const temporary2: string[] = errorState
+
         temporary[id] = value
+
+        temporary2[id] = ''
+
+        if(value === ''){
+            temporary2[id] = 'Kolom ini wajib diisi!'
+        }
+
         switch(type){
             case 'contactName':
                 setSignUpData({...signUpData, contactName: temporary})
+                setErrors({...errors, contactName: temporary2})
             break
             case 'contactShip':
                 setSignUpData({...signUpData, contactShip: temporary})
+                setErrors({...errors, contactShip: temporary2})
             break
             case 'contactTelephone':
                 setSignUpData({...signUpData, contactTelephone: temporary})
             break
             case 'contactPhone':
                 setSignUpData({...signUpData, contactPhone: temporary})
+                setErrors({...errors, contactPhone: temporary2})
             break
             case 'contactStatus':
                 setSignUpData({...signUpData, contactStatus: temporary})
+                setErrors({...errors, contactStatus: temporary2})
             break
             case 'contactAddress':
                 setSignUpData({...signUpData, contactAddress: temporary})
+                setErrors({...errors, contactAddress: temporary2})
             break
         }
     }
 
-    const changeNewFamily = (id: number=0, stateName: any[]= [], type: string = "", value: any= "") => {
+    const changeNewFamily = (id: number=0, stateName: any[]= [], type: string = "", value: any= "", errorState: string[] = []) => {
         const temporary:any[] = stateName
+        const temporary2: any[] = errorState
 
         temporary[id] = value
+        temporary2[id] = ''
+
+        if(value === ''){
+            temporary2[id] = 'Kolom ini wajib diisi!'
+        }
+
         switch(type){
             case 'familyRelationship':
                 setSignUpData({...signUpData, familyRelationship: temporary})
+                setErrors({...errors, familyRelationship: temporary2})
             break
             case 'familyRelationName':
                 setSignUpData({...signUpData, familyRelationName: temporary})
+                setErrors({...errors, familyRelationName: temporary2})
             break
             case 'familyRelationBirth':
                 setSignUpData({...signUpData, familyRelationBirth: temporary})
+                setErrors({...errors, familyRelationBirth: temporary2})
             break
             case 'familyRelationEducation':
                 setSignUpData({...signUpData, familyRelationEducation: temporary})
+                setErrors({...errors, familyRelationEducation: temporary2})
             break
             case 'familyRelationOccupation':
                 setSignUpData({...signUpData, familyRelationOccupation: temporary})
+                setErrors({...errors, familyRelationOccupation: temporary2})
             break
             case 'familyRelationOccupationName':
                 setSignUpData({...signUpData, familyRelationOccupationName: temporary})
             break
             case 'familyRelationStatus':
                 setSignUpData({...signUpData, familyRelationStatus: temporary})
+                setErrors({...errors, familyRelationStatus: temporary2})
             break
         }
     }
 
-    const changeNewEduFormal = (id: number = 0, stateName: string[], type: string = "", value: string = "") => {
+    const changeNewEduFormal = (id: number = 0, stateName: string[], type: string = "", value: string = "", errorState: string[] = []) => {
         const temporary:string[] = stateName
+        const temporary2: string[] = errorState
 
         temporary[id] = value
+
+        temporary2[id] = ''
+
+        if(value === ''){
+            temporary2[id] = 'Kolom ini wajib diisi!'
+        }
+
+        if(type === 'educationFormalGrade' && (signUpData.educationFormalGrade[id] === '55' || signUpData.educationFormalGrade[id] === '54')){
+            const temporary3: string[] = errors.educationFormalMajor
+            
+            temporary3[id] = ''
+
+            setErrors({...errors, educationFormalMajor: temporary3})
+        }
+        
         switch(type){
             case 'educationFormalGrade':
                 setSignUpData({...signUpData, educationFormalGrade: temporary})
+                setErrors({...errors, educationFormalGrade: temporary2})
             break
             case 'educationFormalInstitution':
                 setSignUpData({...signUpData, educationFormalInstitution: temporary})
+                setErrors({...errors, educationFormalInstitution: temporary2})
             break
             case 'educationFormalInstitutionName':
                 setSignUpData({...signUpData, educationFormalInstitutionName: temporary})
             break
             case 'educationFormalMajor':
                 setSignUpData({...signUpData, educationFormalMajor: temporary})
+                setErrors({...errors, educationFormalMajor: temporary2})
             break
             case 'educationFormalMajorName':
                 setSignUpData({...signUpData, educationFormalMajorName: temporary})
             break
             case 'educationFormalCity':
                 setSignUpData({...signUpData, educationFormalCity: temporary})
+                setErrors({...errors, educationFormalCity: temporary2})
             break
             case 'educationFormalCityName':
                 setSignUpData({...signUpData, educationFormalCityName: temporary})
             break
             case 'educationFormalStart':
                 setSignUpData({...signUpData, educationFormalStart: temporary})
+                setErrors({...errors, educationFormalStart: temporary2})
             break
             case 'educationFormalEnd':
                 setSignUpData({...signUpData, educationFormalEnd: temporary})
+                setErrors({...errors, educationFormalEnd: temporary2})
             break
             case 'educationFormalGpa':
                 setSignUpData({...signUpData, educationFormalGpa: temporary})
@@ -1436,36 +1865,36 @@ const Candidate: NextPage = () => {
         }*/
 
         const file = uploadFile(files)
-        fetch('https://api.cloudinary.com/v1_1/ayo-belajar-company/image/upload', file)
+        fetch('http://localhost:3210/api/uploads', file)
             .then(res => res.json())
             .then(res => {
                 switch(type){
                     case 'candidate':
-                        setSignUpData({...signUpData, candidatePhoto: res.secure_url})
+                        setSignUpData({...signUpData, candidatePhoto: res.filename})
                     break
                     case 'idCard':
-                        setSignUpData({...signUpData, idCardPhoto: res.secure_url})
+                        setSignUpData({...signUpData, idCardPhoto: res.filename})
                     break
                     case 'familyCard':
-                        setSignUpData({...signUpData, familyCardPhoto: res.secure_url})
+                        setSignUpData({...signUpData, familyCardPhoto: res.filename})
                     break
                     case 'certificate':
-                        setSignUpData({...signUpData, certificatePhoto: res.secure_url})
+                        setSignUpData({...signUpData, certificatePhoto: res.filename})
                     break
-                    case 'taxType':
-                        setSignUpData({...signUpData, taxPhoto: res.secure_url})
+                    case 'tax':
+                        setSignUpData({...signUpData, taxPhoto: res.filename})
                     break
                     case 'sim':
-                        setSignUpData({...signUpData, simPhoto: res.secure_url})
+                        setSignUpData({...signUpData, simPhoto: res.filename})
                     break
                     case 'maritalCertificate':
-                        setSignUpData({...signUpData, maritalCertificatePhoto: res.secure_url})
+                        setSignUpData({...signUpData, maritalCertificatePhoto: res.filename})
                     break
                     case 'workExp':
-                        setSignUpData({...signUpData, workExpPhoto: res.secure_url})
+                        setSignUpData({...signUpData, workExpPhoto: res.filename})
                     break
                     case 'vaccine':
-                        setSignUpData({...signUpData, vaccinePhoto: res.secure_url})
+                        setSignUpData({...signUpData, vaccinePhoto: res.filename})
                     break
                 }
             })
@@ -1511,16 +1940,21 @@ const Candidate: NextPage = () => {
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             name="officialName"
+                            id="officialName"
                             value={signUpData.officialName}
-                            onChange={(e) => setSignUpData({...signUpData, officialName: e.target.value})}
-                            required
+                            onChange={(e) => {
+                                setErrors({...errors, officialName: ''})
+                                setSignUpData({...signUpData, officialName: e.target.value})
+                            }}
                         />
+                        {errors.officialName && <span className="text-sm text-red-500 font-bold">{errors.officialName}</span>}
                     </div>
                     <div className="w-full md:w-1/2 px-3">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Panggilan </label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                            id="nickName"
                             value={signUpData.nickName}
                             onChange={(e) => setSignUpData({...signUpData, nickName: e.target.value})}
                         />
@@ -1532,9 +1966,11 @@ const Candidate: NextPage = () => {
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Posisi yang dilamar <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                            id="positionApplied"
                             value={signUpData.positionApplied}
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                 setSignUpData({...signUpData, positionAppliedName: e.target.options[e.target.options.selectedIndex].text, positionApplied: e.target.value})
+                                setErrors({...errors, positionApplied: ''})
                             }}
                         >
                             <option value="">- choose -</option>
@@ -1546,15 +1982,21 @@ const Candidate: NextPage = () => {
                                 })
                             }
                         </select>
+                        {errors.positionApplied ? <span className="text-sm text-red-500 font-bold">{errors.positionApplied}</span> : null}
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Sumber Informasi </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Sumber Informasi <label className="text-red-500"> * </label></label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.informationSource}
-                            onChange={(e) => setSignUpData({...signUpData, informationSource: e.target.value})}
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, informationSource: e.target.value})
+                                setErrors({...errors, informationSource: ''})
+                            }}
+                            id="informationSource"
                         />
+                        {errors.informationSource && <span className="text-sm text-red-500 font-bold">{errors.informationSource}</span>}
                     </div>
                 </div>
             </div>
@@ -1566,12 +2008,14 @@ const Candidate: NextPage = () => {
             <div className="p-4 w-full">
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tempat Lahir </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tempat Lahir <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.birthCity}
+                            id="birthCity"
                             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                 setSignUpData({...signUpData, birthCityName: e.target.options[e.target.options.selectedIndex].text, birthCity: e.target.value})
+                                setErrors({...errors, birthCity: ''})
                             }}
                         >
                             <option value="">- choose -</option>
@@ -1583,25 +2027,36 @@ const Candidate: NextPage = () => {
                                 })
                             }
                         </select>
+                        {errors.birthCity && <span className="text-sm text-red-500 font-bold">{errors.birthCity}</span>}
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat Email </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat Email <label className="text-red-500"> * </label></label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.email}
-                            onChange={(e) => setSignUpData({...signUpData, email: e.target.value})}
+                            id="email"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, email: e.target.value})
+                                setErrors({...errors, email: ''})
+                            }}
                         />
+                        {errors.email && <span className="text-sm text-red-500 font-bold">{errors.email}</span>}
                     </div>
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jenis Kelamin </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jenis Kelamin <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.gender}
-                            onChange={(e) => setSignUpData({...signUpData, gender: e.target.value})}
+                            id="gender"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, gender: e.target.value})
+                                setErrors({...errors, gender: ''})
+                            }}
                         >
+                            <option value="">- choose -</option>
                             {
                                 ((dataGender !== undefined) ? dataGender : []).map((entry:any, i:number) => {
                                     return(
@@ -1610,13 +2065,18 @@ const Candidate: NextPage = () => {
                                 })
                             }
                         </select>
+                        {errors.gender && <span className="text-sm text-red-500 font-bold">{errors.gender}</span>}
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kewarganegaraan </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kewarganegaraan <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.nationality}
-                            onChange={(e) => setSignUpData({...signUpData, nationality: e.target.value})}
+                            id="nationality"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, nationality: e.target.value})
+                                setErrors({...errors, nationality: ''})
+                            }}
                         >
                             <option value="">- choose -</option>
                             {
@@ -1627,39 +2087,53 @@ const Candidate: NextPage = () => {
                                 })
                             }
                         </select>
+                        {errors.nationality && <span className="text-sm text-red-500 font-bold">{errors.nationality}</span>}
                     </div>
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tanggal Lahir </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tanggal Lahir <label className="text-red-500"> * </label></label>
                         <DatePicker
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             dateFormat="yyyy-MM-dd"
                             selected={signUpData.birthDate}
+                            id="birthDate"
                             onChange={(date: any) => {
                                 setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate(), birthDateFix: moment(date).format('YYYY-MM-DD')})
+                                setErrors({...errors, birthDate: ''})
                             }}
                         />
+                        {errors.birthDate && <span className="text-sm text-red-500 font-bold">{errors.birthDate}</span>}
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No KTP </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No KTP <label className="text-red-500"> * </label></label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.idCardNumber}
-                            onChange={(e) => setSignUpData({...signUpData, idCardNumber: e.target.value})}
+                            id="idCardNumber"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, idCardNumber: e.target.value})
+                                setErrors({...errors, idCardNumber: ''})
+                            }}
                         />
+                        {errors.idCardNumber && <span className="text-sm text-red-500 font-bold">{errors.idCardNumber}</span>}
                     </div>
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No Handphone </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No Handphone <label className="text-red-500"> * </label></label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.phoneNumber}
-                            onChange={(e) => setSignUpData({...signUpData, phoneNumber: e.target.value})}
+                            id="phoneNumber"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, phoneNumber: e.target.value})
+                                setErrors({...errors, phoneNumber: ''})
+                            }}
                         />
+                        {errors.phoneNumber && <span className="text-sm text-red-500 font-bold">{errors.phoneNumber}</span>}
                     </div>
                     <div className="w-full md:w-1/2 px-3">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Media Sosial </label>
@@ -1930,26 +2404,40 @@ const Candidate: NextPage = () => {
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Agama </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Agama <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.religion}
-                            onChange={(e) => setSignUpData({...signUpData, religion: e.target.value})}
+                            id="religion"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, religion: e.target.value})
+                                setErrors({...errors, religion: ''})
+                            }}
                         >
                             <option value="">- choose -</option>
-                            <option value="1"> Islam </option>
-                            <option value="2"> Kristen </option>
-                            <option value="3"> Katolik </option>
+                            {
+                                ((dataReligion !== undefined) ? dataReligion : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
                         </select>
+                        {errors.religion && <span className="text-sm text-red-500 font-bold">{errors.religion}</span>}
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Suku </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Suku <label className="text-red-500"> * </label></label>
                         <input
                             type="text"
                             className={`appearance-none block w-full bg-gray-200 text-gray-700 border-gray-200 border-2 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.ethnic}
-                            onChange={(e) => setSignUpData({...signUpData, ethnic: e.target.value})}
+                            id="ethnic"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, ethnic: e.target.value})
+                                setErrors({...errors, ethnic: ''})
+                            }}
                         />
+                        {errors.ethnic && <span className="text-sm text-red-500 font-bold">{errors.ethnic}</span>}
                     </div>
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
@@ -1971,11 +2459,15 @@ const Candidate: NextPage = () => {
                         </select>
                     </div>
                     <div className="w-full md:w-1/2 px-3">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status Pernikahan </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status Pernikahan <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.maritalStatus}
-                            onChange={(e) => setSignUpData({...signUpData, maritalStatus: e.target.value})}
+                            id="maritalStatus"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, maritalStatus: e.target.value})
+                                setErrors({...errors, maritalStatus: ''})
+                            }}
                         >
                             <option value="">- choose -</option>
                             {
@@ -1986,15 +2478,20 @@ const Candidate: NextPage = () => {
                                 })
                             }
                         </select>
+                        {errors.maritalStatus && <span className="text-sm text-red-500 font-bold">{errors.maritalStatus}</span>}
                     </div>
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
                     <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status Pajak </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status Pajak <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.taxType}
-                            onChange={(e) => setSignUpData({...signUpData, taxType: e.target.value})}
+                            id="taxType"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, taxType: e.target.value})
+                                setErrors({...errors, taxType: ''})
+                            }}
                         >
                             <option value="">- choose -</option>
                             {
@@ -2005,6 +2502,7 @@ const Candidate: NextPage = () => {
                                 })
                             }
                         </select>
+                        {errors.taxType && <span className="text-sm text-red-500 font-bold">{errors.taxType}</span>}
                     </div>
                     <div className="w-full md:w-1/2 px-3">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> NPWP </label>
@@ -2036,23 +2534,32 @@ const Candidate: NextPage = () => {
             <div className="mx-auto max-w-full flex flex-wrap justify-around box-border pt-2 lg:pt-0 xl:pt-0 2xl:pt-0">
                 <div className="-mx-3 mb-6 w-full lg:w-1/3 xl:w-1/3 2xl:w-1/3">
                     <div className="p-4 bg-green-400 text-white text-center">
-                        <p className="font-bold text-md"> Alamat Sesuai KTP </p>
+                        <p className="font-bold text-md"> Alamat Sesuai Domisili </p>
                     </div>
                     <div className="w-full px-4 py-2 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat KTP </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat Sekarang <label className="text-red-500"> * </label></label>
                         <textarea
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.address2}
-                            onChange={(e) => setSignUpData({...signUpData, address2: e.target.value})}
+                            value={signUpData.address1}
+                            id="address1"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, address1: e.target.value})
+                                setErrors({...errors, address1: ''})
+                            }}
                         >
                         </textarea>
+                        {errors.address1 && <span className="text-sm text-red-500 font-bold">{errors.address1}</span>}
                     </div>
                     <div className="w-full px-4 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kota </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kota <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.city2}
-                            onChange={(e) => setSignUpData({...signUpData, city2: e.target.value, cityName2: e.target.options[e.target.options.selectedIndex].text})}
+                            value={signUpData.city1}
+                            id="city1"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, city1: e.target.value, cityName1: e.target.options[e.target.options.selectedIndex].text})
+                                setErrors({...errors, city1: ''})
+                            }}
                         >
                             <option value="">- choose -</option>
                             {
@@ -2063,6 +2570,110 @@ const Candidate: NextPage = () => {
                                 })
                             }
                         </select>
+                        {errors.city1 && <span className="text-sm text-red-500 font-bold">{errors.city1}</span>}
+                    </div>
+                    <div className="w-full px-4 mb-6 md:mb-0">
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kode Pos </label>
+                        <input
+                            type="text"
+                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border-gray-200 border-2 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                            value={signUpData.posCode1}
+                            onChange={(e) => setSignUpData({...signUpData, posCode1: e.target.value})}
+                        />
+                    </div>
+                    <div className="w-full px-4 mb-6 md:mb-0">
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No Telp/HP </label>
+                        <input
+                            type="text"
+                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border-gray-200 border-2 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                            value={signUpData.addressPhoneNumber1}
+                            onChange={(e) => setSignUpData({...signUpData, addressPhoneNumber1: e.target.value})}
+                        />
+                    </div>
+                    <div className="w-full px-4 mb-6 md:mb-0">
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tinggal Sejak Tahun <label className="text-red-500"> * </label></label>
+                        <select
+                            className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                            value={signUpData.residenceSince1}
+                            id="residenceSince1"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, residenceSince1: e.target.value})
+                                setErrors({...errors, residenceSince1: ''})
+                            }}
+                        >
+                            <option value="">- choose -</option>
+                            {
+                                generateYearCombo().map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
+                        </select>
+                        {errors.residenceSince1 && <span className="text-sm text-red-500 font-bold">{errors.residenceSince1}</span>}
+                    </div>
+                    <div className="w-full px-4 mb-6 md:mb-0">
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status Tempat Tinggal <label className="text-red-500"> * </label></label>
+                        <select
+                            className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                            value={signUpData.stayedStatus1}
+                            id="stayedStatus1"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, stayedStatus1: e.target.value})
+                                setErrors({...errors, stayedStatus1: ''})
+                            }}
+                        >
+                            <option value="">- choose -</option>
+                            {
+                                ((dataStayedStatus !== undefined) ? dataStayedStatus : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
+                        </select>
+                        {errors.stayedStatus1 && <span className="text-sm text-red-500 font-bold">{errors.stayedStatus1}</span>}
+                    </div>
+                </div>
+                <div className="-mx-3 mb-6 w-full lg:w-1/3 xl:w-1/3 2xl:w-1/3">
+                    <div className="p-4 bg-green-400 text-white text-center">
+                        <p className="font-bold text-md"> Alamat Sesuai KTP </p>
+                    </div>
+                    <div className="w-full px-4 py-2 mb-6 md:mb-0">
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat KTP <label className="text-red-500"> * </label></label>
+                        <textarea
+                            className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                            value={signUpData.address2}
+                            id="address2"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, address2: e.target.value})
+                                setErrors({...errors, address2: ''})
+                            }}
+                        >
+                        </textarea>
+                        {errors.address2 && <span className="text-sm text-red-500 font-bold">{errors.address2}</span>}
+                    </div>
+                    <div className="w-full px-4 mb-6 md:mb-0">
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kota <label className="text-red-500"> * </label></label>
+                        <select
+                            className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                            value={signUpData.city2}
+                            id="city2"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, city2: e.target.value, cityName2: e.target.options[e.target.options.selectedIndex].text})
+                                setErrors({...errors, city2: ''})
+                            }}
+                        >
+                            <option value="">- choose -</option>
+                            {
+                                ((dataBirthCity !== undefined) ? dataBirthCity : []).map((entry:any, i:number) => {
+                                    return(
+                                        <option key={i} value={entry.value}>{entry.label}</option>
+                                    )
+                                })
+                            }
+                        </select>
+                        {errors.city2 && <span className="text-sm text-red-500 font-bold">{errors.city2}</span>}
                     </div>
                     <div className="w-full px-4 mb-6 md:mb-0">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kode Pos </label>
@@ -2083,11 +2694,15 @@ const Candidate: NextPage = () => {
                         />
                     </div>
                     <div className="w-full px-4 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tinggal Sejak Tahun </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tinggal Sejak Tahun <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.residenceSince2}
-                            onChange={(e) => setSignUpData({...signUpData, residenceSince2: e.target.value})}
+                            id="residenceSince2"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, residenceSince2: e.target.value})
+                                setErrors({...errors, residenceSince2: ''})
+                            }}
                         >
                             <option value="">- choose -</option>
                             {
@@ -2098,13 +2713,18 @@ const Candidate: NextPage = () => {
                                 })
                             }
                         </select>
+                        {errors.residenceSince2 && <span className="text-sm text-red-500 font-bold">{errors.residenceSince2}</span>}
                     </div>
                     <div className="w-full px-4 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status Tempat Tinggal </label>
+                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status Tempat Tinggal <label className="text-red-500"> * </label></label>
                         <select
                             className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                             value={signUpData.stayedStatus2}
-                            onChange={(e) => setSignUpData({...signUpData, stayedStatus2: e.target.value})}
+                            id="stayedStatus2"
+                            onChange={(e) => {
+                                setSignUpData({...signUpData, stayedStatus2: e.target.value})
+                                setErrors({...errors, stayedStatus2: ''})
+                            }}
                         >
                             <option value="">- choose -</option>
                             {
@@ -2115,6 +2735,7 @@ const Candidate: NextPage = () => {
                                 })
                             }
                         </select>
+                        {errors.stayedStatus2 && <span className="text-sm text-red-500 font-bold">{errors.stayedStatus2}</span>}
                     </div>
                 </div>
                 <div className="-mx-3 mb-6 w-full lg:w-1/3 xl:w-1/3 2xl:w-1/3">
@@ -2200,89 +2821,6 @@ const Candidate: NextPage = () => {
                         </select>
                     </div>
                 </div>
-                <div className="-mx-3 mb-6 w-full lg:w-1/3 xl:w-1/3 2xl:w-1/3">
-                    <div className="p-4 bg-green-400 text-white text-center">
-                        <p className="font-bold text-md"> Alamat Sesuai Domisili </p>
-                    </div>
-                    <div className="w-full px-4 py-2 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat Sekarang </label>
-                        <textarea
-                            className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.address1}
-                            onChange={(e) => setSignUpData({...signUpData, address1: e.target.value})}
-                        >
-                        </textarea>
-                    </div>
-                    <div className="w-full px-4 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kota </label>
-                        <select
-                            className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.city1}
-                            onChange={(e) => setSignUpData({...signUpData, city1: e.target.value, cityName1: e.target.options[e.target.options.selectedIndex].text})}
-                        >
-                            <option value="">- choose -</option>
-                            {
-                                ((dataBirthCity !== undefined) ? dataBirthCity : []).map((entry:any, i:number) => {
-                                    return(
-                                        <option key={i} value={entry.value}>{entry.label}</option>
-                                    )
-                                })
-                            }
-                        </select>
-                    </div>
-                    <div className="w-full px-4 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kode Pos </label>
-                        <input
-                            type="text"
-                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border-gray-200 border-2 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.posCode1}
-                            onChange={(e) => setSignUpData({...signUpData, posCode1: e.target.value})}
-                        />
-                    </div>
-                    <div className="w-full px-4 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No Telp/HP </label>
-                        <input
-                            type="text"
-                            className={`appearance-none block w-full bg-gray-200 text-gray-700 border-gray-200 border-2 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.addressPhoneNumber1}
-                            onChange={(e) => setSignUpData({...signUpData, addressPhoneNumber1: e.target.value})}
-                        />
-                    </div>
-                    <div className="w-full px-4 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tinggal Sejak Tahun </label>
-                        <select
-                            className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.residenceSince1}
-                            onChange={(e) => setSignUpData({...signUpData, residenceSince1: e.target.value})}
-                        >
-                            <option value="">- choose -</option>
-                            {
-                                generateYearCombo().map((entry:any, i:number) => {
-                                    return(
-                                        <option key={i} value={entry.value}>{entry.label}</option>
-                                    )
-                                })
-                            }
-                        </select>
-                    </div>
-                    <div className="w-full px-4 mb-6 md:mb-0">
-                        <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status Tempat Tinggal </label>
-                        <select
-                            className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
-                            value={signUpData.stayedStatus1}
-                            onChange={(e) => setSignUpData({...signUpData, stayedStatus1: e.target.value})}
-                        >
-                            <option value="">- choose -</option>
-                            {
-                                ((dataStayedStatus !== undefined) ? dataStayedStatus : []).map((entry:any, i:number) => {
-                                    return(
-                                        <option key={i} value={entry.value}>{entry.label}</option>
-                                    )
-                                })
-                            }
-                        </select>
-                    </div>
-                </div>
             </div>
 
             <div className="text-center text-white bg-gradient-to-r from-green-400 to-blue-400 py-3">
@@ -2295,21 +2833,24 @@ const Candidate: NextPage = () => {
                         <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lengkap </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lengkap <label className="text-red-500"> * </label></label>
                                     <input
                                         type="text"
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         name="officialName"
                                         value={signUpData.contactName[i]}
-                                        onChange={(e) => changeNewContact(i, signUpData.contactName, 'contactName', e.target.value)}
+                                        id={`contactName${i}`}
+                                        onChange={(e) => changeNewContact(i, signUpData.contactName, 'contactName', e.target.value, errors.contactName)}
                                     />
+                                    {errors.contactName[i] && <span className="text-sm text-red-500 font-bold">{errors.contactName[i]}</span>}
                                 </div>
                                 <div className="w-full lg:w-1/6 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Hubungan </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Hubungan <label className="text-red-500"> * </label></label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.contactShip[i]}
-                                        onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value)}
+                                        id={`contactShip${i}`}
+                                        onChange={(e) => changeNewContact(i, signUpData.contactShip, 'contactShip', e.target.value, errors.contactShip)}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2320,6 +2861,7 @@ const Candidate: NextPage = () => {
                                             })
                                         }
                                     </select>
+                                    {errors.contactShip[i] && <span className="text-sm text-red-500 font-bold">{errors.contactShip[i]}</span>}
                                 </div>
                                 <div className="w-full lg:w-1/6 px-3">
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No Telephone </label>
@@ -2327,38 +2869,45 @@ const Candidate: NextPage = () => {
                                         type="text"
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.contactTelephone[i]}
+                                        id={`contactTelephone${i}`}
                                         onChange={(e) => changeNewContact(i, signUpData.contactTelephone, 'contactTelephone', e.target.value)}
                                     />
                                 </div>
                                 <div className="w-full lg:w-1/6 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No Handphone </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> No Handphone <label className="text-red-500"> * </label></label>
                                     <input
                                         type="text"
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.contactPhone[i]}
-                                        onChange={(e) => changeNewContact(i, signUpData.contactPhone, 'contactPhone', e.target.value)}
+                                        id={`contactPhone${i}`}
+                                        onChange={(e) => changeNewContact(i, signUpData.contactPhone, 'contactPhone', e.target.value, errors.contactPhone)}
                                     />
+                                    {errors.contactPhone[i] && <span className="text-sm text-red-500 font-bold">{errors.contactPhone[i]}</span>}
                                 </div>
                                 <div className="w-full lg:w-1/6 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status <label className="text-red-500"> * </label></label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.contactStatus[i]}
-                                        onChange={(e) => changeNewContact(i, signUpData.contactStatus, 'contactStatus', e.target.value)}
+                                        id={`contactStatus${i}`}
+                                        onChange={(e) => changeNewContact(i, signUpData.contactStatus, 'contactStatus', e.target.value, errors.contactStatus)}
                                     >
                                         <option value="">- choose -</option>
                                         <option value="Tidak dalam satu rumah"> Tidak dalam satu rumah </option>
                                         <option value="Dalam satu rumah"> Dalam satu rumah </option>
                                     </select>
+                                    {errors.contactStatus[i] && <span className="text-sm text-red-500 font-bold">{errors.contactStatus[i]}</span>}
                                 </div>
                                 <div className="w-full lg:w-1/6 px-3">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Alamat <label className="text-red-500"> * </label></label>
                                     <textarea
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.contactAddress[i]}
-                                        onChange={(e) => changeNewContact(i, signUpData.contactAddress, 'contactAddress', e.target.value)}
+                                        id={`contactAddress${i}`}
+                                        onChange={(e) => changeNewContact(i, signUpData.contactAddress, 'contactAddress', e.target.value, errors.contactAddress)}
                                     >
                                     </textarea>
+                                    {errors.contactAddress[i] && <span className="text-sm text-red-500 font-bold">{errors.contactAddress[i]}</span>}
                                 </div>
 
                             </div>
@@ -2390,6 +2939,7 @@ const Candidate: NextPage = () => {
                         <button
                             className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteContact}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -2414,11 +2964,12 @@ const Candidate: NextPage = () => {
                         <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Hubungan </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Hubungan <label className="text-red-500"> * </label></label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.familyRelationship[i]}
-                                        onChange={(e) => changeNewFamily(i, signUpData.familyRelationship, 'familyRelationship', e.target.value)}
+                                        id={`familyRelationship${i}`}
+                                        onChange={(e) => changeNewFamily(i, signUpData.familyRelationship, 'familyRelationship', e.target.value, errors.familyRelationship)}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2429,29 +2980,42 @@ const Candidate: NextPage = () => {
                                             })
                                         }
                                     </select>
+                                    {errors.familyRelationship[i] && <span className="text-sm text-red-500 font-bold">{errors.familyRelationship[i]}</span>}
                                 </div>
 
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lengkap </label>
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lengkap <label className="text-red-500"> * </label></label>
                                     <input
                                         type="text"
                                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.familyRelationName[i]}
-                                        onChange={(e) => changeNewFamily(i, signUpData.familyRelationName, 'familyRelationName', e.target.value)}
+                                        id={`familyRelationName${i}`}
+                                        onChange={(e) => changeNewFamily(i, signUpData.familyRelationName, 'familyRelationName', e.target.value, errors.familyRelationName)}
                                     />
+                                    {errors.familyRelationName[i] && <span className="text-sm text-red-500 font-bold">{errors.familyRelationName[i]}</span>}
                                 </div>
 
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tanggal Lahir </label>
-                                    <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.familyRelationBirth[i]} onChange={(date: any) => changeNewFamily(i, signUpData.familyRelationBirth, 'familyRelationBirth', moment(date, "YYYY-MM-DD").toDate())} />
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tanggal Lahir <label className="text-red-500"> * </label></label>
+                                    <DatePicker
+                                        className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                        dateFormat="yyyy-MM-dd"
+                                        selected={signUpData.familyRelationBirth[i]}
+                                        id={`familyRelationBirth${i}`}
+                                        onChange={(date: any) => {
+                                            changeNewFamily(i, signUpData.familyRelationBirth, 'familyRelationBirth', moment(date, "YYYY-MM-DD").toDate(), errors.familyRelationBirth)
+                                        }}
+                                    />
+                                    {errors.familyRelationBirth[i] && <span className="text-sm text-red-500 font-bold">{errors.familyRelationBirth[i]}</span>}
                                 </div>
 
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Pendidikan Terakhir </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Pendidikan Terakhir <label className="text-red-500"> * </label></label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.familyRelationEducation[i]}
-                                        onChange={(e) => changeNewFamily(i, signUpData.familyRelationEducation, 'familyRelationEducation', e.target.value)}
+                                        id={`familyRelationEducation${i}`}
+                                        onChange={(e) => changeNewFamily(i, signUpData.familyRelationEducation, 'familyRelationEducation', e.target.value, errors.familyRelationEducation)}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2462,15 +3026,17 @@ const Candidate: NextPage = () => {
                                             })
                                         }
                                     </select>
+                                    {errors.familyRelationEducation[i] && <span className="text-sm text-red-500 font-bold">{errors.familyRelationEducation[i]}</span>}
                                 </div>
 
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Pekerjaan </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Pekerjaan <label className="text-red-500"> * </label></label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.familyRelationOccupation[i]}
+                                        id={`familyRelationOccupation${i}`}
                                         onChange={(e) => {
-                                            changeNewFamily(i, signUpData.familyRelationOccupation, 'familyRelationOccupation', e.target.value)
+                                            changeNewFamily(i, signUpData.familyRelationOccupation, 'familyRelationOccupation', e.target.value, errors.familyRelationOccupation)
                                             changeNewFamily(i, signUpData.familyRelationOccupationName, 'familyRelationOccupationName', e.target.options[e.target.options.selectedIndex].text)
                                         }}
                                     >
@@ -2483,14 +3049,16 @@ const Candidate: NextPage = () => {
                                             })
                                         }
                                     </select>
+                                    {errors.familyRelationOccupation[i] && <span className="text-sm text-red-500 font-bold">{errors.familyRelationOccupation[i]}</span>}
                                 </div>
 
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Status <label className="text-red-500"> * </label></label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.familyRelationStatus[i]}
-                                        onChange={(e) => changeNewFamily(i, signUpData.familyRelationStatus, 'familyRelationStatus', e.target.value)}
+                                        id={`familyRelationStatus${i}`}
+                                        onChange={(e) => changeNewFamily(i, signUpData.familyRelationStatus, 'familyRelationStatus', e.target.value, errors.familyRelationStatus)}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2501,6 +3069,7 @@ const Candidate: NextPage = () => {
                                             })
                                         }
                                     </select>
+                                    {errors.familyRelationStatus[i] && <span className="text-sm text-red-500 font-bold">{errors.familyRelationStatus[i]}</span>}
                                 </div>
                             </div>
                         </div>
@@ -2531,6 +3100,7 @@ const Candidate: NextPage = () => {
                         <button
                             className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteFamily}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -2555,11 +3125,12 @@ const Candidate: NextPage = () => {
                         <div className="p-4 w-full border-b-2 border-gray-300" key={i}>
                             <div className="flex flex-wrap -mx-3 mb-6">
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tingkat </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Tingkat <label className="text-red-500"> * </label></label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationFormalGrade[i]}
-                                        onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalGrade, 'educationFormalGrade', e.target.value)}
+                                        id={`educationFormalGrade${i}`}
+                                        onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalGrade, 'educationFormalGrade', e.target.value, errors.educationFormalGrade)}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2570,15 +3141,17 @@ const Candidate: NextPage = () => {
                                             })
                                         }
                                     </select>
+                                    {errors.educationFormalGrade[i] && <span className="text-sm text-red-500 font-bold">{errors.educationFormalGrade[i]}</span>}
                                 </div>
 
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lembaga </label>
+                                <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Nama Lembaga <label className="text-red-500"> * </label></label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationFormalInstitution[i]}
+                                        id={`educationFormalInstitution${i}`}
                                         onChange={(e) => {
-                                            changeNewEduFormal(i, signUpData.educationFormalInstitution, 'educationFormalInstitution', e.target.value)
+                                            changeNewEduFormal(i, signUpData.educationFormalInstitution, 'educationFormalInstitution', e.target.value, errors.educationFormalInstitution)
                                             changeNewEduFormal(i, signUpData.educationFormalInstitutionName, 'educationFormalInstitutionName', e.target.options[e.target.options.selectedIndex].text)
                                         }}
                                     >
@@ -2591,34 +3164,40 @@ const Candidate: NextPage = () => {
                                             })
                                         }
                                     </select>
+                                    {errors.educationFormalInstitution[i] && <span className="text-sm text-red-500 font-bold">{errors.educationFormalInstitution[i]}</span>}
                                 </div>
-
-                                <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jurusan </label>
+                                
+                                <div className={`w-full lg:w-1/6 px-3 mb-6 md:mb-0`}>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Jurusan <label className="text-red-500"> * </label></label>
                                     <select
-                                        className={`appearance-none hidden w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
+                                        className={`appearance-none w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700 ${(signUpData.educationFormalGrade[i] === '54' || signUpData.educationFormalGrade[i] === '55') ? 'hidden' : ''}`}
                                         value={signUpData.educationFormalMajor[i]}
+                                        id={`educationFormalMajor${i}`}
                                         onChange={(e) => {
-                                            changeNewEduFormal(i, signUpData.educationFormalMajor, 'educationFormalMajor', e.target.value)
+                                            changeNewEduFormal(i, signUpData.educationFormalMajor, 'educationFormalMajor', e.target.value, errors.educationFormalMajor)
                                             changeNewEduFormal(i, signUpData.educationFormalMajorName, 'educationFormalMajorName', e.target.options[e.target.options.selectedIndex].text)
                                         }}
-                                        id="majorSelect"
                                     >
                                         <option value="">- choose -</option>
-                                        <option value="1"> Islam </option>
-                                        <option value="2"> Kristen </option>
-                                        <option value="3"> Katolik </option>
+                                        {
+                                            ((dataMajor !== undefined) ? dataMajor : []).map((entry:any, i:number) => {
+                                                return(
+                                                    <option key={i} value={entry.value}>{entry.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
-                                    {/* <DatePicker className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`} dateFormat="yyyy-MM-dd" selected={signUpData.birthDate} onChange={(date: any) => setSignUpData({...signUpData, birthDate: moment(date, "YYYY-MM-DD").toDate()})} /> */}
+                                    {errors.educationFormalMajor[i] && <span className="text-sm text-red-500 font-bold">{errors.educationFormalMajor[i]}</span>}
                                 </div>
 
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kota </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Kota <label className="text-red-500"> * </label></label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationFormalCity[i]}
+                                        id={`educationFormalCity${i}`}
                                         onChange={(e) => {
-                                            changeNewEduFormal(i, signUpData.educationFormalCity, 'educationFormalCity', e.target.value)
+                                            changeNewEduFormal(i, signUpData.educationFormalCity, 'educationFormalCity', e.target.value, errors.educationFormalMajor)
                                             changeNewEduFormal(i, signUpData.educationFormalCityName, 'educationFormalCityName', e.target.options[e.target.options.selectedIndex].text)
                                         }}
                                     >
@@ -2631,14 +3210,16 @@ const Candidate: NextPage = () => {
                                             })
                                         }
                                     </select>
+                                    {errors.educationFormalCity[i] && <span className="text-sm text-red-500 font-bold">{errors.educationFormalCity[i]}</span>}
                                 </div>
 
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
-                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Mulai </label>
+                                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Mulai <label className="text-red-500"> * </label></label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationFormalStart[i]}
-                                        onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalStart, 'educationFormalStart', e.target.value)}
+                                        id={`educationFormalStart${i}`}
+                                        onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalStart, 'educationFormalStart', e.target.value, errors.educationFormalStart)}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2649,12 +3230,14 @@ const Candidate: NextPage = () => {
                                             })
                                         }
                                     </select>
+                                    {errors.educationFormalStart[i] && <span className="text-sm text-red-500 font-bold">{errors.educationFormalStart[i]}</span>}
 
                                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"> Selesai </label>
                                     <select
                                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                                         value={signUpData.educationFormalEnd[i]}
-                                        onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalEnd, 'educationFormalEnd', e.target.value)}
+                                        id={`educationFormalEnd${i}`}
+                                        onChange={(e) => changeNewEduFormal(i, signUpData.educationFormalEnd, 'educationFormalEnd', e.target.value, errors.educationFormalEnd)}
                                     >
                                         <option value="">- choose -</option>
                                         {
@@ -2665,6 +3248,7 @@ const Candidate: NextPage = () => {
                                             })
                                         }
                                     </select>
+                                    {errors.educationFormalEnd[i] && <span className="text-sm text-red-500 font-bold">{errors.educationFormalEnd[i]}</span>}
                                 </div>
 
                                 <div className="w-full lg:w-1/6 px-3 mb-6 md:mb-0">
@@ -2705,6 +3289,7 @@ const Candidate: NextPage = () => {
                         <button
                             className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteEducationFormal}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -2828,6 +3413,7 @@ const Candidate: NextPage = () => {
                         <button
                             className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteEducationUnformal}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -2950,6 +3536,7 @@ const Candidate: NextPage = () => {
                         <button
                             className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteWorkshop}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -3049,6 +3636,7 @@ const Candidate: NextPage = () => {
                         <button
                             className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteOrganization}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -3190,6 +3778,7 @@ const Candidate: NextPage = () => {
                         <button
                             className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteLanguage}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -3261,6 +3850,7 @@ const Candidate: NextPage = () => {
                         <button
                             className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteComputerSkill}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -3332,6 +3922,7 @@ const Candidate: NextPage = () => {
                         <button
                             className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteSkill}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -3508,6 +4099,7 @@ const Candidate: NextPage = () => {
                         <button
                             className={`py-2 px-4 w-full bg-white text-red-500 border-2 border-red-500 text-sm rounded shadow-md transition duration-200 flex hover:bg-red-500 hover:text-white appearance-none leading-tight`}
                             onClick={deleteWorkExp}
+                            type="button"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -3859,7 +4451,7 @@ const Candidate: NextPage = () => {
                                 </td>
                                 <td className="lg:px-6 lg:py-4">
                                     {
-                                        signUpData.candidatePhoto !== '' ? <Image src={signUpData.candidatePhoto} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
+                                        signUpData.candidatePhoto !== '' ? <Image src={`${apiurl}${signUpData.candidatePhoto}`} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
                                     }
                                 </td>
                             </tr>
@@ -3876,7 +4468,7 @@ const Candidate: NextPage = () => {
                                 </td>
                                 <td className="lg:px-6 lg:py-4">
                                     {
-                                        signUpData.idCardPhoto !== '' ? <Image src={signUpData.idCardPhoto} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
+                                        signUpData.idCardPhoto !== '' ? <Image src={`${apiurl}${signUpData.idCardPhoto}`} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
                                     }
                                 </td>
                             </tr>
@@ -3893,7 +4485,7 @@ const Candidate: NextPage = () => {
                                 </td>
                                 <td className="lg:px-6 lg:py-4">
                                     {
-                                        signUpData.familyCardPhoto !== '' ? <Image src={signUpData.familyCardPhoto} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
+                                        signUpData.familyCardPhoto !== '' ? <Image src={`${apiurl}${signUpData.familyCardPhoto}`} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
                                     }
                                 </td>
                             </tr>
@@ -3910,7 +4502,7 @@ const Candidate: NextPage = () => {
                                 </td>
                                 <td className="lg:px-6 lg:py-4 text-gray-900">
                                     {
-                                        signUpData.certificatePhoto !== '' ? <Image src={signUpData.certificatePhoto} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
+                                        signUpData.certificatePhoto !== '' ? <Image src={`${apiurl}${signUpData.certificatePhoto}`} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
                                     }
                                 </td>
                             </tr>
@@ -3927,7 +4519,7 @@ const Candidate: NextPage = () => {
                                 </td>
                                 <td className="lg:px-6 lg:py-4 text-gray-900">
                                     {
-                                        signUpData.taxPhoto !== '' ? <Image src={signUpData.taxPhoto} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
+                                        signUpData.taxPhoto !== '' ? <Image src={`${apiurl}${signUpData.taxPhoto}`} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
                                     }
                                 </td>
                             </tr>
@@ -3944,7 +4536,7 @@ const Candidate: NextPage = () => {
                                 </td>
                                 <td className="lg:px-6 lg:py-4 text-gray-900">
                                     {
-                                        signUpData.simPhoto !== '' ? <Image src={signUpData.simPhoto} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
+                                        signUpData.simPhoto !== '' ? <Image src={`${apiurl}${signUpData.simPhoto}`} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
                                     }
                                 </td>
                             </tr>
@@ -3961,7 +4553,7 @@ const Candidate: NextPage = () => {
                                 </td>
                                 <td className="lg:px-6 lg:py-4 text-gray-900">
                                     {
-                                        signUpData.maritalCertificatePhoto !== '' ? <Image src={signUpData.maritalCertificatePhoto} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
+                                        signUpData.maritalCertificatePhoto !== '' ? <Image src={`${apiurl}${signUpData.maritalCertificatePhoto}`} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
                                     }
                                 </td>
                             </tr>
@@ -3978,7 +4570,7 @@ const Candidate: NextPage = () => {
                                 </td>
                                 <td className="lg:px-6 lg:py-4 text-gray-900">
                                     {
-                                        signUpData.workExpPhoto !== '' ? <Image src={signUpData.workExpPhoto} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
+                                        signUpData.workExpPhoto !== '' ? <Image src={`${apiurl}${signUpData.workExpPhoto}`} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
                                     }
                                 </td>
                             </tr>
@@ -3995,7 +4587,7 @@ const Candidate: NextPage = () => {
                                 </td>
                                 <td className="lg:px-6 lg:py-4 text-gray-900">
                                     {
-                                        signUpData.vaccinePhoto !== '' ? <Image src={signUpData.vaccinePhoto} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
+                                        signUpData.vaccinePhoto !== '' ? <Image src={`${apiurl}${signUpData.vaccinePhoto}`} alt={'Preview image'} id="candidatePhoto" height={500} width={500} /> : null
                                     }
                                 </td>
                             </tr>

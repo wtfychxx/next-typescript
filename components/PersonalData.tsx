@@ -21,7 +21,7 @@ const PersonalData: NextPage = () => {
                     </select>
                 </div>
                 <div className="w-full md:w-1/2 px-3">
-                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Alamat Email </label>
+                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold  mb-2"> Alamat Email </label>
                     <input
                         type="text"
                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
@@ -36,7 +36,7 @@ const PersonalData: NextPage = () => {
                     />
                 </div>
                 <div className="w-full md:w-1/2 px-3">
-                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Kewarganegaraan </label>
+                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold  mb-2"> Kewarganegaraan </label>
                     <select
                         className={`appearance-none block w-full text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                     >
@@ -58,7 +58,7 @@ const PersonalData: NextPage = () => {
                     </select>
                 </div>
                 <div className="w-full md:w-1/2 px-3">
-                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> No KTP </label>
+                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold  mb-2"> No KTP </label>
                     <input
                         className={`appearance-none block w-full bg-gray-200 text-gray-700 border-2 border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-purple-700`}
                     />
@@ -72,7 +72,7 @@ const PersonalData: NextPage = () => {
                     />
                 </div>
                 <div className="w-full md:w-1/2 px-3">
-                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Media Sosial </label>
+                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold  mb-2"> Media Sosial </label>
                     
                     <div className="flex">
                         <svg
@@ -239,7 +239,7 @@ const PersonalData: NextPage = () => {
                     </select>
                 </div>
                 <div className="w-full md:w-1/2 px-3">
-                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold font-bold mb-2"> Media Sosial </label>
+                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold  mb-2"> Media Sosial </label>
                     
                     <div className="flex">
                         <svg
